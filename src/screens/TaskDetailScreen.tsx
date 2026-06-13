@@ -143,7 +143,41 @@ export default function TaskDetailScreen() {
   />
 )}
         </View>
+<View style={styles.card}>
+  <Text style={styles.sectionTitle}>
+    Vital Signs
+  </Text>
 
+  <TextInput
+    placeholder="BP Systolic"
+    style={styles.input}
+  />
+
+  <TextInput
+    placeholder="BP Diastolic"
+    style={styles.input}
+  />
+
+  <TextInput
+    placeholder="Pulse Rate"
+    style={styles.input}
+  />
+
+  <TextInput
+    placeholder="SpO₂"
+    style={styles.input}
+  />
+
+  <TextInput
+    placeholder="Temperature"
+    style={styles.input}
+  />
+
+  <TextInput
+    placeholder="Respiratory Rate"
+    style={styles.input}
+  />
+</View>
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>
             Remarks
@@ -282,7 +316,15 @@ const styles = StyleSheet.create({
     color: '#D97706',
     fontWeight: '700',
   },
-
+input: {
+  height: 48,
+  borderWidth: 1,
+  borderColor: '#E2E8F0',
+  borderRadius: 12,
+  paddingHorizontal: 12,
+  marginTop: 10,
+  backgroundColor: '#FFFFFF',
+},
   textArea: {
     minHeight: 100,
     borderWidth: 1,

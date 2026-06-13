@@ -8,7 +8,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-
+import { patients } from '../data/patients';
 export default function PatientsScreen() {
   return (
     <SafeAreaView style={styles.container}>
@@ -34,29 +34,16 @@ export default function PatientsScreen() {
           />
         </View>
 
-        <PatientCard
-          name="Ravi"
-          age="40"
-          gender="Male"
-          ward="General Ward - 2 / 205"
-          diagnosis="Chest Pain"
-        />
-
-        <PatientCard
-          name="Kumar"
-          age="40"
-          gender="Male"
-          ward="General Ward - 1 / 103"
-          diagnosis="Fever"
-        />
-
-        <PatientCard
-          name="Chalasani"
-          age="50"
-          gender="Male"
-          ward="General Ward - 1 / 104"
-          diagnosis="Cold & Cough"
-        />
+{patients.map((patient) => (
+  <PatientCard
+    key={patient.id}
+    name={patient.name}
+    age={String(patient.age)}
+    gender={patient.gender}
+    ward={patient.ward}
+    diagnosis={patient.diagnosis}
+  />
+))}
       </ScrollView>
     </SafeAreaView>
   );
