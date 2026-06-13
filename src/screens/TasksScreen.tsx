@@ -9,8 +9,50 @@ import {
 } from 'react-native';
 import TaskCard from '../components/tasks/TaskCard';
 import { useNavigation } from '@react-navigation/native';
+
 export default function TasksScreen() {
     const navigation = useNavigation<any>();
+    const tasks = [
+    {
+      status: 'OVERDUE',
+      statusColor: '#DC2626',
+      title: 'Vital Signs Monitoring',
+      location: 'General Ward - 2',
+      due: '02:00 PM',
+      assigned: 'Nurse Lakshmi',
+      dueText: '1h 45m',
+    },
+
+    {
+      status: 'PENDING',
+      statusColor: '#D97706',
+      title: 'Crash Cart / Drug Inventory Check',
+      location: 'Emergency',
+      due: '11:00 AM',
+      assigned: 'Nurse Priya',
+      dueText: 'Due in 30m',
+    },
+
+    {
+      status: 'PENDING',
+      statusColor: '#D97706',
+      title: 'OT Linen Sterilization Check',
+      location: 'Operation Theatre',
+      due: '02:00 PM',
+      assigned: 'Staff Ramesh',
+      dueText: 'Due in 1h 30m',
+    },
+
+    {
+      status: 'IN PROGRESS',
+      statusColor: '#2563EB',
+      title: 'Medical Gas Supply Check',
+      location: 'OT',
+      due: 'Started 10:15 AM',
+      assigned: 'Suresh',
+      dueText: '',
+    },
+  ];
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -35,56 +77,23 @@ export default function TasksScreen() {
           <Text style={styles.filter}>Overdue</Text>
         </View>
 
-        <TaskCard
-          status="OVERDUE"
-          statusColor="#DC2626"
-          title="Vital Signs Monitoring"
-          location="General Ward - 2"
-          due="02:00 PM"
-          assigned="Nurse Lakshmi"
-          dueText="1h 45m"
-onPress={() =>
-  navigation.navigate('TaskDetail', {
-    task: {
-      status: 'OVERDUE',
-      title: 'Vital Signs Monitoring',
-      location: 'General Ward - 2',
-      due: '02:00 PM',
-      assigned: 'Nurse Lakshmi',
-    },
-  })
-}
-        />
-
-        <TaskCard
-          status="PENDING"
-          statusColor="#D97706"
-          title="Crash Cart / Drug Inventory Check"
-          location="Emergency"
-          due="11:00 AM"
-          assigned="Nurse Priya"
-          dueText="Due in 30m"
-        />
-
-        <TaskCard
-          status="PENDING"
-          statusColor="#D97706"
-          title="OT Linen Sterilization Check"
-          location="Operation Theatre"
-          due="02:00 PM"
-          assigned="Staff Ramesh"
-          dueText="Due in 1h 30m"
-        />
-
-        <TaskCard
-          status="IN PROGRESS"
-          statusColor="#2563EB"
-          title="Medical Gas Supply Check"
-          location="OT"
-          due="Started 10:15 AM"
-          assigned="Suresh"
-          dueText=""
-        />
+{tasks.map((task, index) => (
+  <TaskCard
+    key={index}
+    status={task.status}
+    statusColor={task.statusColor}
+    title={task.title}
+    location={task.location}
+    due={task.due}
+    assigned={task.assigned}
+    dueText={task.dueText}
+    onPress={() =>
+      navigation.navigate('TaskDetail', {
+        task,
+      })
+    }
+  />
+))}
       </ScrollView>
     </SafeAreaView>
   );
