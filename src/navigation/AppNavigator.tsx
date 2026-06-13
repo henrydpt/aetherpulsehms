@@ -12,6 +12,7 @@ import {
 } from 'react-native-safe-area-context';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TaskDetailScreen from '../screens/TaskDetailScreen';
+import PatientDetailScreen from '../screens/PatientDetailScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function MainTabs() {
@@ -103,6 +104,10 @@ export default function AppNavigator() {
     name="TaskDetail"
     component={TaskDetailScreen}
   />
+  <Stack.Screen
+  name="PatientDetail"
+  component={PatientDetailScreen}
+/>
 </Stack.Navigator>
         </NavigationContainer>
   </SafeAreaProvider>

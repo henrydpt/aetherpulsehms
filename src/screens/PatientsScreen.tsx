@@ -9,7 +9,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { patients } from '../data/patients';
+import { useNavigation } from '@react-navigation/native';
+
 export default function PatientsScreen() {
+    const navigation = useNavigation<any>();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -35,14 +38,20 @@ export default function PatientsScreen() {
         </View>
 
 {patients.map((patient) => (
-  <PatientCard
-    key={patient.id}
-    name={patient.name}
-    age={String(patient.age)}
-    gender={patient.gender}
-    ward={patient.ward}
-    diagnosis={patient.diagnosis}
-  />
+ <PatientCard
+  key={patient.id}
+  patient={patient}
+  name={patient.name}
+  age={String(patient.age)}
+  gender={patient.gender}
+  ward={patient.ward}
+  diagnosis={patient.diagnosis}
+  onPress={() =>
+    navigation.navigate('PatientDetail', {
+      patient,
+    })
+  }
+/>
 ))}
       </ScrollView>
     </SafeAreaView>
@@ -50,14 +59,19 @@ export default function PatientsScreen() {
 }
 
 function PatientCard({
+  patient,
   name,
   age,
   gender,
   ward,
   diagnosis,
+  onPress,
 }: any) {
   return (
-    <TouchableOpacity style={styles.card}>
+    <TouchableOpacity
+  style={styles.card}
+  onPress={onPress}
+>
       <View style={styles.avatar}>
         <Text style={{ fontSize: 20 }}>👤</Text>
       </View>
