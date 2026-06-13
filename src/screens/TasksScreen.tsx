@@ -8,7 +8,9 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import TaskCard from '../components/tasks/TaskCard';
+import { useNavigation } from '@react-navigation/native';
 export default function TasksScreen() {
+    const navigation = useNavigation<any>();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -41,6 +43,17 @@ export default function TasksScreen() {
           due="02:00 PM"
           assigned="Nurse Lakshmi"
           dueText="1h 45m"
+onPress={() =>
+  navigation.navigate('TaskDetail', {
+    task: {
+      status: 'OVERDUE',
+      title: 'Vital Signs Monitoring',
+      location: 'General Ward - 2',
+      due: '02:00 PM',
+      assigned: 'Nurse Lakshmi',
+    },
+  })
+}
         />
 
         <TaskCard
