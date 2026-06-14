@@ -65,9 +65,18 @@ export default function PatientDetailScreen() {
     marginTop: 18,
   }}
 >
-  <TouchableOpacity
-    style={styles.actionButton}
-  >
+<TouchableOpacity
+  style={styles.actionButton}
+  onPress={() =>
+    navigation.navigate(
+      'AddPatient',
+      {
+        mode: 'EDIT',
+        patient,
+      }
+    )
+  }
+>
     <Text style={styles.actionButtonText}>
       Edit Patient
     </Text>

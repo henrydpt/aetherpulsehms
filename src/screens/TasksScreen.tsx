@@ -9,10 +9,12 @@ import {
 } from 'react-native';
 import TaskCard from '../components/tasks/TaskCard';
 import { useNavigation } from '@react-navigation/native';
-import { generateDailyTasks } from '../services/taskGenerator';
+import { useTaskStore } from '../store/taskStore';
 export default function TasksScreen() {
     const navigation = useNavigation<any>();
-    const tasks = generateDailyTasks();
+    const tasks = useTaskStore(
+  (state) => state.tasks
+);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

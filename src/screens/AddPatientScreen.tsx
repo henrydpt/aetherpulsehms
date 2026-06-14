@@ -9,19 +9,47 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { usePatientStore } from '../store/patientStore';
 
 export default function AddPatientScreen() {
-  const [name, setName] = useState('');
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
-  const [ward, setWard] = useState('');
-  const [diagnosis, setDiagnosis] = useState('');
+  const navigation = useNavigation<any>();
+
+const route = useRoute<any>();
+
+const editPatient =
+  route.params?.patient;
+
+const isEditMode =
+  route.params?.mode === 'EDIT';
+const [name, setName] = useState(
+  editPatient?.name || ''
+);
+
+const [age, setAge] = useState(
+  editPatient?.age?.toString() || ''
+);
+
+const [gender, setGender] = useState(
+  editPatient?.gender || ''
+);
+
+const [ward, setWard] = useState(
+  editPatient?.ward || ''
+);
+
+const [diagnosis, setDiagnosis] = useState(
+  editPatient?.diagnosis || ''
+);
   const addPatient = usePatientStore(
   (state) => state.addPatient
 );
-  const navigation = useNavigation<any>();
+const updatePatient = usePatientStore(
+  (state) => state.updatePatient
+);
 return (
   <SafeAreaView style={styles.container}>
     <ScrollView
@@ -36,7 +64,9 @@ return (
 </TouchableOpacity>
 
         <Text style={styles.topBarTitle}>
-          Add Patient
+          {isEditMode
+  ? 'Edit Patient'
+  : 'Add Patient'}
         </Text>
 
         <View style={{ width: 20 }} />
@@ -92,6 +122,18 @@ return (
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
+if (isEditMode) {
+  updatePatient(
+    editPatient.id,
+    {
+      name,
+      age: Number(age),
+      gender,
+      ward,
+      diagnosis,
+    }
+  );
+} else {
   addPatient({
     id: `PAT${Date.now()}`,
     name,
@@ -100,13 +142,16 @@ return (
     ward,
     diagnosis,
   });
+}
 
-  Alert.alert(
-    'Patient Added',
-    'Patient admission recorded.'
-  );
+Alert.alert(
+  isEditMode
+    ? 'Patient Updated'
+    : 'Patient Added',
+  'Patient admission recorded.'
+);
 
-  navigation.goBack();
+navigation.goBack();
 }}
       >
         <Text style={styles.buttonText}>

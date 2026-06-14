@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { useRoute } from '@react-navigation/native';
+import {
+  useRoute,
+  useNavigation,
+} from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import {
   SafeAreaView,
@@ -12,9 +15,14 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-
+import { useTaskStore } from '../store/taskStore';
 export default function TaskDetailScreen() {
       const route = useRoute<any>();
+      const navigation = useNavigation<any>();
+
+const completeTask = useTaskStore(
+  (state) => state.completeTask
+);
 
 const task =
   route.params?.task || {
@@ -227,12 +235,23 @@ const task =
     },
   ]}
   disabled={!photoAttached}
-  onPress={() =>
-    Alert.alert(
-      'Task Completed',
-      'Evidence submitted successfully.'
-    )
+  onPress={() => {
+  if (task.id) {
+    completeTask(task.id);
   }
+
+  Alert.alert(
+    'Task Completed',
+    'Evidence submitted successfully.',
+    [
+      {
+        text: 'OK',
+        onPress: () =>
+          navigation.goBack(),
+      },
+    ]
+  );
+}}
 >
           <Text style={styles.buttonText}>
             Mark Complete
