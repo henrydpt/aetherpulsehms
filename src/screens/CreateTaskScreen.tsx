@@ -4,6 +4,7 @@ import {
   ScrollView,
   View,
   Text,
+  TextInput,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
@@ -28,7 +29,20 @@ const [selectedPatientId, setSelectedPatientId] =
 
 const [selectedTemplateId, setSelectedTemplateId] =
   useState('');
+const [taskName, setTaskName] =
+  useState('');
 
+const [dueDate, setDueDate] =
+  useState('');
+
+const [dueTime, setDueTime] =
+  useState('');
+
+const [priority, setPriority] =
+  useState('MEDIUM');
+
+const [escalationMinutes, setEscalationMinutes] =
+  useState('30');
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -240,6 +254,123 @@ const [selectedTemplateId, setSelectedTemplateId] =
     </Text>
   </View>
 )}
+<View style={styles.card}>
+  <Text style={styles.sectionTitle}>
+    Task Details
+  </Text>
+
+  <TextInput
+    placeholder="Task Name"
+    value={taskName}
+    onChangeText={setTaskName}
+    style={styles.input}
+  />
+
+  <TextInput
+    placeholder="Due Date (DD-MM-YYYY)"
+    value={dueDate}
+    onChangeText={setDueDate}
+    style={styles.input}
+  />
+
+  <TextInput
+    placeholder="Due Time (06:00 PM)"
+    value={dueTime}
+    onChangeText={setDueTime}
+    style={styles.input}
+  />
+
+  <Text
+    style={{
+      marginTop: 10,
+      marginBottom: 8,
+      fontWeight: '700',
+      color: '#234A7A',
+    }}
+  >
+    Priority
+  </Text>
+
+  <View
+    style={{
+      flexDirection: 'row',
+      gap: 8,
+    }}
+  >
+    {['LOW', 'MEDIUM', 'HIGH'].map(
+      (value) => (
+        <TouchableOpacity
+          key={value}
+          style={[
+            styles.option,
+            {
+              flex: 1,
+              marginTop: 0,
+            },
+            priority === value &&
+              styles.selectedOption,
+          ]}
+          onPress={() =>
+            setPriority(value)
+          }
+        >
+          <Text
+            style={styles.optionText}
+          >
+            {value}
+          </Text>
+        </TouchableOpacity>
+      )
+    )}
+  </View>
+
+  <Text
+    style={{
+      marginTop: 16,
+      marginBottom: 8,
+      fontWeight: '700',
+      color: '#234A7A',
+    }}
+  >
+    Escalation (Minutes)
+  </Text>
+
+  <View
+    style={{
+      flexDirection: 'row',
+      gap: 8,
+    }}
+  >
+    {['15', '30', '60', '120'].map(
+      (value) => (
+        <TouchableOpacity
+          key={value}
+          style={[
+            styles.option,
+            {
+              flex: 1,
+              marginTop: 0,
+            },
+            escalationMinutes ===
+              value &&
+              styles.selectedOption,
+          ]}
+          onPress={() =>
+            setEscalationMinutes(
+              value
+            )
+          }
+        >
+          <Text
+            style={styles.optionText}
+          >
+            {value}
+          </Text>
+        </TouchableOpacity>
+      )
+    )}
+  </View>
+</View>
 <TouchableOpacity
   style={styles.button}
   onPress={() => {
@@ -353,6 +484,15 @@ const styles = StyleSheet.create({
     color: '#234A7A',
     marginBottom: 12,
   },
+
+  input: {
+  backgroundColor: '#FFFFFF',
+  borderRadius: 12,
+  padding: 14,
+  marginBottom: 12,
+  borderWidth: 1,
+  borderColor: '#E2E8F0',
+},
 
   option: {
     borderWidth: 1,
