@@ -10,6 +10,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
 
 export default function TaskDetailScreen() {
@@ -218,7 +219,7 @@ const task =
           />
         </View>
 
-        <TouchableOpacity
+<TouchableOpacity
   style={[
     styles.button,
     !photoAttached && {
@@ -226,6 +227,12 @@ const task =
     },
   ]}
   disabled={!photoAttached}
+  onPress={() =>
+    Alert.alert(
+      'Task Completed',
+      'Evidence submitted successfully.'
+    )
+  }
 >
           <Text style={styles.buttonText}>
             Mark Complete
