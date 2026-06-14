@@ -22,6 +22,7 @@ export function generateDailyTasks() {
 
       assigned: template.category,
         type: 'ADMIN',
+        taskCategory: 'ADMIN',
 
       dueText: '',
     }));
@@ -35,7 +36,10 @@ export function generateVitalsTasks(patient: any) {
     '10:00 PM',
     '02:00 AM',
   ].map((time) => ({
+    id: `VITALS-${patient.id}-${time}`,
     status: 'PENDING',
+    statusColor: '#D97706',
+    dueText: '',
     title: `${time} Vitals Assessment`,
     patientId: patient.id,
     patientName: patient.name,
@@ -43,5 +47,29 @@ export function generateVitalsTasks(patient: any) {
     due: time,
     assigned: 'Nursing Staff',
     type: 'VITALS',
+    taskCategory: 'PATIENT',
   }));
+  }
+  export function seedPatientTasks() {
+  const patients = [
+    {
+      id: 'PAT001',
+      name: 'Ravi Kumar',
+      ward: 'General Ward - 2 / 205',
+    },
+    {
+      id: 'PAT002',
+      name: 'Lakshmi Devi',
+      ward: 'General Ward - 1 / 103',
+    },
+    {
+      id: 'PAT003',
+      name: 'Ramesh Babu',
+      ward: 'General Ward - 1 / 104',
+    },
+  ];
+
+  return patients.flatMap((patient) =>
+    generateVitalsTasks(patient)
+  );
 }

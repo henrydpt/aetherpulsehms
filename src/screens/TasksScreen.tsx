@@ -15,6 +15,15 @@ export default function TasksScreen() {
     const tasks = useTaskStore(
   (state) => state.tasks
 );
+const adminTasks = tasks.filter(
+  (task) =>
+    task.taskCategory === 'ADMIN'
+);
+
+const patientTasks = tasks.filter(
+  (task) =>
+    task.taskCategory === 'PATIENT'
+);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -28,7 +37,9 @@ export default function TasksScreen() {
             My Tasks
           </Text>
 
-          <Text style={styles.icon}>⌕</Text>
+          <TouchableOpacity>
+  <Text style={styles.icon}>＋</Text>
+</TouchableOpacity>
         </View>
 
         <View style={styles.filterRow}>
@@ -39,12 +50,38 @@ export default function TasksScreen() {
           <Text style={styles.filter}>Overdue</Text>
         </View>
 
-{tasks.map((task, index) => (
+<Text style={styles.sectionHeading}>
+  ADMIN TASKS
+</Text>
+
+{adminTasks.map((task, index) => (
   <TaskCard
-    key={index}
+    key={`admin-${index}`}
     status={task.status}
     statusColor={task.statusColor}
     title={task.title}
+    location={task.location}
+    due={task.due}
+    assigned={task.assigned}
+    dueText={task.dueText}
+    onPress={() =>
+      navigation.navigate('TaskDetail', {
+        task,
+      })
+    }
+  />
+))}
+
+<Text style={styles.sectionHeading}>
+  PATIENT CARE TASKS
+</Text>
+
+{patientTasks.map((task, index) => (
+  <TaskCard
+    key={`patient-${index}`}
+    status={task.status}
+    statusColor={task.statusColor}
+    title={`${task.patientName} - ${task.title}`}
     location={task.location}
     due={task.due}
     assigned={task.assigned}
@@ -108,7 +145,15 @@ const styles = StyleSheet.create({
     color: '#64748B',
     fontSize: 12,
   },
-
+sectionHeading: {
+  marginTop: 20,
+  marginBottom: 8,
+  marginHorizontal: 14,
+  color: '#234A7A',
+  fontSize: 14,
+  fontWeight: '700',
+  letterSpacing: 0.5,
+},
   card: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: 14,

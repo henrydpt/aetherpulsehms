@@ -41,6 +41,7 @@ const task =
     const [spo2, setSpo2] = useState('');
     const [temperature, setTemperature] = useState('');
     const [respiratoryRate, setRespiratoryRate] = useState('');
+    const [remarks, setRemarks] = useState('');
     const pickEvidence = async () => {
   const result =
     await ImagePicker.launchCameraAsync({
@@ -135,37 +136,126 @@ const task =
             Evidence Status
           </Text>
 
-         <Text style={styles.pendingText}>
-  {photoAttached
+<Text style={styles.pendingText}>
+  {task.status === 'COMPLETED'
+    ? '✓ Evidence Submitted'
+    : photoAttached
     ? '✓ Evidence Attached'
     : 'Not Submitted'}
 </Text>
 
-<TouchableOpacity
-  onPress={pickEvidence}
->
+{task.status === 'COMPLETED' && (
+  <>
+    <Text
+      style={{
+        marginTop: 12,
+        color: '#475569',
+      }}
+    >
+      Completed By: {' '}
+      {task.completedBy}
+    </Text>
+
+    <Text
+      style={{
+        marginTop: 6,
+        color: '#475569',
+      }}
+    >
+      Completed At: {' '}
+     {task.completedAt
+  ? new Date(
+      task.completedAt
+    ).toLocaleString(
+      'en-IN',
+      {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+      }
+    )
+  : '-'}
+    </Text>
+    {task.remarks ? (
   <Text
     style={{
-      color: '#234A7A',
-      marginTop: 12,
-      fontWeight: '700',
+      marginTop: 6,
+      color: '#475569',
     }}
   >
-    Attach Evidence
+    Remarks: {task.remarks}
   </Text>
-</TouchableOpacity>
-{photoUri && (
-  <Image
-    source={{ uri: photoUri }}
-    style={{
-      width: '100%',
-      height: 180,
-      borderRadius: 12,
-      marginTop: 12,
-    }}
-  />
+) : null}
+{task.vitals && (
+  <>
+    <Text
+      style={{
+        marginTop: 12,
+        fontWeight: '700',
+        color: '#234A7A',
+      }}
+    >
+      Recorded Vital Signs
+    </Text>
+
+    <Text style={{ marginTop: 6 }}>
+      BP: {task.vitals.bpSystolic}/
+      {task.vitals.bpDiastolic}
+    </Text>
+
+    <Text>
+      Pulse: {task.vitals.pulse}
+    </Text>
+
+    <Text>
+      SpO₂: {task.vitals.spo2}
+    </Text>
+
+    <Text>
+      Temperature: {task.vitals.temperature}
+    </Text>
+
+    <Text>
+      Respiratory Rate:{' '}
+      {task.vitals.respiratoryRate}
+    </Text>
+  </>
 )}
-        </View>
+  </>
+)}
+
+{task.status !== 'COMPLETED' && (
+  <>
+    <TouchableOpacity
+      onPress={pickEvidence}
+    >
+      <Text
+        style={{
+          color: '#234A7A',
+          marginTop: 12,
+          fontWeight: '700',
+        }}
+      >
+        Attach Evidence
+      </Text>
+    </TouchableOpacity>
+
+    {photoUri && (
+      <Image
+        source={{ uri: photoUri }}
+        style={{
+          width: '100%',
+          height: 180,
+          borderRadius: 12,
+          marginTop: 12,
+        }}
+      />
+    )}
+  </>
+)}
+</View>
 {task.type === 'VITALS' && (
 <View style={styles.card}>
   <Text style={styles.sectionTitle}>
@@ -220,11 +310,13 @@ const task =
             Remarks
           </Text>
 
-          <TextInput
-            multiline
-            placeholder="Add remarks..."
-            style={styles.textArea}
-          />
+<TextInput
+  multiline
+  placeholder="Add remarks..."
+  value={remarks}
+  onChangeText={setRemarks}
+  style={styles.textArea}
+/>
         </View>
 
 <TouchableOpacity
@@ -237,7 +329,20 @@ const task =
   disabled={!photoAttached}
   onPress={() => {
   if (task.id) {
-    completeTask(task.id);
+    completeTask(task.id, {
+  completedBy: task.assigned,
+  remarks,
+  evidenceUri: photoUri,
+
+  vitals: {
+    bpSystolic,
+    bpDiastolic,
+    pulse,
+    spo2,
+    temperature,
+    respiratoryRate,
+  },
+});
   }
 
   Alert.alert(

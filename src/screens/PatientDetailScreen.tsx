@@ -13,7 +13,7 @@ import {
   useRoute,
   useNavigation,
 } from '@react-navigation/native';
-import { generateVitalsTasks } from '../services/taskGenerator';
+import { useTaskStore } from '../store/taskStore';
 
 export default function PatientDetailScreen() {
   const route = useRoute<any>();
@@ -23,7 +23,13 @@ export default function PatientDetailScreen() {
   usePatientStore(
     (state) => state.dischargePatient
   );
-  const vitalsTasks = generateVitalsTasks(patient);
+  const tasks = useTaskStore(
+  (state) => state.tasks
+);
+const vitalsTasks = tasks.filter(
+  (task) =>
+    task.patientId === patient?.id
+);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -128,20 +134,11 @@ export default function PatientDetailScreen() {
   <TouchableOpacity
     key={`${task.due}-${index}`}
     style={styles.vitalsTask}
-    onPress={() =>
-      navigation.navigate('TaskDetail', {
-        task: {
-  status: task.status.toUpperCase(),
-  title: task.title,
-  location: patient?.ward,
-  due: task.due,
-  assigned: 'Nursing Staff',
-  type: 'VITALS',
-  patientId: patient?.id,
-  patientName: patient?.name,
-},
-      })
-    }
+onPress={() =>
+  navigation.navigate('TaskDetail', {
+    task,
+  })
+}
   >
     <Text style={styles.vitalsTitle}>
   {task.title}
