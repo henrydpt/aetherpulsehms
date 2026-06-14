@@ -55,9 +55,9 @@ export default function PatientDetailScreen() {
           </Text>
         </View>
         <View style={styles.card}>
-  <Text style={styles.name}>
-    Today's Vitals Schedule
-  </Text>
+<Text style={styles.sectionHeading}>
+  Today's Vitals Schedule
+</Text>
 
 {vitalsTasks.map((task, index) => (
   <TouchableOpacity
@@ -100,8 +100,9 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    paddingBottom: 100,
-  },
+  paddingTop: 35,
+  paddingBottom: 120,
+},
 
   topBar: {
     height: 64,
@@ -148,6 +149,7 @@ const styles = StyleSheet.create({
   borderColor: '#E2E8F0',
   borderRadius: 12,
   padding: 14,
+  backgroundColor: '#FAFAFA',
 },
 
 vitalsTitle: {
@@ -159,5 +161,11 @@ vitalsTitle: {
 vitalsStatus: {
   marginTop: 6,
   color: '#64748B',
+},
+sectionHeading: {
+  fontSize: 16,
+  fontWeight: '700',
+  color: '#234A7A',
+  marginBottom: 12,
 },
 });

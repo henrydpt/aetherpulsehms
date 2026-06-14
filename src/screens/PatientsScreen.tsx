@@ -8,12 +8,16 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { patients } from '../data/patients';
+import { usePatientStore } from '../store/patientStore';
 import { useNavigation } from '@react-navigation/native';
 
 export default function PatientsScreen() {
     const navigation = useNavigation<any>();
     const [searchQuery, setSearchQuery] = useState('');
+
+const patients = usePatientStore(
+  (state) => state.patients
+);
 
 const filteredPatients = patients.filter(
   (patient) =>
@@ -37,7 +41,13 @@ const filteredPatients = patients.filter(
             Patients
           </Text>
 
-          <Text style={styles.icon}>＋</Text>
+          <TouchableOpacity
+  onPress={() =>
+    navigation.navigate('AddPatient')
+  }
+>
+  <Text style={styles.icon}>＋</Text>
+</TouchableOpacity>
         </View>
 
         <View style={styles.searchContainer}>

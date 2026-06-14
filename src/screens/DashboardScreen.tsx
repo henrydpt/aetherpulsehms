@@ -7,12 +7,14 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
-import { patients } from '../data/patients';
+import { usePatientStore } from '../store/patientStore';
 import { generateDailyTasks } from '../services/taskGenerator';
 
 export default function DashboardScreen() {
 const tasks = generateDailyTasks();
-const patientCount = patients.length;
+const patientCount = usePatientStore(
+  (state) => state.patients.length
+);
 const pendingTasks = tasks.length;
   return (
     <SafeAreaView style={styles.container}>
