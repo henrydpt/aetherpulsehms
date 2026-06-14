@@ -11,37 +11,13 @@ import {
   useRoute,
   useNavigation,
 } from '@react-navigation/native';
+import { generateVitalsTasks } from '../services/taskGenerator';
 
 export default function PatientDetailScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
   const patient = route.params?.patient;
-  const vitalsTasks = [
-  {
-    time: '06:00 AM',
-    status: 'Pending',
-  },
-  {
-    time: '10:00 AM',
-    status: 'Completed',
-  },
-  {
-    time: '02:00 PM',
-    status: 'Pending',
-  },
-  {
-    time: '06:00 PM',
-    status: 'Pending',
-  },
-  {
-    time: '10:00 PM',
-    status: 'Pending',
-  },
-  {
-    time: '02:00 AM',
-    status: 'Pending',
-  },
-];
+  const vitalsTasks = generateVitalsTasks();
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -83,17 +59,17 @@ export default function PatientDetailScreen() {
     Today's Vitals Schedule
   </Text>
 
-{vitalsTasks.map((task) => (
+{vitalsTasks.map((task, index) => (
   <TouchableOpacity
-    key={task.time}
+    key={`${task.due}-${index}`}
     style={styles.vitalsTask}
     onPress={() =>
       navigation.navigate('TaskDetail', {
         task: {
           status: task.status.toUpperCase(),
-          title: `${task.time} Vitals Assessment`,
+          title: `${task.due} Vitals Assessment`,
           location: patient?.ward,
-          due: task.time,
+          due: task.due,
           assigned: 'Nursing Staff',
           type: 'VITALS',
         },
@@ -101,8 +77,8 @@ export default function PatientDetailScreen() {
     }
   >
     <Text style={styles.vitalsTitle}>
-      {task.time} Vitals Assessment
-    </Text>
+  {task.title}
+</Text>
 
     <Text style={styles.vitalsStatus}>
       {task.status}
