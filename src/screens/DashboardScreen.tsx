@@ -7,8 +7,13 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
+import { patients } from '../data/patients';
+import { generateDailyTasks } from '../services/taskGenerator';
 
 export default function DashboardScreen() {
+const tasks = generateDailyTasks();
+const patientCount = patients.length;
+const pendingTasks = tasks.length;
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -64,7 +69,7 @@ export default function DashboardScreen() {
             </Text>
 
             <Text style={styles.kpiValue}>
-              18
+              {patientCount}
             </Text>
           </View>
 
@@ -74,7 +79,7 @@ export default function DashboardScreen() {
             </Text>
 
             <Text style={styles.kpiValue}>
-              24
+              {pendingTasks}
             </Text>
           </View>
 
