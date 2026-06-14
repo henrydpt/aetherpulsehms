@@ -5,8 +5,10 @@ import {
   View,
   Text,
   StyleSheet,
+  Alert,
   TouchableOpacity,
 } from 'react-native';
+import { usePatientStore } from '../store/patientStore';
 import {
   useRoute,
   useNavigation,
@@ -17,6 +19,10 @@ export default function PatientDetailScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
   const patient = route.params?.patient;
+  const dischargePatient =
+  usePatientStore(
+    (state) => state.dischargePatient
+  );
   const vitalsTasks = generateVitalsTasks(patient);
   return (
     <SafeAreaView style={styles.container}>
@@ -53,6 +59,56 @@ export default function PatientDetailScreen() {
           <Text style={styles.info}>
             {patient?.diagnosis}
           </Text>
+          <View
+  style={{
+    flexDirection: 'row',
+    marginTop: 18,
+  }}
+>
+  <TouchableOpacity
+    style={styles.actionButton}
+  >
+    <Text style={styles.actionButtonText}>
+      Edit Patient
+    </Text>
+  </TouchableOpacity>
+
+<TouchableOpacity
+  style={[
+    styles.actionButton,
+    {
+      marginLeft: 10,
+      backgroundColor: '#DC2626',
+    },
+  ]}
+  onPress={() =>
+    Alert.alert(
+      'Discharge Patient',
+      `Discharge ${patient?.name}?`,
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Discharge',
+          onPress: () => {
+            dischargePatient(
+              patient.id
+            );
+
+            navigation.goBack();
+          },
+        },
+      ]
+    )
+  }
+>
+    <Text style={styles.actionButtonText}>
+      Discharge
+    </Text>
+  </TouchableOpacity>
+</View>
         </View>
         <View style={styles.card}>
 <Text style={styles.sectionHeading}>
@@ -167,5 +223,16 @@ sectionHeading: {
   fontWeight: '700',
   color: '#234A7A',
   marginBottom: 12,
+},
+actionButton: {
+  backgroundColor: '#234A7A',
+  paddingHorizontal: 16,
+  paddingVertical: 10,
+  borderRadius: 10,
+},
+
+actionButtonText: {
+  color: '#FFFFFF',
+  fontWeight: '600',
 },
 });
