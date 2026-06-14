@@ -80,6 +80,12 @@ const task =
             value={task.assigned}
           />
 
+          {task.patientName && (
+  <LabelValue
+    label="Patient"
+    value={task.patientName}
+  />
+)}
           <LabelValue
             label="Location"
             value={task.location}

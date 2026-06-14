@@ -66,13 +66,15 @@ export default function PatientDetailScreen() {
     onPress={() =>
       navigation.navigate('TaskDetail', {
         task: {
-          status: task.status.toUpperCase(),
-          title: `${task.due} Vitals Assessment`,
-          location: patient?.ward,
-          due: task.due,
-          assigned: 'Nursing Staff',
-          type: 'VITALS',
-        },
+  status: task.status.toUpperCase(),
+  title: task.title,
+  location: patient?.ward,
+  due: task.due,
+  assigned: 'Nursing Staff',
+  type: 'VITALS',
+  patientId: patient?.id,
+  patientName: patient?.name,
+},
       })
     }
   >
