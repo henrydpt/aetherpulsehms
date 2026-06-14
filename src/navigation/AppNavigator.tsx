@@ -14,6 +14,8 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TaskDetailScreen from '../screens/TaskDetailScreen';
 import PatientDetailScreen from '../screens/PatientDetailScreen';
 import AddPatientScreen from '../screens/AddPatientScreen';
+import CreateTaskScreen from '../screens/CreateTaskScreen';
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function MainTabs() {
@@ -112,6 +114,10 @@ export default function AppNavigator() {
 <Stack.Screen
   name="AddPatient"
   component={AddPatientScreen}
+/>
+<Stack.Screen
+  name="CreateTask"
+  component={CreateTaskScreen}
 />
 </Stack.Navigator>
         </NavigationContainer>

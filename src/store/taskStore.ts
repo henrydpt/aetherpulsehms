@@ -7,6 +7,10 @@ import {
 interface TaskStore {
   tasks: any[];
 
+  addTask: (
+    task: any
+  ) => void;
+
   completeTask: (
     taskId: string,
     completionData?: any
@@ -19,7 +23,14 @@ export const useTaskStore =
   ...generateDailyTasks(),
   ...seedPatientTasks(),
 ],
-
+addTask: (task) =>
+  set((state) => ({
+    tasks: [
+      task,
+      ...state.tasks,
+    ],
+  })),
+  
 completeTask: (
   taskId,
   completionData = {}

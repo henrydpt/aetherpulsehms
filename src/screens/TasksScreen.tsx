@@ -37,7 +37,11 @@ const patientTasks = tasks.filter(
             My Tasks
           </Text>
 
-          <TouchableOpacity>
+<TouchableOpacity
+  onPress={() =>
+    navigation.navigate('CreateTask')
+  }
+>
   <Text style={styles.icon}>＋</Text>
 </TouchableOpacity>
         </View>
