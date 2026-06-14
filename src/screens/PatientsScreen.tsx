@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -13,6 +13,17 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function PatientsScreen() {
     const navigation = useNavigation<any>();
+    const [searchQuery, setSearchQuery] = useState('');
+
+const filteredPatients = patients.filter(
+  (patient) =>
+    patient.name
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase()) ||
+    patient.id
+      .toLowerCase()
+      .includes(searchQuery.toLowerCase())
+);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -31,13 +42,15 @@ export default function PatientsScreen() {
 
         <View style={styles.searchContainer}>
           <TextInput
-            placeholder="Search patients by name or ID"
-            placeholderTextColor="#94A3B8"
-            style={styles.searchInput}
-          />
+  placeholder="Search patients by name or ID"
+  placeholderTextColor="#94A3B8"
+  value={searchQuery}
+  onChangeText={setSearchQuery}
+  style={styles.searchInput}
+/>
         </View>
 
-{patients.map((patient) => (
+{filteredPatients.map((patient) => (
  <PatientCard
   key={patient.id}
   patient={patient}
