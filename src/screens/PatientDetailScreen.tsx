@@ -17,7 +17,7 @@ export default function PatientDetailScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
   const patient = route.params?.patient;
-  const vitalsTasks = generateVitalsTasks();
+  const vitalsTasks = generateVitalsTasks(patient);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

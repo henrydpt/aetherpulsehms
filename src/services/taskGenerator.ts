@@ -26,7 +26,7 @@ export function generateDailyTasks() {
       dueText: '',
     }));
     }
-    export function generateVitalsTasks() {
+export function generateVitalsTasks(patient: any) {
   return [
     '06:00 AM',
     '10:00 AM',
@@ -37,6 +37,9 @@ export function generateDailyTasks() {
   ].map((time) => ({
     status: 'PENDING',
     title: `${time} Vitals Assessment`,
+    patientId: patient.id,
+    patientName: patient.name,
+    location: patient.ward,
     due: time,
     assigned: 'Nursing Staff',
     type: 'VITALS',
