@@ -15,16 +15,23 @@ import {
 export default function TaskDetailScreen() {
       const route = useRoute<any>();
 
-  const task =
-    route.params?.task || {
-      status: 'OVERDUE',
-      title: 'Vital Signs Monitoring',
-      location: 'General Ward - 2',
-      due: '02:00 PM',
-      assigned: 'Nurse Lakshmi',
-    };
+const task =
+  route.params?.task || {
+    status: 'OVERDUE',
+    title: 'Vital Signs Monitoring',
+    location: 'General Ward - 2',
+    due: '02:00 PM',
+    assigned: 'Nurse Lakshmi',
+    type: 'VITALS',
+  };
     const [photoAttached, setPhotoAttached] = useState(false);
     const [photoUri, setPhotoUri] = useState<string | null>(null);
+    const [bpSystolic, setBpSystolic] = useState('');
+    const [bpDiastolic, setBpDiastolic] = useState('');
+    const [pulse, setPulse] = useState('');
+    const [spo2, setSpo2] = useState('');
+    const [temperature, setTemperature] = useState('');
+    const [respiratoryRate, setRespiratoryRate] = useState('');
     const pickEvidence = async () => {
   const result =
     await ImagePicker.launchCameraAsync({
@@ -85,27 +92,28 @@ export default function TaskDetailScreen() {
         </View>
 
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>
-            Task Instructions
-          </Text>
+  <Text style={styles.sectionTitle}>
+    Task Instructions
+  </Text>
 
-          <Text style={styles.bodyText}>
-            Record blood pressure, pulse,
-            temperature and respiratory rate
-            for all admitted patients in
-            General Ward - 2.
-          </Text>
-        </View>
+  <Text style={styles.bodyText}>
+    {task.type === 'VITALS'
+      ? 'Record blood pressure, pulse, temperature and respiratory rate for the patient.'
+      : 'Capture evidence photo and record remarks before completing this checklist item.'}
+  </Text>
+</View>
 
         <View style={styles.card}>
-          <Text style={styles.sectionTitle}>
-            NABH Reference
-          </Text>
+  <Text style={styles.sectionTitle}>
+    NABH Reference
+  </Text>
 
-          <Text style={styles.bodyText}>
-            COP.2 – Patient Assessment
-          </Text>
-        </View>
+  <Text style={styles.bodyText}>
+    {task.type === 'VITALS'
+      ? 'COP.2 – Patient Assessment'
+      : 'FMS / Operations Checklist'}
+  </Text>
+</View>
 
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>
@@ -143,41 +151,55 @@ export default function TaskDetailScreen() {
   />
 )}
         </View>
+{task.type === 'VITALS' && (
 <View style={styles.card}>
   <Text style={styles.sectionTitle}>
     Vital Signs
   </Text>
 
-  <TextInput
-    placeholder="BP Systolic"
-    style={styles.input}
-  />
+<TextInput
+  placeholder="BP Systolic"
+  value={bpSystolic}
+  onChangeText={setBpSystolic}
+  style={styles.input}
+/>
 
-  <TextInput
-    placeholder="BP Diastolic"
-    style={styles.input}
-  />
+<TextInput
+  placeholder="BP Diastolic"
+  value={bpDiastolic}
+  onChangeText={setBpDiastolic}
+  style={styles.input}
+/>
 
-  <TextInput
-    placeholder="Pulse Rate"
-    style={styles.input}
-  />
+<TextInput
+  placeholder="Pulse Rate"
+  value={pulse}
+  onChangeText={setPulse}
+  style={styles.input}
+/>
 
-  <TextInput
-    placeholder="SpO₂"
-    style={styles.input}
-  />
+<TextInput
+  placeholder="SpO₂"
+  value={spo2}
+  onChangeText={setSpo2}
+  style={styles.input}
+/>
 
-  <TextInput
-    placeholder="Temperature"
-    style={styles.input}
-  />
+<TextInput
+  placeholder="Temperature"
+  value={temperature}
+  onChangeText={setTemperature}
+  style={styles.input}
+/>
 
-  <TextInput
-    placeholder="Respiratory Rate"
-    style={styles.input}
-  />
+<TextInput
+  placeholder="Respiratory Rate"
+  value={respiratoryRate}
+  onChangeText={setRespiratoryRate}
+  style={styles.input}
+/>
 </View>
+)}
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>
             Remarks

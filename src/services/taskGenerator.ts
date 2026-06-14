@@ -20,6 +20,7 @@ export function generateDailyTasks() {
       due: 'Today',
 
       assigned: template.category,
+        type: 'ADMIN',
 
       dueText: '',
     }));

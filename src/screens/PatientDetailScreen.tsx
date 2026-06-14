@@ -5,14 +5,43 @@ import {
   View,
   Text,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import {
+  useRoute,
+  useNavigation,
+} from '@react-navigation/native';
 
 export default function PatientDetailScreen() {
   const route = useRoute<any>();
-
+  const navigation = useNavigation<any>();
   const patient = route.params?.patient;
-
+  const vitalsTasks = [
+  {
+    time: '06:00 AM',
+    status: 'Pending',
+  },
+  {
+    time: '10:00 AM',
+    status: 'Completed',
+  },
+  {
+    time: '02:00 PM',
+    status: 'Pending',
+  },
+  {
+    time: '06:00 PM',
+    status: 'Pending',
+  },
+  {
+    time: '10:00 PM',
+    status: 'Pending',
+  },
+  {
+    time: '02:00 AM',
+    status: 'Pending',
+  },
+];
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -49,6 +78,38 @@ export default function PatientDetailScreen() {
             {patient?.diagnosis}
           </Text>
         </View>
+        <View style={styles.card}>
+  <Text style={styles.name}>
+    Today's Vitals Schedule
+  </Text>
+
+{vitalsTasks.map((task) => (
+  <TouchableOpacity
+    key={task.time}
+    style={styles.vitalsTask}
+    onPress={() =>
+      navigation.navigate('TaskDetail', {
+        task: {
+          status: task.status.toUpperCase(),
+          title: `${task.time} Vitals Assessment`,
+          location: patient?.ward,
+          due: task.time,
+          assigned: 'Nursing Staff',
+          type: 'VITALS',
+        },
+      })
+    }
+  >
+    <Text style={styles.vitalsTitle}>
+      {task.time} Vitals Assessment
+    </Text>
+
+    <Text style={styles.vitalsStatus}>
+      {task.status}
+    </Text>
+  </TouchableOpacity>
+))}
+</View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -103,4 +164,22 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#475569',
   },
+  vitalsTask: {
+  marginTop: 12,
+  borderWidth: 1,
+  borderColor: '#E2E8F0',
+  borderRadius: 12,
+  padding: 14,
+},
+
+vitalsTitle: {
+  fontSize: 15,
+  fontWeight: '600',
+  color: '#1E293B',
+},
+
+vitalsStatus: {
+  marginTop: 6,
+  color: '#64748B',
+},
 });
