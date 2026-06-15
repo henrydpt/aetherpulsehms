@@ -10,6 +10,7 @@ import {
 import { usePatientStore } from '../store/patientStore';
 import { useTaskStore } from '../store/taskStore';
 import { useNavigation } from '@react-navigation/native';
+import { COLORS } from '../theme/colors';
 export default function DashboardScreen() {
 const navigation = useNavigation<any>();
 
@@ -251,7 +252,7 @@ navigation.navigate(
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F5EE',
+    backgroundColor: COLORS.background,
   },
 
   content: {
@@ -261,7 +262,7 @@ const styles = StyleSheet.create({
 
   topBar: {
     height: 64,
-    backgroundColor: '#234A7A',
+    backgroundColor: COLORS.primary,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -269,7 +270,7 @@ const styles = StyleSheet.create({
   },
 
   topBarTitle: {
-    color: '#FFFFFF',
+    color: COLORS.card,
     fontSize: 18,
     fontWeight: '700',
   },
@@ -319,7 +320,7 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 16,
     fontWeight: '700',
-    color: '#1E293B',
+    color: COLORS.text,
     marginHorizontal: 18,
     marginTop: 22,
     marginBottom: 12,
@@ -334,12 +335,12 @@ const styles = StyleSheet.create({
 
   kpiCard: {
     width: '48%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: COLORS.card,
     borderRadius: 16,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#EEE7D8',
+    borderColor: COLORS.border,
   },
 
   kpiLabel: {

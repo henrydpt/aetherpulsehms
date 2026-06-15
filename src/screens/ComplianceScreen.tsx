@@ -62,6 +62,53 @@ const compliancePercent =
 
           <View style={{ width: 20 }} />
         </View>
+<View
+  style={[
+    styles.statusCard,
+    {
+      borderColor:
+        compliancePercent >= 90
+          ? '#16A34A'
+          : compliancePercent >= 75
+          ? '#2563EB'
+          : compliancePercent >= 60
+          ? '#D97706'
+          : '#DC2626',
+    },
+  ]}
+>
+  <Text style={styles.statusLabel}>
+    Compliance Status
+  </Text>
+
+  <Text
+    style={[
+      styles.statusTitle,
+      {
+        color:
+          compliancePercent >= 90
+            ? '#16A34A'
+            : compliancePercent >= 75
+            ? '#2563EB'
+            : compliancePercent >= 60
+            ? '#D97706'
+            : '#DC2626',
+      },
+    ]}
+  >
+    {compliancePercent >= 90
+      ? 'EXCELLENT'
+      : compliancePercent >= 75
+      ? 'GOOD'
+      : compliancePercent >= 60
+      ? 'NEEDS ATTENTION'
+      : 'CRITICAL'}
+  </Text>
+
+  <Text style={styles.statusPercent}>
+    {compliancePercent}% Overall Compliance
+  </Text>
+</View>
 <View style={styles.grid}>
   <ComplianceCard
     chapter="Compliance"
@@ -168,7 +215,32 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 24,
   },
+statusCard: {
+  backgroundColor: '#FFFFFF',
+  marginHorizontal: 14,
+  marginTop: 14,
+  padding: 18,
+  borderRadius: 18,
+  borderWidth: 2,
+},
 
+statusLabel: {
+  color: '#64748B',
+  fontSize: 12,
+  fontWeight: '600',
+},
+
+statusTitle: {
+  marginTop: 8,
+  fontSize: 22,
+  fontWeight: '700',
+},
+
+statusPercent: {
+  marginTop: 6,
+  color: '#475569',
+  fontSize: 14,
+},
   grid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
