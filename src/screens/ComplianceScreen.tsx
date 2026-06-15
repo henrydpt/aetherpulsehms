@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTaskStore } from '../store/taskStore';
 import {
   SafeAreaView,
   ScrollView,
@@ -9,6 +10,43 @@ import {
 } from 'react-native';
 
 export default function ComplianceScreen() {
+    const tasks = useTaskStore(
+  (state) => state.tasks
+);
+const completedTasks =
+  tasks.filter(
+    (task) =>
+      task.status ===
+      'COMPLETED'
+  ).length;
+
+const pendingTasks =
+  tasks.filter(
+    (task) =>
+      task.status ===
+      'PENDING'
+  ).length;
+
+const overdueTasks =
+  tasks.filter(
+    (task) =>
+      task.status !==
+        'COMPLETED' &&
+      task.dueDate &&
+      task.dueTime &&
+      new Date(
+        `${task.dueDate} ${task.dueTime}`
+      ) < new Date()
+  ).length;
+
+const compliancePercent =
+  tasks.length > 0
+    ? Math.round(
+        (completedTasks /
+          tasks.length) *
+          100
+      )
+    : 0;
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -16,7 +54,7 @@ export default function ComplianceScreen() {
         contentContainerStyle={styles.content}
       >
         <View style={styles.topBar}>
-          <Text style={styles.icon}>‹</Text>
+          <View style={{ width: 20 }} />
 
           <Text style={styles.topBarTitle}>
             NABH Compliance
@@ -24,54 +62,51 @@ export default function ComplianceScreen() {
 
           <View style={{ width: 20 }} />
         </View>
+<View style={styles.grid}>
+  <ComplianceCard
+    chapter="Compliance"
+    percent={`${compliancePercent}%`}
+    completed={`${completedTasks}/${tasks.length} Completed`}
+  />
 
-        <View style={styles.grid}>
-          <ComplianceCard
-            chapter="FMS"
-            percent="28%"
-            completed="7/25 Completed"
-          />
+  <ComplianceCard
+    chapter="Completed"
+    percent={`${completedTasks}`}
+    completed="Tasks Closed"
+  />
 
-          <ComplianceCard
-            chapter="COP"
-            percent="12%"
-            completed="6/49 Completed"
-          />
+  <ComplianceCard
+    chapter="Pending"
+    percent={`${pendingTasks}`}
+    completed="Awaiting Action"
+  />
 
-          <ComplianceCard
-            chapter="HIC"
-            percent="18%"
-            completed="2/11 Completed"
-          />
+  <ComplianceCard
+    chapter="Overdue"
+    percent={`${overdueTasks}`}
+    completed="Require Attention"
+  />
 
-          <ComplianceCard
-            chapter="AAC"
-            percent="0%"
-            completed="0/6 Completed"
-          />
+  <ComplianceCard
+    chapter="Evidence"
+    percent={`${completedTasks > 0 ? 100 : 0}%`}
+    completed="Evidence Coverage"
+  />
 
-          <ComplianceCard
-            chapter="MOM"
-            percent="25%"
-            completed="2/8 Completed"
-          />
-
-          <ComplianceCard
-            chapter="HRM"
-            percent="33%"
-            completed="2/6 Completed"
-          />
-        </View>
-
-        <TouchableOpacity style={styles.reportButton}>
-          <Text style={styles.reportText}>
-            View Detailed Compliance Report
-          </Text>
-
-          <Text style={styles.arrow}>
-            ›
-          </Text>
-        </TouchableOpacity>
+  <ComplianceCard
+    chapter="Patient Care"
+    percent={`${
+      tasks.filter(
+        (t) =>
+          t.taskCategory ===
+            'PATIENT' &&
+          t.status ===
+            'COMPLETED'
+      ).length
+    }`}
+    completed="Patient Tasks Done"
+  />
+</View>
       </ScrollView>
     </SafeAreaView>
   );

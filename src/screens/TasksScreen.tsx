@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useEffect,
+} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -8,17 +11,33 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import TaskCard from '../components/tasks/TaskCard';
-import { useNavigation } from '@react-navigation/native';
+import {
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { useTaskStore } from '../store/taskStore';
 export default function TasksScreen() {
 const navigation = useNavigation<any>();
-
+const route = useRoute<any>();
 const tasks = useTaskStore(
   (state) => state.tasks
 );
 const [activeFilter, setActiveFilter] =
-  useState('ALL');
-
+  useState(
+    route.params?.initialFilter ||
+      'ALL'
+  );
+useEffect(() => {
+  if (
+    route.params?.initialFilter
+  ) {
+    setActiveFilter(
+      route.params.initialFilter
+    );
+  }
+}, [
+  route.params?.initialFilter,
+]);
 const isOverdue = (task: any) => {
   if (
     task.status ===
@@ -38,13 +57,29 @@ const isOverdue = (task: any) => {
     new Date(
       `${task.dueDate} ${task.dueTime}`
     );
-console.log(
-  'OVERDUE CHECK',
-  task.title,
-  task.dueDate,
-  task.dueTime,
-  dueDateTime
-);
+const isEscalated = (task: any) => {
+  if (!isOverdue(task)) {
+    return false;
+  }
+
+  const dueDateTime =
+    new Date(
+      `${task.dueDate} ${task.dueTime}`
+    );
+
+  const escalationTime =
+    new Date(
+      dueDateTime.getTime() +
+      task.escalationMinutes *
+        60 *
+        1000
+    );
+
+  return (
+    escalationTime <
+    new Date()
+  );
+};
   return (
     dueDateTime <
     new Date()

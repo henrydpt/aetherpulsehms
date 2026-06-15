@@ -8,14 +8,71 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { usePatientStore } from '../store/patientStore';
-import { generateDailyTasks } from '../services/taskGenerator';
-
+import { useTaskStore } from '../store/taskStore';
+import { useNavigation } from '@react-navigation/native';
 export default function DashboardScreen() {
-const tasks = generateDailyTasks();
+const navigation = useNavigation<any>();
+
+const tasks = useTaskStore(
+  (state) => state.tasks
+);
+
 const patientCount = usePatientStore(
   (state) => state.patients.length
 );
-const pendingTasks = tasks.length;
+
+const pendingTasks =
+  tasks.filter(
+    (task) =>
+      task.status ===
+      'PENDING'
+  ).length;
+
+const completedTasks =
+  tasks.filter(
+    (task) =>
+      task.status ===
+      'COMPLETED'
+  ).length;
+
+const overdueTasks =
+  tasks.filter((task) => {
+    if (
+      task.status ===
+      'COMPLETED'
+    ) {
+      return false;
+    }
+
+    if (
+      !task.dueDate ||
+      !task.dueTime
+    ) {
+      return false;
+    }
+
+    return (
+      new Date(
+        `${task.dueDate} ${task.dueTime}`
+      ) < new Date()
+    );
+  }).length;
+
+const highPriorityTasks =
+  tasks.filter(
+    (task) =>
+      task.priority ===
+      'HIGH'
+  ).length;
+  const currentHour =
+  new Date().getHours();
+
+const greeting =
+  currentHour < 12
+    ? 'Good Morning'
+    : currentHour < 17
+    ? 'Good Afternoon'
+    : 'Good Evening';
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -24,37 +81,40 @@ const pendingTasks = tasks.length;
       >
         {/* Top Bar */}
 
-        <View style={styles.topBar}>
-          <Text style={styles.icon}>☰</Text>
+<View style={styles.topBar}>
+  <View />
 
-          <Text style={styles.topBarTitle}>
-            Dashboard
-          </Text>
+  <Text style={styles.topBarTitle}>
+    Udumula Hospitals Dashboard
+  </Text>
 
-          <Text style={styles.icon}>🔔</Text>
-        </View>
+  <View style={{ width: 20 }} />
+</View>
 
         {/* Greeting */}
 
         <View style={styles.greetingRow}>
           <View>
             <Text style={styles.goodMorning}>
-              Good Morning,
+              {greeting},
             </Text>
 
             <Text style={styles.userName}>
-              Nursing Head 👋
-            </Text>
-
-            <Text style={styles.hospital}>
-              Udumula Hospitals
+              Nursing Head
             </Text>
           </View>
 
           <View style={styles.dateChip}>
             <Text style={styles.dateText}>
-              14 May 2025
-            </Text>
+  {new Date().toLocaleDateString(
+    'en-IN',
+    {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }
+  )}
+</Text>
           </View>
         </View>
 
@@ -65,17 +125,33 @@ const pendingTasks = tasks.length;
         </Text>
 
         <View style={styles.kpiGrid}>
-          <View style={styles.kpiCard}>
+          <TouchableOpacity
+  style={styles.kpiCard}
+  onPress={() =>
+    navigation.navigate('Patients')
+  }
+>
             <Text style={styles.kpiLabel}>
-              Patients Admitted
+              Active Patients
             </Text>
 
             <Text style={styles.kpiValue}>
               {patientCount}
             </Text>
-          </View>
+          </TouchableOpacity>
 
-          <View style={styles.kpiCard}>
+          <TouchableOpacity
+  style={styles.kpiCard}
+  onPress={() =>
+    navigation.navigate(
+  'Tasks',
+  {
+    initialFilter:
+      'PENDING',
+  }
+)
+  }
+>
             <Text style={styles.kpiLabel}>
               Pending Tasks
             </Text>
@@ -83,78 +159,90 @@ const pendingTasks = tasks.length;
             <Text style={styles.kpiValue}>
               {pendingTasks}
             </Text>
-          </View>
+          </TouchableOpacity>
 
-          <View style={styles.kpiCard}>
+          <TouchableOpacity
+  style={styles.kpiCard}
+  onPress={() =>
+navigation.navigate(
+  'Tasks',
+  {
+    initialFilter:
+      'OVERDUE',
+  }
+)
+  }
+>
             <Text style={styles.kpiLabel}>
               Overdue Tasks
             </Text>
 
             <Text style={styles.kpiValueDanger}>
-              3
-            </Text>
-          </View>
+  {overdueTasks}
+</Text>
+          </TouchableOpacity>
 
-          <View style={styles.kpiCard}>
+          <TouchableOpacity
+  style={styles.kpiCard}
+  onPress={() =>
+    navigation.navigate(
+  'Tasks',
+  {
+    initialFilter:
+      'COMPLETED',
+  }
+)
+  }
+>
             <Text style={styles.kpiLabel}>
               Completed Tasks
             </Text>
 
             <Text style={styles.kpiValueSuccess}>
-              12
-            </Text>
-          </View>
+  {completedTasks}
+</Text>
+          </TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.kpiCard}
+  onPress={() =>
+    navigation.navigate(
+  'Tasks'
+)
+  }
+>
+  <Text style={styles.kpiLabel}>
+    High Priority
+  </Text>
+
+  <Text style={styles.kpiValueDanger}>
+    {highPriorityTasks}
+  </Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  style={styles.kpiCard}
+  onPress={() =>
+    navigation.navigate('Compliance')
+  }
+>
+  <Text style={styles.kpiLabel}>
+    Compliance %
+  </Text>
+
+  <Text style={styles.kpiValueSuccess}>
+    {tasks.length > 0
+      ? Math.round(
+          (completedTasks /
+            tasks.length) *
+            100
+        )
+      : 0}
+    %
+  </Text>
+</TouchableOpacity>
         </View>
 
-        {/* Compliance */}
-
-        <Text style={styles.sectionTitle}>
-          Compliance Score (Overall)
-        </Text>
-
-        <View style={styles.complianceCard}>
-          <View style={styles.scoreCircle}>
-            <Text style={styles.scoreText}>
-              92%
-            </Text>
-          </View>
-
-          <View style={styles.complianceInfo}>
-            <Text style={styles.complianceTitle}>
-              NABH Compliance
-            </Text>
-
-            <Text style={styles.complianceStatus}>
-              Excellent
-            </Text>
-
-            <Text style={styles.complianceTime}>
-              Last updated: 10:30 AM
-            </Text>
-          </View>
-        </View>
-
-        {/* Critical Alerts */}
-
-        <Text style={styles.sectionTitle}>
-          Critical Alerts
-        </Text>
-
-        <TouchableOpacity style={styles.alertCard}>
-          <View>
-            <Text style={styles.alertTitle}>
-              3 tasks are overdue
-            </Text>
-
-            <Text style={styles.alertSubtitle}>
-              Please take immediate action
-            </Text>
-          </View>
-
-          <Text style={styles.alertArrow}>
-            ›
-          </Text>
-        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -341,10 +429,9 @@ const styles = StyleSheet.create({
     borderColor: '#F0D6C0',
   },
 
-  alertTitle: {
-    color: '#991B1B',
-    fontWeight: '700',
-  },
+alertTitle: {
+  fontWeight: '700',
+},
 
   alertSubtitle: {
     color: '#64748B',

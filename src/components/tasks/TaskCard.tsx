@@ -35,6 +35,23 @@ export default function TaskCard({
   dueText,
   onPress,
 }: Props) {
+const isOverdue =
+  status !== 'COMPLETED' &&
+  dueDate &&
+  dueTime &&
+  new Date(
+    `${dueDate} ${dueTime}`
+  ) < new Date();
+
+const displayStatus =
+  isOverdue
+    ? 'OVERDUE'
+    : status;
+
+const displayColor =
+  isOverdue
+    ? '#DC2626'
+    : statusColor;
   return (
     <TouchableOpacity
       style={styles.card}
@@ -44,16 +61,16 @@ export default function TaskCard({
         <View
           style={[
             styles.badge,
-            { borderColor: statusColor },
+            { borderColor: displayColor }
           ]}
         >
           <Text
             style={[
               styles.badgeText,
-              { color: statusColor },
+              { color: displayColor }
             ]}
           >
-            {status}
+            {displayStatus}
           </Text>
         </View>
 
@@ -61,7 +78,7 @@ export default function TaskCard({
           <Text
             style={[
               styles.dueText,
-              { color: statusColor },
+              { color: displayColor }
             ]}
           >
             {dueText}
