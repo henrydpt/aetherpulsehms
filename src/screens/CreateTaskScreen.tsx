@@ -355,14 +355,15 @@ const [showTimePicker, setShowTimePicker] =
 
       if (selectedTime) {
         setDueTime(
-          selectedTime
-            .toLocaleTimeString(
-              'en-IN',
-              {
-                hour: 'numeric',
-                minute: '2-digit',
-              }
-            )
+selectedTime
+  .toLocaleTimeString(
+    'en-GB',
+    {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }
+  )
         );
       }
     }}

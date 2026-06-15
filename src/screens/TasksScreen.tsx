@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -11,19 +11,97 @@ import TaskCard from '../components/tasks/TaskCard';
 import { useNavigation } from '@react-navigation/native';
 import { useTaskStore } from '../store/taskStore';
 export default function TasksScreen() {
-    const navigation = useNavigation<any>();
-    const tasks = useTaskStore(
+const navigation = useNavigation<any>();
+
+const tasks = useTaskStore(
   (state) => state.tasks
 );
-const adminTasks = tasks.filter(
-  (task) =>
-    task.taskCategory === 'ADMIN'
-);
+const [activeFilter, setActiveFilter] =
+  useState('ALL');
 
-const patientTasks = tasks.filter(
-  (task) =>
-    task.taskCategory === 'PATIENT'
+const isOverdue = (task: any) => {
+  if (
+    task.status ===
+    'COMPLETED'
+  ) {
+    return false;
+  }
+
+  if (
+    !task.dueDate ||
+    !task.dueTime
+  ) {
+    return false;
+  }
+
+  const dueDateTime =
+    new Date(
+      `${task.dueDate} ${task.dueTime}`
+    );
+console.log(
+  'OVERDUE CHECK',
+  task.title,
+  task.dueDate,
+  task.dueTime,
+  dueDateTime
 );
+  return (
+    dueDateTime <
+    new Date()
+  );
+};
+
+const filteredTasks =
+  tasks.filter((task) => {
+    if (activeFilter === 'ALL') {
+      return true;
+    }
+
+    if (
+      activeFilter ===
+      'PENDING'
+    ) {
+      return (
+        task.status ===
+          'PENDING' &&
+        !isOverdue(task)
+      );
+    }
+
+    if (
+      activeFilter ===
+      'COMPLETED'
+    ) {
+      return (
+        task.status ===
+        'COMPLETED'
+      );
+    }
+
+    if (
+      activeFilter ===
+      'OVERDUE'
+    ) {
+      return isOverdue(task);
+    }
+
+    return true;
+  });
+
+const adminTasks =
+  filteredTasks.filter(
+    (task) =>
+      task.taskCategory ===
+      'ADMIN'
+  );
+
+const patientTasks =
+  filteredTasks.filter(
+    (task) =>
+      task.taskCategory ===
+      'PATIENT'
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -47,11 +125,71 @@ const patientTasks = tasks.filter(
         </View>
 
         <View style={styles.filterRow}>
-          <Text style={styles.activeFilter}>All</Text>
-          <Text style={styles.filter}>Pending</Text>
-          <Text style={styles.filter}>In Progress</Text>
-          <Text style={styles.filter}>Completed</Text>
-          <Text style={styles.filter}>Overdue</Text>
+<TouchableOpacity
+  onPress={() =>
+    setActiveFilter('ALL')
+  }
+>
+  <Text
+    style={
+      activeFilter === 'ALL'
+        ? styles.activeFilter
+        : styles.filter
+    }
+  >
+    All
+  </Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  onPress={() =>
+    setActiveFilter('PENDING')
+  }
+>
+  <Text
+    style={
+      activeFilter === 'PENDING'
+        ? styles.activeFilter
+        : styles.filter
+    }
+  >
+    Pending
+  </Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  onPress={() =>
+    setActiveFilter('COMPLETED')
+  }
+>
+  <Text
+    style={
+      activeFilter ===
+      'COMPLETED'
+        ? styles.activeFilter
+        : styles.filter
+    }
+  >
+    Completed
+  </Text>
+</TouchableOpacity>
+
+<TouchableOpacity
+  onPress={() =>
+    setActiveFilter('OVERDUE')
+  }
+>
+  <Text
+    style={
+      activeFilter ===
+      'OVERDUE'
+        ? styles.activeFilter
+        : styles.filter
+    }
+  >
+    Overdue
+  </Text>
+</TouchableOpacity>
         </View>
 
 <Text style={styles.sectionHeading}>

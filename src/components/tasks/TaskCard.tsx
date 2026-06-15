@@ -73,7 +73,20 @@ export default function TaskCard({
         {title}
       </Text>
 {priority && (
-  <Text style={styles.priority}>
+  <Text
+    style={[
+      styles.priority,
+      {
+        color:
+          priority === 'HIGH'
+            ? '#DC2626'
+            : priority ===
+                'MEDIUM'
+              ? '#D97706'
+              : '#16A34A',
+      },
+    ]}
+  >
     {priority} PRIORITY
   </Text>
 )}
@@ -167,7 +180,6 @@ priority: {
   marginTop: 6,
   fontSize: 12,
   fontWeight: '700',
-  color: '#DC2626',
 },
 
   meta: {
