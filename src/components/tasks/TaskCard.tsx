@@ -13,6 +13,10 @@ type Props = {
   location: string;
   due: string;
   assigned: string;
+  priority?: string;
+  escalationMinutes?: number;
+  dueDate?: string;
+  dueTime?: string;
   dueText?: string;
   onPress?: () => void;
 };
@@ -24,6 +28,10 @@ export default function TaskCard({
   location,
   due,
   assigned,
+  priority,
+  escalationMinutes,
+  dueDate,
+  dueTime,
   dueText,
   onPress,
 }: Props) {
@@ -64,6 +72,29 @@ export default function TaskCard({
       <Text style={styles.title}>
         {title}
       </Text>
+{priority && (
+  <Text style={styles.priority}>
+    {priority} PRIORITY
+  </Text>
+)}
+
+{dueDate && (
+  <Text style={styles.meta}>
+    Date: {dueDate}
+  </Text>
+)}
+
+{dueTime && (
+  <Text style={styles.meta}>
+    Time: {dueTime}
+  </Text>
+)}
+
+{escalationMinutes ? (
+  <Text style={styles.meta}>
+    Escalation: {escalationMinutes} mins
+  </Text>
+) : null}
 
       <Text style={styles.meta}>
         Location: {location}
@@ -131,6 +162,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     color: '#1E293B',
   },
+
+priority: {
+  marginTop: 6,
+  fontSize: 12,
+  fontWeight: '700',
+  color: '#DC2626',
+},
 
   meta: {
     color: '#64748B',

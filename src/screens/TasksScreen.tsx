@@ -59,15 +59,21 @@ const patientTasks = tasks.filter(
 </Text>
 
 {adminTasks.map((task, index) => (
-  <TaskCard
-    key={`admin-${index}`}
-    status={task.status}
-    statusColor={task.statusColor}
-    title={task.title}
-    location={task.location}
-    due={task.due}
-    assigned={task.assigned}
-    dueText={task.dueText}
+<TaskCard
+  key={`admin-${index}`}
+  status={task.status}
+  statusColor={task.statusColor}
+  title={task.title}
+  location={task.location}
+  due={task.due}
+  assigned={task.assigned}
+  priority={task.priority}
+  dueDate={task.dueDate}
+  dueTime={task.dueTime}
+  escalationMinutes={
+    task.escalationMinutes
+  }
+  dueText={task.dueText}
     onPress={() =>
       navigation.navigate('TaskDetail', {
         task,
@@ -81,15 +87,21 @@ const patientTasks = tasks.filter(
 </Text>
 
 {patientTasks.map((task, index) => (
-  <TaskCard
-    key={`patient-${index}`}
-    status={task.status}
-    statusColor={task.statusColor}
-    title={`${task.patientName} - ${task.title}`}
-    location={task.location}
-    due={task.due}
-    assigned={task.assigned}
-    dueText={task.dueText}
+<TaskCard
+  key={`patient-${index}`}
+  status={task.status}
+  statusColor={task.statusColor}
+  title={`${task.patientName} - ${task.title}`}
+  location={task.location}
+  due={task.due}
+  assigned={task.assigned}
+  priority={task.priority}
+  dueDate={task.dueDate}
+  dueTime={task.dueTime}
+  escalationMinutes={
+    task.escalationMinutes
+  }
+  dueText={task.dueText}
     onPress={() =>
       navigation.navigate('TaskDetail', {
         task,

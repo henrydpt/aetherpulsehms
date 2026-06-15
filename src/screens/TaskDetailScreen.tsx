@@ -23,7 +23,9 @@ export default function TaskDetailScreen() {
 const completeTask = useTaskStore(
   (state) => state.completeTask
 );
-
+const deleteTask = useTaskStore(
+  (state) => state.deleteTask
+);
 const task =
   route.params?.task || {
     status: 'OVERDUE',
@@ -71,7 +73,25 @@ const task =
             Task Details
           </Text>
 
-          <View style={{ width: 20 }} />
+          <TouchableOpacity
+  onPress={() =>
+    navigation.navigate(
+      'CreateTask',
+      {
+        task,
+      }
+    )
+  }
+>
+  <Text
+    style={{
+      color: '#FFFFFF',
+      fontWeight: '700',
+    }}
+  >
+    Edit
+  </Text>
+</TouchableOpacity>
         </View>
 
         <View style={styles.statusCard}>
@@ -105,6 +125,35 @@ const task =
             label="Due Time"
             value={task.due}
           />
+          <LabelValue
+  label="Priority"
+  value={
+    task.priority || '-'
+  }
+/>
+
+<LabelValue
+  label="Due Date"
+  value={
+    task.dueDate || '-'
+  }
+/>
+
+<LabelValue
+  label="Due Time"
+  value={
+    task.dueTime || '-'
+  }
+/>
+
+<LabelValue
+  label="Escalation"
+  value={
+    task.escalationMinutes
+      ? `${task.escalationMinutes} mins`
+      : '-'
+  }
+/>
         </View>
 
         <View style={styles.card}>
@@ -362,6 +411,52 @@ const task =
             Mark Complete
           </Text>
         </TouchableOpacity>
+<TouchableOpacity
+  style={[
+    styles.button,
+    {
+      backgroundColor:
+        '#FFFFFF',
+      borderWidth: 1,
+      borderColor: '#94A3B8',
+      marginTop: 12,
+    },
+  ]}
+  onPress={() => {
+    Alert.alert(
+      'Delete Task',
+      'Are you sure?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            if (task.id) {
+              deleteTask(task.id);
+            }
+
+            navigation.goBack();
+          },
+        },
+      ]
+    );
+  }}
+>
+<Text
+  style={[
+    styles.buttonText,
+    {
+      color: '#475569',
+    },
+  ]}
+>
+  Delete Task
+</Text>
+</TouchableOpacity>        
       </ScrollView>
     </SafeAreaView>
   );

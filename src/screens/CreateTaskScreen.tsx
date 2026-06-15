@@ -8,12 +8,23 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import { taskTemplates } from '../data/taskTemplates';
 import { usePatientStore } from '../store/patientStore';
 import { useTaskStore } from '../store/taskStore';
+import DateTimePicker from '@react-native-community/datetimepicker';
 export default function CreateTaskScreen() {
   const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+
+const editTask =
+  route.params?.task;
+
+const isEditMode =
+  !!editTask;
   const [taskCategory, setTaskCategory] =
   useState('ADMIN');
   const [taskSource, setTaskSource] =
@@ -24,25 +35,48 @@ export default function CreateTaskScreen() {
 const addTask = useTaskStore(
   (state) => state.addTask
 );
+
+const updateTask = useTaskStore(
+  (state) => state.updateTask
+);
 const [selectedPatientId, setSelectedPatientId] =
   useState('');
 
 const [selectedTemplateId, setSelectedTemplateId] =
   useState('');
 const [taskName, setTaskName] =
-  useState('');
+  useState(
+    editTask?.title || ''
+  );
 
 const [dueDate, setDueDate] =
-  useState('');
+  useState(
+    editTask?.dueDate || ''
+  );
 
 const [dueTime, setDueTime] =
-  useState('');
+  useState(
+    editTask?.dueTime || ''
+  );
 
 const [priority, setPriority] =
-  useState('MEDIUM');
+  useState(
+    editTask?.priority ||
+      'MEDIUM'
+  );
 
 const [escalationMinutes, setEscalationMinutes] =
-  useState('30');
+  useState(
+    editTask?.escalationMinutes
+      ?.toString() || '30'
+  );
+
+const [showDatePicker, setShowDatePicker] =
+  useState(false);
+
+const [showTimePicker, setShowTimePicker] =
+  useState(false);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -266,19 +300,74 @@ const [escalationMinutes, setEscalationMinutes] =
     style={styles.input}
   />
 
-  <TextInput
-    placeholder="Due Date (DD-MM-YYYY)"
-    value={dueDate}
-    onChangeText={setDueDate}
-    style={styles.input}
-  />
+<TouchableOpacity
+  style={styles.input}
+  onPress={() =>
+    setShowDatePicker(true)
+  }
+>
+  <Text>
+    {dueDate || 'Select Due Date'}
+  </Text>
+</TouchableOpacity>
 
-  <TextInput
-    placeholder="Due Time (06:00 PM)"
-    value={dueTime}
-    onChangeText={setDueTime}
-    style={styles.input}
+<TouchableOpacity
+  style={styles.input}
+  onPress={() =>
+    setShowTimePicker(true)
+  }
+>
+  <Text>
+    {dueTime || 'Select Due Time'}
+  </Text>
+</TouchableOpacity>
+
+{showDatePicker && (
+  <DateTimePicker
+    value={new Date()}
+    mode="date"
+    onChange={(
+      event,
+      selectedDate
+    ) => {
+      setShowDatePicker(false);
+
+      if (selectedDate) {
+       setDueDate(
+  selectedDate
+    .toISOString()
+    .split('T')[0]
+);
+      }
+    }}
   />
+)}
+
+{showTimePicker && (
+  <DateTimePicker
+    value={new Date()}
+    mode="time"
+    onChange={(
+      event,
+      selectedTime
+    ) => {
+      setShowTimePicker(false);
+
+      if (selectedTime) {
+        setDueTime(
+          selectedTime
+            .toLocaleTimeString(
+              'en-IN',
+              {
+                hour: 'numeric',
+                minute: '2-digit',
+              }
+            )
+        );
+      }
+    }}
+  />
+)}
 
   <Text
     style={{
@@ -388,50 +477,77 @@ const [escalationMinutes, setEscalationMinutes] =
           selectedPatientId
       );
 
-    addTask({
-      id: `TASK-${Date.now()}`,
+    const taskPayload = {
+  status: 'PENDING',
 
-      status: 'PENDING',
+  statusColor: '#D97706',
 
-      statusColor: '#D97706',
+  dueText: '',
 
-      dueText: '',
+  title:
+    taskName ||
+    selectedTemplate?.name ||
+    'Custom Task',
 
-      title:
-        selectedTemplate?.name ||
-        'Custom Task',
+  assigned:
+    taskCategory === 'ADMIN'
+      ? 'Administration'
+      : 'Nursing Staff',
 
-      assigned:
-        taskCategory === 'ADMIN'
-          ? 'Administration'
-          : 'Nursing Staff',
+  due:
+    dueDate && dueTime
+      ? `${dueDate} ${dueTime}`
+      : 'Today',
 
-      due: 'Today',
+  dueAt: null,
 
-      location:
-        selectedPatient?.ward ||
-        'Hospital',
+  dueDate,
 
-      taskCategory,
+  dueTime,
 
-      patientId:
-        selectedPatient?.id,
+  priority,
 
-      patientName:
-        selectedPatient?.name,
+  escalationMinutes:
+    Number(escalationMinutes),
 
-      type:
-        taskCategory === 'PATIENT'
-          ? 'VITALS'
-          : 'ADMIN',
-    });
+  location:
+    selectedPatient?.ward ||
+    'Hospital',
+
+  taskCategory,
+
+  patientId:
+    selectedPatient?.id,
+
+  patientName:
+    selectedPatient?.name,
+
+  type:
+    taskCategory === 'PATIENT'
+      ? 'VITALS'
+      : 'ADMIN',
+};
+
+if (isEditMode) {
+  updateTask(
+    editTask.id,
+    taskPayload
+  );
+} else {
+  addTask({
+    id: `TASK-${Date.now()}`,
+    ...taskPayload,
+  });
+}
 
     navigation.goBack();
   }}
 >
-  <Text style={styles.buttonText}>
-    Create Task
-  </Text>
+<Text style={styles.buttonText}>
+  {isEditMode
+    ? 'Save Changes'
+    : 'Create Task'}
+</Text>
 </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

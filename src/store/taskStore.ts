@@ -11,6 +11,15 @@ interface TaskStore {
     task: any
   ) => void;
 
+  updateTask: (
+  taskId: string,
+  updates: any
+) => void;
+
+deleteTask: (
+  taskId: string
+) => void;
+
   completeTask: (
     taskId: string,
     completionData?: any
@@ -29,6 +38,30 @@ addTask: (task) =>
       task,
       ...state.tasks,
     ],
+  })),
+
+  updateTask: (
+  taskId,
+  updates
+) =>
+  set((state) => ({
+    tasks: state.tasks.map(
+      (task) =>
+        task.id === taskId
+          ? {
+              ...task,
+              ...updates,
+            }
+          : task
+    ),
+  })),
+
+deleteTask: (taskId) =>
+  set((state) => ({
+    tasks: state.tasks.filter(
+      (task) =>
+        task.id !== taskId
+    ),
   })),
   
 completeTask: (
