@@ -9,30 +9,38 @@ import ComplianceScreen from '../screens/ComplianceScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import {
   SafeAreaProvider,
+  useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import TaskDetailScreen from '../screens/TaskDetailScreen';
 import PatientDetailScreen from '../screens/PatientDetailScreen';
 import AddPatientScreen from '../screens/AddPatientScreen';
 import CreateTaskScreen from '../screens/CreateTaskScreen';
-
+import { COLORS } from '../theme/colors';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function MainTabs() {
+    const insets = useSafeAreaInsets();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
 
-        tabBarActiveTintColor: '#234A7A',
+        tabBarActiveTintColor: COLORS.primary,
         tabBarInactiveTintColor: '#94A3B8',
 
-        tabBarStyle: {
-          height: 95,
-          paddingBottom: 25,
-          paddingTop: 8,
-          marginBottom: 20,
-        },
+      tabBarStyle: {
+  height: 60 + insets.bottom,
+  paddingBottom: insets.bottom,
+  paddingTop: 8,
+
+  backgroundColor: COLORS.card,
+  borderTopColor: COLORS.border,
+  borderTopWidth: 1,
+},
+tabBarLabelStyle: {
+  fontWeight: '600',
+},
 
         tabBarIcon: ({ color, size }) => {
           let iconName: any;

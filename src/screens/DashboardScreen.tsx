@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import { usePatientStore } from '../store/patientStore';
 import { useTaskStore } from '../store/taskStore';
@@ -75,7 +76,11 @@ const greeting =
     ? 'Good Afternoon'
     : 'Good Evening';
   return (
-    <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}>
+    <StatusBar
+      backgroundColor={COLORS.primary}
+      barStyle="light-content"
+    />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
@@ -256,12 +261,12 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    paddingTop: 35,
-    paddingBottom: 100,
+    paddingBottom: 20,
       },
 
   topBar: {
-    height: 64,
+    height: 90,
+    paddingTop: 20,
     backgroundColor: COLORS.primary,
     flexDirection: 'row',
     alignItems: 'center',
@@ -306,15 +311,15 @@ const styles = StyleSheet.create({
   },
 
   dateChip: {
-    backgroundColor: '#EFE7D6',
+    backgroundColor: COLORS.indigoLight,
     paddingHorizontal: 14,
     paddingVertical: 8,
     borderRadius: 10,
   },
 
   dateText: {
-    color: '#6B7280',
-    fontSize: 12,
+    color: COLORS.primary,
+fontWeight: '600'
   },
 
   sectionTitle: {
@@ -335,38 +340,46 @@ const styles = StyleSheet.create({
 
   kpiCard: {
     width: '48%',
-    backgroundColor: COLORS.card,
-    borderRadius: 16,
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: COLORS.border,
+    borderColor: '#EEF2FF',
+    shadowColor: '#4338CA',
+shadowOpacity: 0.08,
+shadowRadius: 10,
+shadowOffset: {
+  width: 0,
+  height: 4,
+},
+elevation: 3,
   },
 
   kpiLabel: {
     fontSize: 12,
-    color: '#64748B',
+    color: COLORS.primary,
   },
 
   kpiValue: {
     marginTop: 12,
     fontSize: 30,
     fontWeight: '700',
-    color: '#1E293B',
+    color: COLORS.text,
   },
 
   kpiValueDanger: {
     marginTop: 12,
     fontSize: 30,
     fontWeight: '700',
-    color: '#DC2626',
+    color: COLORS.danger,
   },
 
   kpiValueSuccess: {
     marginTop: 12,
     fontSize: 30,
     fontWeight: '700',
-    color: '#16A34A',
+    color: COLORS.success,
   },
 
   complianceCard: {
