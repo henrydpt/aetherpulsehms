@@ -51,7 +51,7 @@ tabBarLabelStyle: {
             iconName = 'clipboard';
           } else if (route.name === 'Patients') {
             iconName = 'people';
-          } else if (route.name === 'Compliance') {
+          } else if (route.name === 'Analytics') {
             iconName = 'bar-chart';
           } else {
             iconName = 'person';
@@ -86,7 +86,7 @@ tabBarLabelStyle: {
       />
 
       <Tab.Screen
-        name="Compliance"
+        name="Analytics"
         component={ComplianceScreen}
       />
 

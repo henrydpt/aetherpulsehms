@@ -12,6 +12,8 @@ import { usePatientStore } from '../store/patientStore';
 import { useTaskStore } from '../store/taskStore';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../theme/colors';
+import { Ionicons } from '@expo/vector-icons';
+
 export default function DashboardScreen() {
 const navigation = useNavigation<any>();
 
@@ -140,9 +142,16 @@ const greeting =
     navigation.navigate('Patients')
   }
 >
-            <Text style={styles.kpiLabel}>
-  👥 Active Patients
-</Text>
+<View style={styles.kpiHeader}>
+  <Ionicons
+    name="people"
+    size={16}
+    color="#4F46E5"
+  />
+  <Text style={styles.kpiLabel}>
+    Active Patients
+  </Text>
+</View>
 
             <Text style={styles.kpiValue}>
               {patientCount}
@@ -164,9 +173,16 @@ const greeting =
 )
   }
 >
-            <Text style={styles.kpiLabel}>
-              📋 Pending Tasks
-            </Text>
+<View style={styles.kpiHeader}>
+  <Ionicons
+    name="clipboard"
+    size={16}
+    color="#14B8A6"
+  />
+  <Text style={styles.kpiLabel}>
+    Pending Tasks
+  </Text>
+</View>
 
             <Text style={styles.kpiValue}>
               {pendingTasks}
@@ -188,9 +204,16 @@ navigation.navigate(
 )
   }
 >
-            <Text style={styles.kpiLabel}>
-              ⚠️ Overdue Tasks
-            </Text>
+<View style={styles.kpiHeader}>
+  <Ionicons
+    name="warning"
+    size={16}
+    color="#EF4444"
+  />
+  <Text style={styles.kpiLabel}>
+    Overdue Tasks
+  </Text>
+</View>
 
             <Text style={styles.kpiValueDanger}>
   {overdueTasks}
@@ -212,9 +235,16 @@ navigation.navigate(
 )
   }
 >
-            <Text style={styles.kpiLabel}>
-              ✅ Completed Tasks
-            </Text>
+<View style={styles.kpiHeader}>
+  <Ionicons
+    name="checkmark-circle"
+    size={16}
+    color="#22C55E"
+  />
+  <Text style={styles.kpiLabel}>
+    Completed Tasks
+  </Text>
+</View>
 
             <Text style={styles.kpiValueSuccess}>
   {completedTasks}
@@ -232,9 +262,16 @@ navigation.navigate(
 )
   }
 >
+<View style={styles.kpiHeader}>
+  <Ionicons
+    name="star"
+    size={16}
+    color="#F59E0B"
+  />
   <Text style={styles.kpiLabel}>
-    ⭐ High Priority
+    High Priority
   </Text>
+</View>
 
   <Text style={styles.kpiValueDanger}>
     {highPriorityTasks}
@@ -247,12 +284,19 @@ navigation.navigate(
   styles.complianceAccentCard,
 ]}
   onPress={() =>
-    navigation.navigate('Compliance')
+    navigation.navigate('Analytics')
   }
 >
+<View style={styles.kpiHeader}>
+  <Ionicons
+    name="shield-checkmark"
+    size={16}
+    color="#06B6D4"
+  />
   <Text style={styles.kpiLabel}>
-    🛡️ Compliance %
+    Compliance %
   </Text>
+</View>
 
   <Text style={styles.kpiValueSuccess}>
     {tasks.length > 0
@@ -404,9 +448,13 @@ complianceAccentCard: {
 },
   kpiLabel: {
     fontSize: 12,
+    marginLeft: 6,
     color: COLORS.primary,
   },
-
+kpiHeader: {
+  flexDirection: 'row',
+  alignItems: 'center',
+},
   kpiValue: {
     marginTop: 12,
     fontSize: 30,
