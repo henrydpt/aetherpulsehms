@@ -132,14 +132,17 @@ const greeting =
 
         <View style={styles.kpiGrid}>
           <TouchableOpacity
-  style={styles.kpiCard}
+  style={[
+  styles.kpiCard,
+  styles.activeCard,
+]}
   onPress={() =>
     navigation.navigate('Patients')
   }
 >
             <Text style={styles.kpiLabel}>
-              Active Patients
-            </Text>
+  👥 Active Patients
+</Text>
 
             <Text style={styles.kpiValue}>
               {patientCount}
@@ -147,7 +150,10 @@ const greeting =
           </TouchableOpacity>
 
           <TouchableOpacity
-  style={styles.kpiCard}
+  style={[
+  styles.kpiCard,
+  styles.pendingCard,
+]}
   onPress={() =>
     navigation.navigate(
   'Tasks',
@@ -159,7 +165,7 @@ const greeting =
   }
 >
             <Text style={styles.kpiLabel}>
-              Pending Tasks
+              📋 Pending Tasks
             </Text>
 
             <Text style={styles.kpiValue}>
@@ -168,7 +174,10 @@ const greeting =
           </TouchableOpacity>
 
           <TouchableOpacity
-  style={styles.kpiCard}
+  style={[
+  styles.kpiCard,
+  styles.overdueCard,
+]}
   onPress={() =>
 navigation.navigate(
   'Tasks',
@@ -180,7 +189,7 @@ navigation.navigate(
   }
 >
             <Text style={styles.kpiLabel}>
-              Overdue Tasks
+              ⚠️ Overdue Tasks
             </Text>
 
             <Text style={styles.kpiValueDanger}>
@@ -189,7 +198,10 @@ navigation.navigate(
           </TouchableOpacity>
 
           <TouchableOpacity
-  style={styles.kpiCard}
+  style={[
+  styles.kpiCard,
+  styles.completedCard,
+]}
   onPress={() =>
     navigation.navigate(
   'Tasks',
@@ -201,7 +213,7 @@ navigation.navigate(
   }
 >
             <Text style={styles.kpiLabel}>
-              Completed Tasks
+              ✅ Completed Tasks
             </Text>
 
             <Text style={styles.kpiValueSuccess}>
@@ -210,7 +222,10 @@ navigation.navigate(
           </TouchableOpacity>
 
 <TouchableOpacity
-  style={styles.kpiCard}
+  style={[
+  styles.kpiCard,
+  styles.priorityCard,
+]}
   onPress={() =>
     navigation.navigate(
   'Tasks'
@@ -218,7 +233,7 @@ navigation.navigate(
   }
 >
   <Text style={styles.kpiLabel}>
-    High Priority
+    ⭐ High Priority
   </Text>
 
   <Text style={styles.kpiValueDanger}>
@@ -227,13 +242,16 @@ navigation.navigate(
 </TouchableOpacity>
 
 <TouchableOpacity
-  style={styles.kpiCard}
+  style={[
+  styles.kpiCard,
+  styles.complianceAccentCard,
+]}
   onPress={() =>
     navigation.navigate('Compliance')
   }
 >
   <Text style={styles.kpiLabel}>
-    Compliance %
+    🛡️ Compliance %
   </Text>
 
   <Text style={styles.kpiValueSuccess}>
@@ -355,7 +373,35 @@ shadowOffset: {
 },
 elevation: 3,
   },
+activeCard: {
+  borderLeftWidth: 4,
+  borderLeftColor: '#4F46E5',
+},
 
+pendingCard: {
+  borderLeftWidth: 4,
+  borderLeftColor: '#14B8A6',
+},
+
+overdueCard: {
+  borderLeftWidth: 4,
+  borderLeftColor: '#EF4444',
+},
+
+completedCard: {
+  borderLeftWidth: 4,
+  borderLeftColor: '#22C55E',
+},
+
+priorityCard: {
+  borderLeftWidth: 4,
+  borderLeftColor: '#F59E0B',
+},
+
+complianceAccentCard: {
+  borderLeftWidth: 4,
+  borderLeftColor: '#06B6D4',
+},
   kpiLabel: {
     fontSize: 12,
     color: COLORS.primary,
