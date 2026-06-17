@@ -16,6 +16,7 @@ import TaskDetailScreen from '../screens/TaskDetailScreen';
 import PatientDetailScreen from '../screens/PatientDetailScreen';
 import AddPatientScreen from '../screens/AddPatientScreen';
 import CreateTaskScreen from '../screens/CreateTaskScreen';
+import LoginScreen from '../screens/LoginScreen';
 import { COLORS } from '../theme/colors';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -106,6 +107,11 @@ export default function AppNavigator() {
     headerShown: false,
   }}
 >
+  <Stack.Screen
+    name="Login"
+    component={LoginScreen}
+  />
+
   <Stack.Screen
     name="MainTabs"
     component={MainTabs}

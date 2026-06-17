@@ -9,7 +9,9 @@ import {
   StatusBar,
 } from 'react-native';
 import { COLORS } from '../theme/colors';
+import { useNavigation } from '@react-navigation/native';
 export default function ProfileScreen() {
+  const navigation = useNavigation<any>();
   return (
   <SafeAreaView style={styles.container}>
     <StatusBar
@@ -57,7 +59,12 @@ export default function ProfileScreen() {
           <MenuItem title="About Aether Pulse" />
         </View>
 
-        <TouchableOpacity style={styles.logoutCard}>
+        <TouchableOpacity
+  style={styles.logoutCard}
+  onPress={() =>
+    navigation.replace('Login')
+  }
+>
           <Text style={styles.logoutText}>
             Logout
           </Text>
