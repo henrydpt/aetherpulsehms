@@ -8,13 +8,14 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  StatusBar,
 } from 'react-native';
 import {
   useNavigation,
   useRoute,
 } from '@react-navigation/native';
 import { usePatientStore } from '../store/patientStore';
-
+import { COLORS } from '../theme/colors';
 export default function AddPatientScreen() {
   const navigation = useNavigation<any>();
 
@@ -52,16 +53,16 @@ const updatePatient = usePatientStore(
 );
 return (
   <SafeAreaView style={styles.container}>
+    <StatusBar
+      backgroundColor={COLORS.primary}
+      barStyle="light-content"
+    />
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={styles.content}
     >
       <View style={styles.topBar}>
-        <TouchableOpacity
-  onPress={() => navigation.goBack()}
->
-  <Text style={styles.icon}>‹</Text>
-</TouchableOpacity>
+      <View style={{ width: 24 }} />
 
         <Text style={styles.topBarTitle}>
           {isEditMode
@@ -174,8 +175,9 @@ const styles = StyleSheet.create({
 },
 
 topBar: {
-  height: 64,
-  backgroundColor: '#234A7A',
+  height: 90,
+  paddingTop: 20,
+  backgroundColor: COLORS.primary,
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -189,7 +191,7 @@ icon: {
 },
 
 topBarTitle: {
-  color: '#FFFFFF',
+  color: COLORS.card,
   fontSize: 18,
   fontWeight: '700',
 },

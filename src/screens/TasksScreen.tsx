@@ -9,6 +9,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import TaskCard from '../components/tasks/TaskCard';
 import {
@@ -16,12 +17,14 @@ import {
   useRoute,
 } from '@react-navigation/native';
 import { useTaskStore } from '../store/taskStore';
+import { COLORS } from '../theme/colors';
 export default function TasksScreen() {
 const navigation = useNavigation<any>();
 const route = useRoute<any>();
 const tasks = useTaskStore(
   (state) => state.tasks
 );
+
 const [activeFilter, setActiveFilter] =
   useState(
     route.params?.initialFilter ||
@@ -38,6 +41,44 @@ useEffect(() => {
 }, [
   route.params?.initialFilter,
 ]);
+const parseTaskDateTime = (task: any) => {
+  if (!task.dueDate || !task.dueTime) {
+    return null;
+  }
+
+  const [time, period] =
+    task.dueTime.split(' ');
+
+  let [hours, minutes] =
+    time.split(':').map(Number);
+
+  if (
+    period === 'PM' &&
+    hours !== 12
+  ) {
+    hours += 12;
+  }
+
+  if (
+    period === 'AM' &&
+    hours === 12
+  ) {
+    hours = 0;
+  }
+
+  const dueDateTime =
+    new Date(task.dueDate);
+
+  dueDateTime.setHours(
+    hours,
+    minutes,
+    0,
+    0
+  );
+
+  return dueDateTime;
+};
+
 const isOverdue = (task: any) => {
   if (
     task.status ===
@@ -46,42 +87,41 @@ const isOverdue = (task: any) => {
     return false;
   }
 
-  if (
-    !task.dueDate ||
-    !task.dueTime
-  ) {
+  const dueDateTime =
+    parseTaskDateTime(task);
+
+  if (!dueDateTime) {
     return false;
   }
 
-  const dueDateTime =
-    new Date(
-      `${task.dueDate} ${task.dueTime}`
-    );
+  return (
+    dueDateTime <
+    new Date()
+  );
+};
+
 const isEscalated = (task: any) => {
   if (!isOverdue(task)) {
     return false;
   }
 
   const dueDateTime =
-    new Date(
-      `${task.dueDate} ${task.dueTime}`
-    );
+    parseTaskDateTime(task);
+
+  if (!dueDateTime) {
+    return false;
+  }
 
   const escalationTime =
     new Date(
       dueDateTime.getTime() +
-      task.escalationMinutes *
+      (task.escalationMinutes || 0) *
         60 *
         1000
     );
 
   return (
     escalationTime <
-    new Date()
-  );
-};
-  return (
-    dueDateTime <
     new Date()
   );
 };
@@ -119,7 +159,22 @@ const filteredTasks =
     ) {
       return isOverdue(task);
     }
+if (
+  activeFilter ===
+  'ESCALATED'
+) {
+  return isEscalated(task);
+}
 
+if (
+  activeFilter ===
+  'HIGH_PRIORITY'
+) {
+  return (
+    task.priority ===
+    'HIGH'
+  );
+}
     return true;
   });
 
@@ -137,14 +192,18 @@ const patientTasks =
       'PATIENT'
   );
 
-  return (
-    <SafeAreaView style={styles.container}>
+return (
+  <SafeAreaView style={styles.container}>
+    <StatusBar
+      backgroundColor={COLORS.primary}
+      barStyle="light-content"
+    />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
       >
         <View style={styles.topBar}>
-          <Text style={styles.icon}>☰</Text>
+          <View style={{ width: 24 }} />
 
           <Text style={styles.topBarTitle}>
             My Tasks
@@ -225,6 +284,24 @@ const patientTasks =
     Overdue
   </Text>
 </TouchableOpacity>
+<TouchableOpacity
+  onPress={() =>
+    setActiveFilter(
+      'ESCALATED'
+    )
+  }
+>
+  <Text
+    style={
+      activeFilter ===
+      'ESCALATED'
+        ? styles.activeFilter
+        : styles.filter
+    }
+  >
+    Escalated
+  </Text>
+</TouchableOpacity>
         </View>
 
 <Text style={styles.sectionHeading}>
@@ -293,25 +370,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F5EE',
   },
 
-  content: {
-    paddingTop: 35,
-    paddingBottom: 100,
-  },
+content: {
+  paddingBottom: 100,
+},
 
-  topBar: {
-    height: 64,
-    backgroundColor: '#234A7A',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 18,
-  },
+topBar: {
+  height: 90,
+  paddingTop: 20,
+  backgroundColor: COLORS.primary,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: 18,
+},
 
-  topBarTitle: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: '700',
-  },
+topBarTitle: {
+  color: COLORS.card,
+  fontSize: 18,
+  fontWeight: '700',
+},
 
   icon: {
     color: '#FFFFFF',

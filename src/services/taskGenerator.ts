@@ -45,6 +45,16 @@ export function generateVitalsTasks(patient: any) {
     patientName: patient.name,
     location: patient.ward,
     due: time,
+    dueDate:
+  new Date()
+    .toISOString()
+    .split('T')[0],
+
+dueTime: time,
+
+priority: 'HIGH',
+
+escalationMinutes: 30,
     assigned: 'Nursing Staff',
     type: 'VITALS',
     taskCategory: 'PATIENT',

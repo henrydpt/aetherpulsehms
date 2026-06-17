@@ -346,7 +346,7 @@ barTrack: {
 
 barFill: {
   height: 12,
-  backgroundColor: '#4338CA',
+  backgroundColor: COLORS.primary,
   borderRadius: 999,
 },
   icon: {

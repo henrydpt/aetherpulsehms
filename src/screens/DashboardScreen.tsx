@@ -38,7 +38,43 @@ const completedTasks =
       task.status ===
       'COMPLETED'
   ).length;
+const parseTaskDateTime = (task: any) => {
+  if (!task.dueDate || !task.dueTime) {
+    return null;
+  }
 
+  const [time, period] =
+    task.dueTime.split(' ');
+
+  let [hours, minutes] =
+    time.split(':').map(Number);
+
+  if (
+    period === 'PM' &&
+    hours !== 12
+  ) {
+    hours += 12;
+  }
+
+  if (
+    period === 'AM' &&
+    hours === 12
+  ) {
+    hours = 0;
+  }
+
+  const dueDateTime =
+    new Date(task.dueDate);
+
+  dueDateTime.setHours(
+    hours,
+    minutes,
+    0,
+    0
+  );
+
+  return dueDateTime;
+};
 const overdueTasks =
   tasks.filter((task) => {
     if (
@@ -48,26 +84,48 @@ const overdueTasks =
       return false;
     }
 
-    if (
-      !task.dueDate ||
-      !task.dueTime
-    ) {
+    const dueDateTime =
+      parseTaskDateTime(task);
+
+    if (!dueDateTime) {
       return false;
     }
 
     return (
-      new Date(
-        `${task.dueDate} ${task.dueTime}`
-      ) < new Date()
+      dueDateTime <
+      new Date()
     );
   }).length;
 
-const highPriorityTasks =
-  tasks.filter(
-    (task) =>
-      task.priority ===
-      'HIGH'
-  ).length;
+const escalatedTasks =
+  tasks.filter((task) => {
+    if (
+      task.status ===
+      'COMPLETED'
+    ) {
+      return false;
+    }
+
+    const dueDateTime =
+      parseTaskDateTime(task);
+
+    if (!dueDateTime) {
+      return false;
+    }
+
+    const escalationTime =
+      new Date(
+        dueDateTime.getTime() +
+        (task.escalationMinutes || 0) *
+          60 *
+          1000
+      );
+
+    return (
+      escalationTime <
+      new Date()
+    );
+  }).length;
   const currentHour =
   new Date().getHours();
 
@@ -153,7 +211,7 @@ const greeting =
   </Text>
 </View>
 
-            <Text style={styles.kpiValue}>
+            <Text style={styles.kpiValueActive}>
               {patientCount}
             </Text>
           </TouchableOpacity>
@@ -184,7 +242,7 @@ const greeting =
   </Text>
 </View>
 
-            <Text style={styles.kpiValue}>
+            <Text style={styles.kpiValuePending}>
               {pendingTasks}
             </Text>
           </TouchableOpacity>
@@ -256,25 +314,29 @@ navigation.navigate(
   styles.kpiCard,
   styles.priorityCard,
 ]}
-  onPress={() =>
-    navigation.navigate(
-  'Tasks'
-)
-  }
+onPress={() =>
+  navigation.navigate(
+    'Tasks',
+    {
+      initialFilter:
+  'ESCALATED',
+    }
+  )
+}
 >
 <View style={styles.kpiHeader}>
-  <Ionicons
-    name="star"
-    size={16}
-    color="#F59E0B"
-  />
+<Ionicons
+  name="star"
+  size={16}
+  color="#EF4444"
+/>
   <Text style={styles.kpiLabel}>
-    High Priority
+    Escalated Tasks
   </Text>
 </View>
 
-  <Text style={styles.kpiValueDanger}>
-    {highPriorityTasks}
+  <Text style={styles.kpiValuePriority}>
+    {escalatedTasks}
   </Text>
 </TouchableOpacity>
 
@@ -298,7 +360,7 @@ navigation.navigate(
   </Text>
 </View>
 
-  <Text style={styles.kpiValueSuccess}>
+  <Text style={styles.kpiValueCompliance}>
     {tasks.length > 0
       ? Math.round(
           (completedTasks /
@@ -310,7 +372,23 @@ navigation.navigate(
   </Text>
 </TouchableOpacity>
         </View>
+<View style={styles.attentionCard}>
+  <Text style={styles.attentionTitle}>
+    Attention Required
+  </Text>
 
+  <Text style={styles.attentionItem}>
+    ⚠ {overdueTasks} overdue tasks require attention
+  </Text>
+
+  <Text style={styles.attentionItem}>
+    📋 {pendingTasks} tasks pending completion
+  </Text>
+
+  <Text style={styles.attentionItem}>
+    🚨 {escalatedTasks} escalated tasks require attention
+  </Text>
+</View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -389,7 +467,7 @@ fontWeight: '600'
     fontWeight: '700',
     color: COLORS.text,
     marginHorizontal: 18,
-    marginTop: 22,
+    marginTop: 12,
     marginBottom: 12,
   },
 
@@ -446,6 +524,37 @@ complianceAccentCard: {
   borderLeftWidth: 4,
   borderLeftColor: '#06B6D4',
 },
+attentionCard: {
+  backgroundColor: '#FFFFFF',
+  marginHorizontal: 18,
+  marginTop: 8,
+  padding: 18,
+  borderRadius: 18,
+  borderLeftWidth: 4,
+  borderLeftColor: '#F59E0B',
+
+  shadowColor: '#000',
+  shadowOpacity: 0.05,
+  shadowRadius: 8,
+  shadowOffset: {
+    width: 0,
+    height: 2,
+  },
+  elevation: 2,
+},
+
+attentionTitle: {
+  fontSize: 16,
+  fontWeight: '700',
+  color: COLORS.text,
+  marginBottom: 12,
+},
+
+attentionItem: {
+  fontSize: 14,
+  color: '#475569',
+  marginBottom: 8,
+},
   kpiLabel: {
     fontSize: 12,
     marginLeft: 6,
@@ -461,7 +570,26 @@ kpiHeader: {
     fontWeight: '700',
     color: COLORS.text,
   },
+kpiValueActive: {
+  marginTop: 12,
+  fontSize: 30,
+  fontWeight: '700',
+  color: '#4F46E5',
+},
 
+kpiValuePending: {
+  marginTop: 12,
+  fontSize: 30,
+  fontWeight: '700',
+  color: '#14B8A6',
+},
+
+kpiValuePriority: {
+  marginTop: 12,
+  fontSize: 30,
+  fontWeight: '700',
+  color: '#F59E0B',
+},
   kpiValueDanger: {
     marginTop: 12,
     fontSize: 30,
@@ -475,7 +603,12 @@ kpiHeader: {
     fontWeight: '700',
     color: COLORS.success,
   },
-
+kpiValueCompliance: {
+  marginTop: 12,
+  fontSize: 30,
+  fontWeight: '700',
+  color: '#06B6D4',
+},
   complianceCard: {
     backgroundColor: '#FFFFFF',
     marginHorizontal: 18,

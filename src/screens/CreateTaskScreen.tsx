@@ -7,6 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  StatusBar,
 } from 'react-native';
 import {
   useNavigation,
@@ -16,6 +17,7 @@ import { taskTemplates } from '../data/taskTemplates';
 import { usePatientStore } from '../store/patientStore';
 import { useTaskStore } from '../store/taskStore';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { COLORS } from '../theme/colors';
 export default function CreateTaskScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
@@ -77,18 +79,18 @@ const [showDatePicker, setShowDatePicker] =
 const [showTimePicker, setShowTimePicker] =
   useState(false);
 
-  return (
-    <SafeAreaView style={styles.container}>
+return (
+  <SafeAreaView style={styles.container}>
+    <StatusBar
+      backgroundColor={COLORS.primary}
+      barStyle="light-content"
+    />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
       >
         <View style={styles.topBar}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-          >
-            <Text style={styles.icon}>‹</Text>
-          </TouchableOpacity>
+        <View style={{ width: 24 }} />
 
           <Text style={styles.topBarTitle}>
             Create Task
@@ -571,14 +573,15 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
 
-  topBar: {
-    height: 64,
-    backgroundColor: '#234A7A',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 18,
-  },
+topBar: {
+  height: 90,
+  paddingTop: 20,
+  backgroundColor: COLORS.primary,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: 18,
+},
 
   icon: {
     color: '#FFFFFF',
@@ -586,11 +589,11 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 
-  topBarTitle: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: '700',
-  },
+topBarTitle: {
+  color: COLORS.card,
+  fontSize: 18,
+  fontWeight: '700',
+},
 
   card: {
     backgroundColor: '#FFFFFF',

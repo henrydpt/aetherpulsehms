@@ -11,11 +11,13 @@ import {
   Text,
   Image,
   TextInput,
+  StatusBar,
   TouchableOpacity,
   StyleSheet,
   Alert,
 } from 'react-native';
 import { useTaskStore } from '../store/taskStore';
+import { COLORS } from '../theme/colors';
 export default function TaskDetailScreen() {
       const route = useRoute<any>();
       const navigation = useNavigation<any>();
@@ -60,14 +62,18 @@ const task =
     setPhotoAttached(true);
   }
 };
-  return (
-    <SafeAreaView style={styles.container}>
+return (
+  <SafeAreaView style={styles.container}>
+    <StatusBar
+      backgroundColor={COLORS.primary}
+      barStyle="light-content"
+    />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
       >
         <View style={styles.topBar}>
-          <Text style={styles.icon}>‹</Text>
+          <View style={{ width: 24 }} />
 
           <Text style={styles.topBarTitle}>
             Task Details
@@ -83,14 +89,24 @@ const task =
     )
   }
 >
+<View
+  style={{
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+  }}
+>
   <Text
     style={{
-      color: '#FFFFFF',
+      color: COLORS.primary,
       fontWeight: '700',
+      fontSize: 12,
     }}
   >
-    Edit
+    EDIT
   </Text>
+</View>
 </TouchableOpacity>
         </View>
 
@@ -277,19 +293,26 @@ const task =
 
 {task.status !== 'COMPLETED' && (
   <>
-    <TouchableOpacity
-      onPress={pickEvidence}
-    >
-      <Text
-        style={{
-          color: '#234A7A',
-          marginTop: 12,
-          fontWeight: '700',
-        }}
-      >
-        Attach Evidence
-      </Text>
-    </TouchableOpacity>
+<TouchableOpacity
+  onPress={pickEvidence}
+  style={{
+    marginTop: 16,
+    borderWidth: 1,
+    borderColor: COLORS.primary,
+    borderRadius: 12,
+    paddingVertical: 12,
+    alignItems: 'center',
+  }}
+>
+  <Text
+    style={{
+      color: COLORS.primary,
+      fontWeight: '700',
+    }}
+  >
+    📷 ATTACH EVIDENCE
+  </Text>
+</TouchableOpacity>
 
     {photoUri && (
       <Image
@@ -492,14 +515,15 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
 
-  topBar: {
-    height: 64,
-    backgroundColor: '#234A7A',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 18,
-  },
+topBar: {
+  height: 90,
+  paddingTop: 20,
+  backgroundColor: COLORS.primary,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: 18,
+},
 
   icon: {
     color: '#FFFFFF',
@@ -507,8 +531,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 
-  topBarTitle: {
-    color: '#FFFFFF',
+topBarTitle: {
+  color: COLORS.card,
     fontSize: 18,
     fontWeight: '700',
   },

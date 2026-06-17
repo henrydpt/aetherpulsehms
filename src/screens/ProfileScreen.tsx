@@ -6,11 +6,16 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
-
+import { COLORS } from '../theme/colors';
 export default function ProfileScreen() {
   return (
-    <SafeAreaView style={styles.container}>
+  <SafeAreaView style={styles.container}>
+    <StatusBar
+      backgroundColor={COLORS.primary}
+      barStyle="light-content"
+    />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
@@ -86,18 +91,19 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
 
-  topBar: {
-    height: 64,
-    backgroundColor: '#234A7A',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+topBar: {
+  height: 90,
+  paddingTop: 20,
+  backgroundColor: COLORS.primary,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
 
-  topBarTitle: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: '700',
-  },
+topBarTitle: {
+  color: COLORS.card,
+  fontSize: 18,
+  fontWeight: '700',
+},
 
   profileCard: {
     backgroundColor: '#FFFFFF',

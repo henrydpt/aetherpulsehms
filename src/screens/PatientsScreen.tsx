@@ -10,7 +10,8 @@ import {
 } from 'react-native';
 import { usePatientStore } from '../store/patientStore';
 import { useNavigation } from '@react-navigation/native';
-
+import { COLORS } from '../theme/colors';
+import { StatusBar } from 'react-native';
 export default function PatientsScreen() {
     const navigation = useNavigation<any>();
     const [searchQuery, setSearchQuery] = useState('');
@@ -30,12 +31,16 @@ const filteredPatients = patients.filter(
 );
   return (
     <SafeAreaView style={styles.container}>
+     <StatusBar
+  backgroundColor={COLORS.primary}
+  barStyle="light-content"
+/>
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
       >
         <View style={styles.topBar}>
-          <Text style={styles.icon}>☰</Text>
+          <View style={{ width: 24 }} />
 
           <Text style={styles.topBarTitle}>
             Patients
@@ -134,20 +139,21 @@ const styles = StyleSheet.create({
     paddingBottom: 100,
   },
 
-  topBar: {
-    height: 64,
-    backgroundColor: '#234A7A',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 18,
-  },
+topBar: {
+  height: 90,
+  paddingTop: 20,
+  backgroundColor: COLORS.primary,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: 18,
+},
 
-  topBarTitle: {
-    color: '#FFFFFF',
-    fontSize: 18,
-    fontWeight: '700',
-  },
+topBarTitle: {
+  color: COLORS.card,
+  fontSize: 18,
+  fontWeight: '700',
+},
 
   icon: {
     color: '#FFFFFF',

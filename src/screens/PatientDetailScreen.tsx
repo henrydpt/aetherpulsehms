@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Alert,
   TouchableOpacity,
+  StatusBar,
 } from 'react-native';
 import { usePatientStore } from '../store/patientStore';
 import {
@@ -14,7 +15,7 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import { useTaskStore } from '../store/taskStore';
-
+import { COLORS } from '../theme/colors';
 export default function PatientDetailScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
@@ -30,13 +31,17 @@ const vitalsTasks = tasks.filter(
   (task) =>
     task.patientId === patient?.id
 );
-  return (
-    <SafeAreaView style={styles.container}>
+return (
+  <SafeAreaView style={styles.container}>
+    <StatusBar
+      backgroundColor={COLORS.primary}
+      barStyle="light-content"
+    />
       <ScrollView
         contentContainerStyle={styles.content}
       >
         <View style={styles.topBar}>
-          <Text style={styles.icon}>‹</Text>
+          <View style={{ width: 24 }} />
 
           <Text style={styles.topBarTitle}>
             Patient Details
@@ -165,14 +170,15 @@ const styles = StyleSheet.create({
   paddingBottom: 100,
 },
 
-  topBar: {
-    height: 64,
-    backgroundColor: '#234A7A',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 18,
-  },
+topBar: {
+  height: 90,
+  paddingTop: 20,
+  backgroundColor: COLORS.primary,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: 18,
+},
 
   icon: {
     color: '#FFFFFF',
@@ -180,8 +186,8 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 
-  topBarTitle: {
-    color: '#FFFFFF',
+ topBarTitle: {
+  color: COLORS.card,
     fontSize: 18,
     fontWeight: '700',
   },
