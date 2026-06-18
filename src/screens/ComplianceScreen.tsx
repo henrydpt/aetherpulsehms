@@ -136,6 +136,7 @@ const nursingPending =
   <View
     style={[
       styles.barFill,
+{ backgroundColor: '#F59E0B' },
       {
         width:
           adminTasks.length > 0
@@ -158,6 +159,7 @@ const nursingPending =
   <View
     style={[
       styles.barFill,
+{ backgroundColor: '#22C55E' },
       {
         width:
           adminTasks.length > 0
@@ -189,6 +191,7 @@ const nursingPending =
   <View
     style={[
       styles.barFill,
+{ backgroundColor: '#F59E0B' },
       {
         width:
           nursingTasks.length > 0
@@ -211,6 +214,7 @@ const nursingPending =
   <View
     style={[
       styles.barFill,
+{ backgroundColor: '#22C55E' },
       {
         width:
           nursingTasks.length > 0

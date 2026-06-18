@@ -37,6 +37,7 @@ const task =
     assigned: 'Nurse Lakshmi',
     type: 'VITALS',
   };
+
     const [photoAttached, setPhotoAttached] = useState(false);
     const [photoUri, setPhotoUri] = useState<string | null>(null);
     const [bpSystolic, setBpSystolic] = useState('');
@@ -68,10 +69,12 @@ return (
       backgroundColor={COLORS.primary}
       barStyle="light-content"
     />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}
-      >
+<ScrollView
+  showsVerticalScrollIndicator={false}
+  contentContainerStyle={styles.content}
+  keyboardShouldPersistTaps="handled"
+  keyboardDismissMode="on-drag"
+>
         <View style={styles.topBar}>
           <View style={{ width: 24 }} />
 
@@ -79,7 +82,8 @@ return (
             Task Details
           </Text>
 
-          <TouchableOpacity
+{task.status !== 'COMPLETED' ? (
+<TouchableOpacity
   onPress={() =>
     navigation.navigate(
       'CreateTask',
@@ -108,6 +112,9 @@ return (
   </Text>
 </View>
 </TouchableOpacity>
+) : (
+<View style={{ width: 60 }} />
+)}
         </View>
 
         <View style={styles.statusCard}>
@@ -253,6 +260,35 @@ return (
     Remarks: {task.remarks}
   </Text>
 ) : null}
+{task.evidenceUri ? (
+  <TouchableOpacity
+    style={{
+      marginTop: 12,
+      backgroundColor: '#EFF6FF',
+      padding: 12,
+      borderRadius: 12,
+      alignItems: 'center',
+    }}
+    onPress={() =>
+      navigation.navigate(
+        'EvidenceViewer',
+        {
+          imageUri:
+            task.evidenceUri,
+        }
+      )
+    }
+  >
+    <Text
+      style={{
+        color: '#234A7A',
+        fontWeight: '700',
+      }}
+    >
+      View Evidence
+    </Text>
+  </TouchableOpacity>
+) : null}
 {task.vitals && (
   <>
     <Text
@@ -328,6 +364,10 @@ return (
   </>
 )}
 </View>
+
+{task.status !== 'COMPLETED' && (
+<>
+
 {task.type === 'VITALS' && (
 <View style={styles.card}>
   <Text style={styles.sectionTitle}>
@@ -479,9 +519,14 @@ return (
 >
   Delete Task
 </Text>
-</TouchableOpacity>        
-      </ScrollView>
-    </SafeAreaView>
+</TouchableOpacity>
+
+</>
+)}
+
+</ScrollView>
+</SafeAreaView>
+
   );
 }
 
@@ -512,7 +557,7 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    paddingBottom: 100,
+    paddingBottom: 320,
   },
 
 topBar: {
