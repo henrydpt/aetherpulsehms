@@ -18,6 +18,7 @@ import { usePatientStore } from '../store/patientStore';
 import { useTaskStore } from '../store/taskStore';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { COLORS } from '../theme/colors';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 export default function CreateTaskScreen() {
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
@@ -85,10 +86,13 @@ return (
       backgroundColor={COLORS.primary}
       barStyle="light-content"
     />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.content}
-      >
+<KeyboardAwareScrollView
+  showsVerticalScrollIndicator={false}
+  contentContainerStyle={styles.content}
+  enableOnAndroid={true}
+  extraScrollHeight={100}
+  keyboardShouldPersistTaps="handled"
+>
         <View style={styles.topBar}>
         <View style={{ width: 24 }} />
 
@@ -558,7 +562,7 @@ if (isEditMode) {
     : 'Create Task'}
 </Text>
 </TouchableOpacity>
-      </ScrollView>
+</KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }

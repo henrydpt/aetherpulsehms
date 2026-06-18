@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   View,
   Text,
   TextInput,
@@ -16,6 +15,7 @@ import {
 } from '@react-navigation/native';
 import { usePatientStore } from '../store/patientStore';
 import { COLORS } from '../theme/colors';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 export default function AddPatientScreen() {
   const navigation = useNavigation<any>();
 
@@ -57,9 +57,11 @@ return (
       backgroundColor={COLORS.primary}
       barStyle="light-content"
     />
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.content}
+<KeyboardAwareScrollView
+  showsVerticalScrollIndicator={false}
+  enableOnAndroid={true}
+  extraScrollHeight={100}
+  keyboardShouldPersistTaps="handled"
     >
       <View style={styles.topBar}>
       <View style={{ width: 24 }} />
@@ -159,7 +161,7 @@ navigation.goBack();
           Save Patient
         </Text>
       </TouchableOpacity>
-    </ScrollView>
+</KeyboardAwareScrollView>
   </SafeAreaView>
 );
 }

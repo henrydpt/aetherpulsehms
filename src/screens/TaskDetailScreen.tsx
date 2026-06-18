@@ -6,7 +6,6 @@ import {
 import * as ImagePicker from 'expo-image-picker';
 import {
   SafeAreaView,
-  ScrollView,
   View,
   Text,
   Image,
@@ -18,6 +17,7 @@ import {
 } from 'react-native';
 import { useTaskStore } from '../store/taskStore';
 import { COLORS } from '../theme/colors';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 export default function TaskDetailScreen() {
       const route = useRoute<any>();
       const navigation = useNavigation<any>();
@@ -69,11 +69,12 @@ return (
       backgroundColor={COLORS.primary}
       barStyle="light-content"
     />
-<ScrollView
+<KeyboardAwareScrollView
   showsVerticalScrollIndicator={false}
   contentContainerStyle={styles.content}
+  enableOnAndroid={true}
+  extraScrollHeight={100}
   keyboardShouldPersistTaps="handled"
-  keyboardDismissMode="on-drag"
 >
         <View style={styles.topBar}>
           <View style={{ width: 24 }} />
@@ -524,7 +525,7 @@ return (
 </>
 )}
 
-</ScrollView>
+</KeyboardAwareScrollView>
 </SafeAreaView>
 
   );
@@ -557,7 +558,7 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    paddingBottom: 320,
+    paddingBottom: 100,
   },
 
 topBar: {
