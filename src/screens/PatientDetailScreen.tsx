@@ -70,6 +70,21 @@ return (
           <Text style={styles.info}>
             {patient?.diagnosis}
           </Text>
+<Text style={styles.info}>
+  Mobile: {patient?.mobile || '-'}
+</Text>
+
+<Text style={styles.info}>
+  Doctor: {patient?.doctorAssigned || '-'}
+</Text>
+
+<Text style={styles.info}>
+  Billing Type: {patient?.billingType || '-'}
+</Text>
+
+<Text style={styles.info}>
+  Billing Remarks: {patient?.billingRemarks || '-'}
+</Text>
           <View
   style={{
     flexDirection: 'row',
@@ -92,13 +107,33 @@ return (
       Edit Patient
     </Text>
   </TouchableOpacity>
-
 <TouchableOpacity
   style={[
     styles.actionButton,
     {
       marginLeft: 10,
-      backgroundColor: '#DC2626',
+      backgroundColor: '#475569'
+    },
+  ]}
+  onPress={() =>
+    navigation.navigate(
+      'PatientCaseSheet',
+      {
+        patient,
+      }
+    )
+  }
+>
+  <Text style={styles.actionButtonText}>
+    Case Sheet
+  </Text>
+</TouchableOpacity>
+<TouchableOpacity
+  style={[
+    styles.actionButton,
+    {
+      marginLeft: 10,
+      backgroundColor: '#7F1D1D'
     },
   ]}
   onPress={() =>

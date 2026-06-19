@@ -1,3 +1,4 @@
+import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
 import {
   SafeAreaView,
@@ -41,7 +42,24 @@ const [gender, setGender] = useState(
 const [ward, setWard] = useState(
   editPatient?.ward || ''
 );
+const [mobile, setMobile] = useState(
+  editPatient?.mobile || ''
+);
 
+const [doctorAssigned, setDoctorAssigned] =
+  useState(
+    editPatient?.doctorAssigned || ''
+  );
+
+const [billingType, setBillingType] =
+  useState(
+    editPatient?.billingType || ''
+  );
+
+const [billingRemarks, setBillingRemarks] =
+  useState(
+    editPatient?.billingRemarks || ''
+  );
 const [diagnosis, setDiagnosis] = useState(
   editPatient?.diagnosis || ''
 );
@@ -62,7 +80,8 @@ return (
   enableOnAndroid={true}
   extraScrollHeight={100}
   keyboardShouldPersistTaps="handled"
-    >
+  contentContainerStyle={styles.content}
+>
       <View style={styles.topBar}>
       <View style={{ width: 24 }} />
 
@@ -100,6 +119,33 @@ return (
           onChangeText={setGender}
           style={styles.input}
         />
+<TextInput
+  placeholder="Mobile Number"
+  value={mobile}
+  onChangeText={setMobile}
+  style={styles.input}
+/>
+
+<View style={styles.pickerContainer}>
+  <Picker
+    style={styles.picker}
+    selectedValue={doctorAssigned}
+    onValueChange={setDoctorAssigned}
+  >
+    <Picker.Item
+      label="Select Doctor"
+      value=""
+    />
+    <Picker.Item
+      label="Doctor 1"
+      value="Doctor 1"
+    />
+    <Picker.Item
+      label="Doctor 2"
+      value="Doctor 2"
+    />
+  </Picker>
+</View>
       </View>
 
       <View style={styles.card}>
@@ -120,6 +166,39 @@ return (
           onChangeText={setDiagnosis}
           style={styles.input}
         />
+<View style={styles.pickerContainer}>
+  <Picker
+    style={styles.picker}
+    selectedValue={billingType}
+    onValueChange={setBillingType}
+  >
+    <Picker.Item
+      label="Select Billing Type"
+      value=""
+    />
+    <Picker.Item
+      label="Cash"
+      value="Cash"
+    />
+    <Picker.Item
+      label="Insurance"
+      value="Insurance"
+    />
+    <Picker.Item
+      label="Aarogyasri"
+      value="Aarogyasri"
+    />
+  </Picker>
+</View>
+
+<TextInput
+  placeholder="Billing Remarks"
+  value={billingRemarks}
+  onChangeText={setBillingRemarks}
+  multiline
+  style={styles.textArea}
+/>
+
       </View>
 
       <TouchableOpacity
@@ -128,23 +207,31 @@ return (
 if (isEditMode) {
   updatePatient(
     editPatient.id,
-    {
-      name,
-      age: Number(age),
-      gender,
-      ward,
-      diagnosis,
-    }
+{
+  name,
+  age: Number(age),
+  gender,
+  ward,
+  diagnosis,
+  mobile,
+  doctorAssigned,
+  billingType,
+  billingRemarks,
+}
   );
 } else {
   addPatient({
-    id: `PAT${Date.now()}`,
-    name,
-    age: Number(age),
-    gender,
-    ward,
-    diagnosis,
-  });
+  id: `PAT${Date.now()}`,
+  name,
+  age: Number(age),
+  gender,
+  ward,
+  diagnosis,
+  mobile,
+  doctorAssigned,
+  billingType,
+  billingRemarks,
+});
 }
 
 Alert.alert(
@@ -173,7 +260,7 @@ const styles = StyleSheet.create({
   },
 
   content: {
-  paddingBottom: 100,
+  paddingBottom: 180,
 },
 
 topBar: {
@@ -217,10 +304,32 @@ input: {
   borderWidth: 1,
   borderColor: '#E2E8F0',
   borderRadius: 12,
-  padding: 14,
+  paddingHorizontal: 14,
+  height: 56,
   marginBottom: 12,
 },
+pickerContainer: {
+  borderWidth: 1,
+  borderColor: '#E2E8F0',
+  borderRadius: 12,
+  marginBottom: 12,
+  height: 56,
+  justifyContent: 'center',
+  overflow: 'hidden',
+},
 
+picker: {
+  height: 56,
+},
+textArea: {
+  borderWidth: 1,
+  borderColor: '#E2E8F0',
+  borderRadius: 12,
+  padding: 14,
+  minHeight: 100,
+  textAlignVertical: 'top',
+  marginTop: 12,
+},
  button: {
   backgroundColor: '#234A7A',
   marginHorizontal: 14,

@@ -6,7 +6,15 @@ export interface Patient {
   age: number;
   gender: string;
   ward: string;
-  diagnosis: string;
+  mobile?: string;
+doctorAssigned?: string;
+diagnosis?: string;
+billingType?: string;
+billingRemarks?: string;
+chiefComplaint?: string;
+clinicalHistory?: string;
+treatmentPlan?: string;
+doctorNotes?: string;
 }
 
 interface PatientStore {

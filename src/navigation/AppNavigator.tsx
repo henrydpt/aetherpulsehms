@@ -17,6 +17,7 @@ import PatientDetailScreen from '../screens/PatientDetailScreen';
 import AddPatientScreen from '../screens/AddPatientScreen';
 import CreateTaskScreen from '../screens/CreateTaskScreen';
 import EvidenceViewerScreen from '../screens/EvidenceViewerScreen';
+import PatientCaseSheetScreen from '../screens/PatientCaseSheetScreen';
 import LoginScreen from '../screens/LoginScreen';
 import { COLORS } from '../theme/colors';
 const Tab = createBottomTabNavigator();
@@ -125,6 +126,10 @@ export default function AppNavigator() {
   <Stack.Screen
   name="PatientDetail"
   component={PatientDetailScreen}
+/>
+<Stack.Screen
+  name="PatientCaseSheet"
+  component={PatientCaseSheetScreen}
 />
 <Stack.Screen
   name="AddPatient"
