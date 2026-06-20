@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuthStore } from '../store/authStore';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
@@ -24,6 +25,9 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function MainTabs() {
     const insets = useSafeAreaInsets();
+    const role = useAuthStore(
+  (state) => state.role
+);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -78,20 +82,27 @@ tabBarLabelStyle: {
         }}
       />
 
-      <Tab.Screen
-        name="Tasks"
-        component={TasksScreen}
-      />
+{role !== 'Doctor' && (
+  <Tab.Screen
+    name="Tasks"
+    component={TasksScreen}
+  />
+)}
 
       <Tab.Screen
         name="Patients"
         component={PatientsScreen}
       />
 
-      <Tab.Screen
-        name="Analytics"
-        component={ComplianceScreen}
-      />
+{(
+  role === 'Admin' ||
+  role === 'Super User'
+) && (
+  <Tab.Screen
+    name="Analytics"
+    component={ComplianceScreen}
+  />
+)}
 
       <Tab.Screen
         name="Profile"

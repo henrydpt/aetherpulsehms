@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuthStore } from '../store/authStore';
 import {
   SafeAreaView,
   ScrollView,
@@ -12,6 +13,9 @@ import { COLORS } from '../theme/colors';
 import { useNavigation } from '@react-navigation/native';
 export default function ProfileScreen() {
   const navigation = useNavigation<any>();
+  const role = useAuthStore(
+  (state) => state.role
+);
   return (
   <SafeAreaView style={styles.container}>
     <StatusBar
@@ -42,7 +46,15 @@ export default function ProfileScreen() {
           <Text style={styles.email}>
             nursing.head@hospital.com
           </Text>
-
+<Text
+  style={{
+    marginTop: 8,
+    fontWeight: '700',
+    color: COLORS.primary,
+  }}
+>
+  Role: {role}
+</Text>
           <View style={styles.onlineRow}>
             <View style={styles.onlineDot} />
             <Text style={styles.onlineText}>

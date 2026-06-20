@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuthStore } from '../store/authStore';
 import {
   SafeAreaView,
   View,
@@ -12,23 +13,37 @@ import {
 import { COLORS } from '../theme/colors';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 export default function LoginScreen() {
   const navigation = useNavigation<any>();
-
+const setRoleInStore =
+  useAuthStore(
+    (state) => state.setRole
+  );
 const [username, setUsername] =
   useState('admin');
 
 const [password, setPassword] =
   useState('admin');
-
+const [role, setRole] =
+  useState('Executive');
   return (
     <SafeAreaView style={styles.container}>
 <StatusBar
   backgroundColor="#F8F5EE"
   barStyle="dark-content"
 />
-
+<KeyboardAwareScrollView
+  enableOnAndroid={true}
+  extraScrollHeight={200}
+  keyboardShouldPersistTaps="handled"
+contentContainerStyle={{
+  flexGrow: 1,
+  paddingHorizontal: 24,
+  paddingTop: 40,
+  paddingBottom: 120,
+}}
+>
       <View style={styles.hero}>
 <Image
   source={require('../../assets/aetherpulsetransparent.png')}
@@ -60,7 +75,58 @@ const [password, setPassword] =
           onChangeText={setPassword}
           style={styles.input}
         />
+<Text
+  style={{
+    fontWeight: '700',
+    marginBottom: 10,
+    color: COLORS.primary,
+  }}
+>
+  Role
+</Text>
 
+<View
+  style={{
+flexDirection: 'row',
+flexWrap: 'wrap',
+justifyContent: 'space-between',
+marginBottom: 16,
+  }}
+>
+  {[
+    'Super User',
+    'Admin',
+    'Doctor',
+    'Executive',
+  ].map((item) => (
+    <TouchableOpacity
+      key={item}
+      onPress={() => setRole(item)}
+      style={{
+        backgroundColor:
+          role === item
+            ? COLORS.primary
+            : '#E2E8F0',
+width: '48%',
+paddingVertical: 10,
+borderRadius: 12,
+marginBottom: 10,
+alignItems: 'center',
+      }}
+    >
+      <Text
+        style={{
+          color:
+            role === item
+              ? '#FFFFFF'
+              : '#334155',
+        }}
+      >
+        {item}
+      </Text>
+    </TouchableOpacity>
+  ))}
+</View>
         <TouchableOpacity
           style={styles.button}
 onPress={() => {
@@ -68,6 +134,7 @@ onPress={() => {
     username === 'admin' &&
     password === 'admin'
   ) {
+    setRoleInStore(role);
     navigation.replace(
       'MainTabs'
     );
@@ -81,12 +148,14 @@ onPress={() => {
           <Text style={styles.buttonText}>
             Sign In
           </Text>
+
         </TouchableOpacity>
       </View>
 
       <Text style={styles.footer}>
         Powered by Aether Interactions
       </Text>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   );
 }
@@ -95,8 +164,6 @@ const styles = StyleSheet.create({
 container: {
   flex: 1,
   backgroundColor: '#F8F5EE',
-  paddingHorizontal: 24,
-  paddingTop: 40,
 },
 logo: {
   width: 180,
@@ -136,11 +203,12 @@ tagline: {
   letterSpacing: 1,
 },
 
-  card: {
-    backgroundColor: '#FFFFFF',
-    borderRadius: 24,
-    padding: 20,
-  },
+card: {
+  backgroundColor: '#FFFFFF',
+  borderRadius: 24,
+  padding: 20,
+  marginBottom: 20,
+},
 
   input: {
     borderWidth: 1,
