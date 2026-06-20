@@ -2,6 +2,8 @@ import React, {
   useState,
   useEffect,
 } from 'react';
+import { useAuthStore } from '../store/authStore';
+import { usePatientStore } from '../store/patientStore';
 import {
   SafeAreaView,
   ScrollView,
@@ -24,7 +26,29 @@ const route = useRoute<any>();
 const tasks = useTaskStore(
   (state) => state.tasks
 );
+const role = useAuthStore(
+  (state) => state.role
+);
+const userName = useAuthStore(
+  (state) => state.userName
+);
+const patients = usePatientStore(
+  (state) => state.patients
+);
 
+const doctorPatients =
+  role === 'Doctor'
+    ? patients.filter(
+        (patient) =>
+patient.doctorAssigned ===
+userName
+      )
+    : patients;
+
+const doctorPatientIds =
+  doctorPatients.map(
+    (patient) => patient.id
+  );
 const [activeFilter, setActiveFilter] =
   useState(
     route.params?.initialFilter ||
@@ -128,6 +152,12 @@ const isEscalated = (task: any) => {
 
 const filteredTasks =
   tasks.filter((task) => {
+
+if (role === 'Doctor') {
+  return doctorPatientIds.includes(
+    task.patientId
+  );
+}
     if (activeFilter === 'ALL') {
       return true;
     }
@@ -304,33 +334,38 @@ return (
 </TouchableOpacity>
         </View>
 
-<Text style={styles.sectionHeading}>
-  ADMIN TASKS
-</Text>
+{role !== 'Doctor' && (
+  <>
+    <Text style={styles.sectionHeading}>
+      ADMIN TASKS
+    </Text>
 
-{adminTasks.map((task, index) => (
-<TaskCard
-  key={`admin-${index}`}
-  status={task.status}
-  statusColor={task.statusColor}
-  title={task.title}
-  location={task.location}
-  due={task.due}
-  assigned={task.assigned}
-  priority={task.priority}
-  dueDate={task.dueDate}
-  dueTime={task.dueTime}
-  escalationMinutes={
-    task.escalationMinutes
-  }
-  dueText={task.dueText}
-    onPress={() =>
-      navigation.navigate('TaskDetail', {
-        task,
-      })
-    }
-  />
-))}
+    {adminTasks.map((task, index) => (
+      <TaskCard
+        key={`admin-${index}`}
+        status={task.status}
+        statusColor={task.statusColor}
+        title={task.title}
+        location={task.location}
+        due={task.due}
+        assigned={task.assigned}
+        priority={task.priority}
+        dueDate={task.dueDate}
+        dueTime={task.dueTime}
+        escalationMinutes={
+          task.escalationMinutes
+        }
+        dueText={task.dueText}
+        onPress={() =>
+          navigation.navigate(
+            'TaskDetail',
+            { task }
+          )
+        }
+      />
+    ))}
+  </>
+)}
 
 <Text style={styles.sectionHeading}>
   PATIENT CARE TASKS

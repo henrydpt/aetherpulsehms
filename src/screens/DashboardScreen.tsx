@@ -1,4 +1,5 @@
 import React from 'react';
+import { useAuthStore } from '../store/authStore';
 import {
   SafeAreaView,
   ScrollView,
@@ -16,24 +17,61 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function DashboardScreen() {
 const navigation = useNavigation<any>();
-
+const role = useAuthStore(
+  (state) => state.role
+);
+const displayName =
+  useAuthStore(
+    (state) => state.userName
+  );
 const tasks = useTaskStore(
   (state) => state.tasks
 );
 
-const patientCount = usePatientStore(
-  (state) => state.patients.length
+const patients = usePatientStore(
+  (state) => state.patients
 );
 
+const userName = useAuthStore(
+  (state) => state.userName
+);
+
+const visiblePatients =
+  role === 'Doctor'
+    ? patients.filter(
+        (patient) =>
+          patient.doctorAssigned ===
+          userName
+      )
+    : patients;
+
+const patientCount =
+  visiblePatients.length;
+
+const doctorPatientIds =
+  visiblePatients.map(
+    (patient) => patient.id
+  );
+
+const visibleTasks =
+  role === 'Doctor'
+    ? tasks.filter(
+        (task) =>
+          doctorPatientIds.includes(
+            task.patientId
+          )
+      )
+    : tasks;
+
 const pendingTasks =
-  tasks.filter(
+  visibleTasks.filter(
     (task) =>
       task.status ===
       'PENDING'
   ).length;
 
 const completedTasks =
-  tasks.filter(
+  visibleTasks.filter(
     (task) =>
       task.status ===
       'COMPLETED'
@@ -76,7 +114,7 @@ const parseTaskDateTime = (task: any) => {
   return dueDateTime;
 };
 const overdueTasks =
-  tasks.filter((task) => {
+  visibleTasks.filter((task) => {
     if (
       task.status ===
       'COMPLETED'
@@ -98,7 +136,7 @@ const overdueTasks =
   }).length;
 
 const escalatedTasks =
-  tasks.filter((task) => {
+  visibleTasks.filter((task) => {
     if (
       task.status ===
       'COMPLETED'
@@ -160,14 +198,14 @@ const greeting =
         {/* Greeting */}
 
         <View style={styles.greetingRow}>
-          <View>
+          <View style={styles.greetingLeft}>
             <Text style={styles.goodMorning}>
               {greeting},
             </Text>
 
-            <Text style={styles.userName}>
-              Nursing Head
-            </Text>
+<Text style={styles.userName}>
+  {displayName}
+</Text>
           </View>
 
           <View style={styles.dateChip}>
@@ -339,7 +377,7 @@ onPress={() =>
     {escalatedTasks}
   </Text>
 </TouchableOpacity>
-
+{role !== 'Doctor' && (
 <TouchableOpacity
   style={[
   styles.kpiCard,
@@ -371,6 +409,7 @@ onPress={() =>
     %
   </Text>
 </TouchableOpacity>
+)}
         </View>
 <View style={styles.attentionCard}>
   <Text style={styles.attentionTitle}>
@@ -425,13 +464,18 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 
-  greetingRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 18,
-    paddingTop: 20,
-    alignItems: 'flex-start',
-  },
+greetingRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  paddingHorizontal: 18,
+  paddingTop: 20,
+  alignItems: 'flex-start',
+},
+
+greetingLeft: {
+  flex: 1,
+  paddingRight: 10,
+},
 
   goodMorning: {
     color: '#64748B',

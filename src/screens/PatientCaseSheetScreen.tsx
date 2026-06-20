@@ -158,12 +158,29 @@ useEffect(() => {
 
     updatePatient(
       patient.id,
+{
+  chiefComplaint,
+  clinicalHistory,
+  treatmentPlan,
+  doctorNotes,
+caseSheetUpdatedAt:
+  `${new Date()
+    .toLocaleDateString(
+      'en-GB',
       {
-        chiefComplaint,
-        clinicalHistory,
-        treatmentPlan,
-        doctorNotes,
+        day: '2-digit',
+        month: 'short',
+        year: '2-digit',
       }
+    )
+    .replace(/ /g, '-')}, ${new Date().toLocaleTimeString(
+    'en-US',
+    {
+      hour: '2-digit',
+      minute: '2-digit',
+    }
+  )}`,
+}
     );
 
     Alert.alert(

@@ -19,7 +19,17 @@ import { COLORS } from '../theme/colors';
 export default function PatientDetailScreen() {
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
-  const patient = route.params?.patient;
+  const patientId =
+  route.params?.patient?.id;
+
+const patients = usePatientStore(
+  (state) => state.patients
+);
+
+const patient = patients.find(
+  (p) => p.id === patientId
+);
+
   const dischargePatient =
   usePatientStore(
     (state) => state.dischargePatient
@@ -85,6 +95,62 @@ return (
 <Text style={styles.info}>
   Billing Remarks: {patient?.billingRemarks || '-'}
 </Text>
+<View
+  style={{
+    marginTop: 18,
+    paddingTop: 18,
+    borderTopWidth: 1,
+    borderTopColor: '#E2E8F0',
+  }}
+>
+  <Text
+    style={{
+      fontSize: 16,
+      fontWeight: '700',
+      color: '#234A7A',
+      marginBottom: 10,
+    }}
+  >
+    Case Sheet Summary
+  </Text>
+<Text
+  style={{
+    fontSize: 12,
+    color: '#64748B',
+    marginBottom: 10,
+  }}
+>
+  Last Updated:{' '}
+  {patient?.caseSheetUpdatedAt || '-'}
+</Text>
+<Text
+  style={{
+    fontWeight: '600',
+    marginTop: 8,
+    color: '#64748B',
+  }}
+>
+  Chief Complaint
+</Text>
+
+<Text style={styles.info}>
+  {patient?.chiefComplaint || '-'}
+</Text>
+
+<Text
+  style={{
+    fontWeight: '600',
+    marginTop: 12,
+    color: '#64748B',
+  }}
+>
+  Treatment Plan
+</Text>
+
+<Text style={styles.info}>
+  {patient?.treatmentPlan || '-'}
+</Text>
+</View>
           <View
   style={{
     flexDirection: 'row',
@@ -148,9 +214,11 @@ return (
         {
           text: 'Discharge',
           onPress: () => {
-            dischargePatient(
-              patient.id
-            );
+if (!patient) return;
+
+dischargePatient(
+  patient.id
+);
 
             navigation.goBack();
           },

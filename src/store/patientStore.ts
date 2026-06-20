@@ -15,6 +15,7 @@ chiefComplaint?: string;
 clinicalHistory?: string;
 treatmentPlan?: string;
 doctorNotes?: string;
+caseSheetUpdatedAt?: string;
 }
 
 interface PatientStore {

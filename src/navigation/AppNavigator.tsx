@@ -82,12 +82,10 @@ tabBarLabelStyle: {
         }}
       />
 
-{role !== 'Doctor' && (
-  <Tab.Screen
-    name="Tasks"
-    component={TasksScreen}
-  />
-)}
+<Tab.Screen
+  name="Tasks"
+  component={TasksScreen}
+/>
 
       <Tab.Screen
         name="Patients"

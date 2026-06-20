@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useAuthStore } from '../store/authStore';
 import {
   SafeAreaView,
   ScrollView,
@@ -19,16 +20,35 @@ export default function PatientsScreen() {
 const patients = usePatientStore(
   (state) => state.patients
 );
-
-const filteredPatients = patients.filter(
-  (patient) =>
-    patient.name
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase()) ||
-    patient.id
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase())
+const role = useAuthStore(
+  (state) => state.role
 );
+const userName = useAuthStore(
+  (state) => state.userName
+);
+const visiblePatients =
+  role === 'Doctor'
+    ? patients.filter(
+        (patient) =>
+patient.doctorAssigned ===
+userName
+      )
+    : patients;
+
+const filteredPatients =
+  visiblePatients.filter(
+    (patient) =>
+      patient.name
+        .toLowerCase()
+        .includes(
+          searchQuery.toLowerCase()
+        ) ||
+      patient.id
+        .toLowerCase()
+        .includes(
+          searchQuery.toLowerCase()
+        )
+  );
   return (
     <SafeAreaView style={styles.container}>
      <StatusBar

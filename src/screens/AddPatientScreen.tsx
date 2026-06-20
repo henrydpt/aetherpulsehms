@@ -136,14 +136,15 @@ return (
       label="Select Doctor"
       value=""
     />
-    <Picker.Item
-      label="Doctor 1"
-      value="Doctor 1"
-    />
-    <Picker.Item
-      label="Doctor 2"
-      value="Doctor 2"
-    />
+<Picker.Item
+  label="Dr Udumula Ashok Reddy"
+  value="Dr Udumula Ashok Reddy"
+/>
+
+<Picker.Item
+  label="Dr S.V. Geethika Reddy"
+  value="Dr S.V. Geethika Reddy"
+/>
   </Picker>
 </View>
       </View>

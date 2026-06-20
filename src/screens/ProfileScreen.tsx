@@ -16,6 +16,19 @@ export default function ProfileScreen() {
   const role = useAuthStore(
   (state) => state.role
 );
+
+const userName = useAuthStore(
+  (state) => state.userName
+);
+
+const department =
+  userName ===
+  'Dr Udumula Ashok Reddy'
+    ? 'Orthopaedics'
+    : userName ===
+      'Dr S.V. Geethika Reddy'
+    ? 'Gynaecology'
+    : '-';
   return (
   <SafeAreaView style={styles.container}>
     <StatusBar
@@ -33,44 +46,126 @@ export default function ProfileScreen() {
         </View>
 
         <View style={styles.profileCard}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              NH
-            </Text>
-          </View>
-
-          <Text style={styles.name}>
-            Nursing Head
-          </Text>
-
-          <Text style={styles.email}>
-            nursing.head@hospital.com
-          </Text>
 <Text
   style={{
-    marginTop: 8,
+    fontSize: 20,
     fontWeight: '700',
     color: COLORS.primary,
+    marginBottom: 10,
+    alignSelf: 'flex-start',
   }}
 >
-  Role: {role}
+  Profile Information
 </Text>
-          <View style={styles.onlineRow}>
-            <View style={styles.onlineDot} />
-            <Text style={styles.onlineText}>
-              Online
-            </Text>
-          </View>
-        </View>
 
-        <View style={styles.menuCard}>
-          <MenuItem title="My Profile" />
-          <MenuItem title="Change Password" />
-          <MenuItem title="Notifications" />
-          <MenuItem title="Help & Support" />
-          <MenuItem title="About Aether Pulse" />
-        </View>
+<View style={styles.infoRow}>
+  <Text style={styles.infoIcon}>👤</Text>
 
+  <View>
+    <Text style={styles.infoLabel}>
+      User
+    </Text>
+
+    <Text style={styles.infoValue}>
+      {userName}
+    </Text>
+  </View>
+</View>
+
+<View style={styles.infoRow}>
+  <Text style={styles.infoIcon}>🩺</Text>
+
+  <View>
+    <Text style={styles.infoLabel}>
+      Role
+    </Text>
+
+    <Text style={styles.infoValue}>
+      {role}
+    </Text>
+  </View>
+</View>
+
+<View
+  style={{
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 14,
+  }}
+>
+  <Text style={styles.infoIcon}>🏥</Text>
+
+  <View>
+    <Text style={styles.infoLabel}>
+      Department
+    </Text>
+
+    <Text style={styles.infoValue}>
+      {department}
+    </Text>
+  </View>
+</View>
+</View>
+<View style={styles.menuCard}>
+<Text
+  style={{
+    fontSize: 20,
+    fontWeight: '700',
+    color: COLORS.primary,
+    marginBottom: 10,
+  }}
+>
+  Workspace Information
+</Text>
+
+<View style={styles.infoRow}>
+  <Text style={styles.infoIcon}>🏥</Text>
+
+  <View>
+    <Text style={styles.infoLabel}>
+      Hospital
+    </Text>
+
+    <Text style={styles.infoValue}>
+      Udumula Hospitals
+    </Text>
+  </View>
+</View>
+
+<View style={styles.infoRow}>
+  <Text style={styles.infoIcon}>📱</Text>
+
+  <View>
+    <Text style={styles.infoLabel}>
+      Application
+    </Text>
+
+    <Text style={styles.infoValue}>
+      Aether Pulse Mobile
+    </Text>
+  </View>
+</View>
+
+<View
+  style={{
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 14,
+  }}
+>
+  <Text style={styles.infoIcon}>🔖</Text>
+
+  <View>
+    <Text style={styles.infoLabel}>
+      Version
+    </Text>
+
+    <Text style={styles.infoValue}>
+      v1.0
+    </Text>
+  </View>
+</View>
+</View>
         <TouchableOpacity
   style={styles.logoutCard}
   onPress={() =>
@@ -124,15 +219,14 @@ topBarTitle: {
   fontWeight: '700',
 },
 
-  profileCard: {
-    backgroundColor: '#FFFFFF',
-    margin: 16,
-    borderRadius: 18,
-    padding: 24,
-    alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#EEE7D8',
-  },
+profileCard: {
+  backgroundColor: '#FFFFFF',
+  margin: 16,
+  borderRadius: 18,
+  padding: 20,
+  borderWidth: 1,
+  borderColor: '#EEE7D8',
+},
 
   avatar: {
     width: 90,
@@ -180,14 +274,14 @@ topBarTitle: {
     fontWeight: '600',
   },
 
-  menuCard: {
-    backgroundColor: '#FFFFFF',
-    marginHorizontal: 16,
-    borderRadius: 18,
-    borderWidth: 1,
-    borderColor: '#EEE7D8',
-    overflow: 'hidden',
-  },
+menuCard: {
+  backgroundColor: '#FFFFFF',
+  marginHorizontal: 16,
+  borderRadius: 18,
+  borderWidth: 1,
+  borderColor: '#EEE7D8',
+  padding: 20,
+},
 
   menuItem: {
     flexDirection: 'row',
@@ -223,4 +317,28 @@ topBarTitle: {
     fontWeight: '700',
     fontSize: 16,
   },
+infoRow: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingVertical: 14,
+  borderBottomWidth: 1,
+  borderBottomColor: '#F1F5F9',
+},
+
+infoIcon: {
+  fontSize: 22,
+  marginRight: 14,
+},
+
+infoLabel: {
+  color: '#64748B',
+  fontSize: 13,
+},
+
+infoValue: {
+  color: '#1E293B',
+  fontSize: 16,
+  fontWeight: '600',
+  marginTop: 2,
+},
 });

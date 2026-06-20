@@ -20,13 +20,16 @@ const setRoleInStore =
   useAuthStore(
     (state) => state.setRole
   );
+  const setUserNameInStore =
+  useAuthStore(
+    (state) => state.setUserName
+  );
 const [username, setUsername] =
-  useState('admin');
+  useState('');
 
 const [password, setPassword] =
-  useState('admin');
-const [role, setRole] =
-  useState('Executive');
+  useState('');
+
   return (
     <SafeAreaView style={styles.container}>
 <StatusBar
@@ -75,74 +78,88 @@ contentContainerStyle={{
           onChangeText={setPassword}
           style={styles.input}
         />
-<Text
-  style={{
-    fontWeight: '700',
-    marginBottom: 10,
-    color: COLORS.primary,
-  }}
->
-  Role
-</Text>
-
-<View
-  style={{
-flexDirection: 'row',
-flexWrap: 'wrap',
-justifyContent: 'space-between',
-marginBottom: 16,
-  }}
->
-  {[
-    'Super User',
-    'Admin',
-    'Doctor',
-    'Executive',
-  ].map((item) => (
-    <TouchableOpacity
-      key={item}
-      onPress={() => setRole(item)}
-      style={{
-        backgroundColor:
-          role === item
-            ? COLORS.primary
-            : '#E2E8F0',
-width: '48%',
-paddingVertical: 10,
-borderRadius: 12,
-marginBottom: 10,
-alignItems: 'center',
-      }}
-    >
-      <Text
-        style={{
-          color:
-            role === item
-              ? '#FFFFFF'
-              : '#334155',
-        }}
-      >
-        {item}
-      </Text>
-    </TouchableOpacity>
-  ))}
-</View>
         <TouchableOpacity
           style={styles.button}
 onPress={() => {
-  if (
-    username === 'admin' &&
-    password === 'admin'
-  ) {
-    setRoleInStore(role);
-    navigation.replace(
-      'MainTabs'
-    );
-  } else {
-    alert(
-      'Invalid username or password'
-    );
-  }
+if (
+  username === 'ashok' &&
+  password === 'doctor123'
+) {
+  setRoleInStore('Doctor');
+
+  setUserNameInStore(
+    'Dr Udumula Ashok Reddy'
+  );
+
+  navigation.replace(
+    'MainTabs'
+  );
+}
+else if (
+  username === 'geethika' &&
+  password === 'doctor123'
+) {
+  setRoleInStore('Doctor');
+
+setUserNameInStore(
+  'Dr S.V. Geethika Reddy'
+);
+
+  navigation.replace(
+    'MainTabs'
+  );
+}
+else if (
+  username === 'executive' &&
+  password === 'admin123'
+) {
+  setRoleInStore(
+    'Executive'
+  );
+
+  setUserNameInStore(
+    'Executive User'
+  );
+
+  navigation.replace(
+    'MainTabs'
+  );
+}
+else if (
+  username === 'admin' &&
+  password === 'admin123'
+) {
+  setRoleInStore('Admin');
+
+  setUserNameInStore(
+    'Admin User'
+  );
+
+  navigation.replace(
+    'MainTabs'
+  );
+}
+else if (
+  username === 'superuser' &&
+  password === 'admin123'
+) {
+  setRoleInStore(
+    'Super User'
+  );
+
+  setUserNameInStore(
+    'Super User'
+  );
+
+  navigation.replace(
+    'MainTabs'
+  );
+}
+else {
+  alert(
+    'Invalid username or password'
+  );
+}
 }}
         >
           <Text style={styles.buttonText}>
