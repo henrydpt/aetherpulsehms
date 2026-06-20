@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import { COLORS } from '../theme/colors';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
 export default function ProfileScreen() {
   const navigation = useNavigation<any>();
   const role = useAuthStore(
@@ -39,11 +40,39 @@ const department =
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.content}
       >
-        <View style={styles.topBar}>
-          <Text style={styles.topBarTitle}>
-            Profile
-          </Text>
-        </View>
+<View style={styles.topBar}>
+  <View style={{ width: 60 }} />
+
+  <Text style={styles.topBarTitle}>
+    Profile
+  </Text>
+
+<TouchableOpacity
+  onPress={() =>
+    navigation.replace('Login')
+  }
+  style={{
+    flexDirection: 'row',
+    alignItems: 'center',
+  }}
+>
+  <Ionicons
+    name="log-out-outline"
+    size={18}
+    color="#FFFFFF"
+  />
+
+  <Text
+    style={{
+      color: '#FFFFFF',
+      fontWeight: '700',
+      marginLeft: 4,
+    }}
+  >
+    Logout
+  </Text>
+</TouchableOpacity>
+</View>
 
         <View style={styles.profileCard}>
 <Text
@@ -166,16 +195,45 @@ const department =
   </View>
 </View>
 </View>
-        <TouchableOpacity
-  style={styles.logoutCard}
-  onPress={() =>
-    navigation.replace('Login')
-  }
->
-          <Text style={styles.logoutText}>
-            Logout
-          </Text>
-        </TouchableOpacity>
+{(
+  role === 'Admin' ||
+  role === 'Super User'
+) && (
+  <View style={styles.menuCard}>
+    <Text
+      style={{
+        fontSize: 20,
+        fontWeight: '700',
+        color: COLORS.primary,
+        marginBottom: 10,
+      }}
+    >
+      Administration
+    </Text>
+
+    <TouchableOpacity
+      style={styles.adminItem}
+      onPress={() =>
+        navigation.navigate(
+          'UserManagement'
+        )
+      }
+    >
+      <Text
+        style={styles.adminText}
+      >
+        User Management
+      </Text>
+
+      <Text
+        style={styles.arrow}
+      >
+        ›
+      </Text>
+    </TouchableOpacity>
+  </View>
+)}
+
       </ScrollView>
     </SafeAreaView>
   );
@@ -201,16 +259,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F5EE',
   },
 
-  content: {
-    paddingBottom: 100,
-  },
+content: {
+  paddingBottom: 100,
+  paddingTop: 0,
+},
 
 topBar: {
   height: 90,
   paddingTop: 20,
   backgroundColor: COLORS.primary,
-  justifyContent: 'center',
+  flexDirection: 'row',
   alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: 18,
 },
 
 topBarTitle: {
@@ -221,7 +282,8 @@ topBarTitle: {
 
 profileCard: {
   backgroundColor: '#FFFFFF',
-  margin: 16,
+  marginHorizontal: 16,
+  marginTop: 16,
   borderRadius: 18,
   padding: 20,
   borderWidth: 1,
@@ -277,9 +339,11 @@ profileCard: {
 menuCard: {
   backgroundColor: '#FFFFFF',
   marginHorizontal: 16,
+  marginTop: 16,
   borderRadius: 18,
   borderWidth: 1,
   borderColor: '#EEE7D8',
+  overflow: 'hidden',
   padding: 20,
 },
 
@@ -340,5 +404,17 @@ infoValue: {
   fontSize: 16,
   fontWeight: '600',
   marginTop: 2,
+},
+adminItem: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  paddingVertical: 14,
+},
+
+adminText: {
+  fontSize: 16,
+  fontWeight: '600',
+  color: '#1E293B',
 },
 });

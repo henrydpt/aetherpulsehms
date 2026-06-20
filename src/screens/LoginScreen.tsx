@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { useUserStore } from '../store/userStore';
 import {
   SafeAreaView,
   View,
@@ -24,6 +25,9 @@ const setRoleInStore =
   useAuthStore(
     (state) => state.setUserName
   );
+  const users = useUserStore(
+  (state) => state.users
+);
 const [username, setUsername] =
   useState('');
 
@@ -81,85 +85,31 @@ contentContainerStyle={{
         <TouchableOpacity
           style={styles.button}
 onPress={() => {
-if (
-  username === 'ashok' &&
-  password === 'doctor123'
-) {
-  setRoleInStore('Doctor');
-
-  setUserNameInStore(
-    'Dr Udumula Ashok Reddy'
+  const user = users.find(
+    (u) =>
+      u.username === username &&
+      u.password === password &&
+      u.active
   );
 
-  navigation.replace(
-    'MainTabs'
-  );
-}
-else if (
-  username === 'geethika' &&
-  password === 'doctor123'
-) {
-  setRoleInStore('Doctor');
+  if (!user) {
+    alert(
+      'Invalid username or password'
+    );
+    return;
+  }
 
-setUserNameInStore(
-  'Dr S.V. Geethika Reddy'
-);
-
-  navigation.replace(
-    'MainTabs'
-  );
-}
-else if (
-  username === 'executive' &&
-  password === 'admin123'
-) {
   setRoleInStore(
-    'Executive'
+    user.role
   );
 
   setUserNameInStore(
-    'Executive User'
+    user.name
   );
 
   navigation.replace(
     'MainTabs'
   );
-}
-else if (
-  username === 'admin' &&
-  password === 'admin123'
-) {
-  setRoleInStore('Admin');
-
-  setUserNameInStore(
-    'Admin User'
-  );
-
-  navigation.replace(
-    'MainTabs'
-  );
-}
-else if (
-  username === 'superuser' &&
-  password === 'admin123'
-) {
-  setRoleInStore(
-    'Super User'
-  );
-
-  setUserNameInStore(
-    'Super User'
-  );
-
-  navigation.replace(
-    'MainTabs'
-  );
-}
-else {
-  alert(
-    'Invalid username or password'
-  );
-}
 }}
         >
           <Text style={styles.buttonText}>
