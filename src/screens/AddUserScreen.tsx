@@ -8,6 +8,7 @@ import {
   StatusBar,
   StyleSheet,
 } from 'react-native';
+import { supabase } from '../lib/supabase';
 import {
   useNavigation,
 } from '@react-navigation/native';
@@ -25,7 +26,9 @@ export default function AddUserScreen() {
   const addUser = useUserStore(
     (state) => state.addUser
   );
-
+const loadUsers = useUserStore(
+  (state) => state.loadUsers
+);
   const [name, setName] =
     useState('');
 
@@ -41,7 +44,7 @@ export default function AddUserScreen() {
   const [department, setDepartment] =
     useState('');
 
-  const createUser = () => {
+  const createUser = async () => {
     if (
       !name ||
       !username ||
@@ -72,20 +75,37 @@ export default function AddUserScreen() {
         '0'
       )}`;
 
-    addUser({
-      id,
-      name,
-      username,
-      password,
-      role,
-      department:
-        role === 'Doctor'
-          ? department
-          : undefined,
-      active: true,
-    });
+const newUser = {
+  id,
+  name,
+  username,
+  password,
+  role,
+department:
+  role === 'Doctor'
+    ? department
+    : undefined,
+  active: true,
+};
+console.log('ABOUT TO INSERT', newUser);
+const { error } =
+  await supabase
+    .from('users')
+    .insert([newUser]);
+console.log(
+  'INSERT ERROR',
+  error
+);
+if (error) {
+  alert(error.message);
+  return;
+}
 
-    navigation.goBack();
+addUser(newUser);
+
+await loadUsers();
+
+navigation.goBack();
   };
 
   return (

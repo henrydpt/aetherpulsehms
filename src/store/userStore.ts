@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-
+import { supabase } from '../lib/supabase';
 export interface AppUser {
   id: string;
   name: string;
@@ -12,7 +12,11 @@ export interface AppUser {
 
 interface UserStore {
   users: AppUser[];
+setUsers: (
+  users: AppUser[]
+) => void;
 
+loadUsers: () => Promise<void>;
   addUser: (
     user: AppUser
   ) => void;
@@ -102,7 +106,29 @@ export const useUserStore =
         active: true,
       },
     ],
+setUsers: (users) =>
+  set({
+    users,
+  }),
 
+loadUsers: async () => {
+  const { data, error } =
+    await supabase
+      .from('users')
+      .select('*');
+
+console.log('SUPABASE DATA', data);
+console.log('SUPABASE ERROR', error);
+
+if (error) {
+  return;
+}
+
+  set({
+    users:
+      data as AppUser[],
+  });
+},
     addUser: (user) =>
       set((state) => ({
         users: [

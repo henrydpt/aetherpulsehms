@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useEffect,
+} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -15,8 +18,18 @@ import { COLORS } from '../theme/colors';
 
 export default function UserManagementScreen() {
   const navigation = useNavigation<any>();
+  const loadUsers = useUserStore(
+  (state) => state.loadUsers
+);
   const [searchText, setSearchText] =
   useState('');
+useEffect(() => {
+  loadUsers();
+}, []);
+console.log(
+  'SUPABASE URL',
+  process.env.EXPO_PUBLIC_SUPABASE_URL
+);
 const allUsers = useUserStore(
   (state) => state.users
 );
