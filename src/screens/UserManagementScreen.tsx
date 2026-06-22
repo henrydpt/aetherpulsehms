@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   ScrollView,
   View,
   Text,
+  TextInput,
   StyleSheet,
   TouchableOpacity,
   StatusBar,
@@ -14,10 +15,35 @@ import { COLORS } from '../theme/colors';
 
 export default function UserManagementScreen() {
   const navigation = useNavigation<any>();
+  const [searchText, setSearchText] =
+  useState('');
+const allUsers = useUserStore(
+  (state) => state.users
+);
 
-  const users = useUserStore(
-    (state) => state.users
-  );
+const users = allUsers.filter(
+  (user) =>
+    user.name
+      .toLowerCase()
+      .includes(
+        searchText.toLowerCase()
+      ) ||
+    user.username
+      .toLowerCase()
+      .includes(
+        searchText.toLowerCase()
+      ) ||
+    user.role
+      .toLowerCase()
+      .includes(
+        searchText.toLowerCase()
+      ) ||
+    (user.department || '')
+      .toLowerCase()
+      .includes(
+        searchText.toLowerCase()
+      )
+);
 
   const admins = users.filter(
     (user) =>
@@ -163,6 +189,26 @@ export default function UserManagementScreen() {
       + Add User
     </Text>
   </TouchableOpacity>
+</View>
+<View
+  style={{
+    paddingHorizontal: 16,
+    paddingTop: 12,
+  }}
+>
+  <TextInput
+    placeholder="Search users..."
+    value={searchText}
+    onChangeText={setSearchText}
+    style={{
+      backgroundColor: '#FFFFFF',
+      borderRadius: 12,
+      borderWidth: 1,
+      borderColor: '#E2E8F0',
+      paddingHorizontal: 14,
+      paddingVertical: 12,
+    }}
+  />
 </View>
         <Section
           title={`Administrators (${admins.length})`}
