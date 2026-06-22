@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useEffect,
+} from 'react';
 import { useAuthStore } from '../store/authStore';
 import {
   SafeAreaView,
@@ -15,6 +18,14 @@ import { COLORS } from '../theme/colors';
 import { StatusBar } from 'react-native';
 export default function PatientsScreen() {
     const navigation = useNavigation<any>();
+    const loadPatients =
+  usePatientStore(
+    (state) => state.loadPatients
+  );
+
+useEffect(() => {
+  loadPatients();
+}, []);
     const [searchQuery, setSearchQuery] = useState('');
 
 const patients = usePatientStore(

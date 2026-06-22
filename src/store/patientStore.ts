@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-
+import { supabase } from '../lib/supabase';
 export interface Patient {
   id: string;
   name: string;
@@ -20,7 +20,11 @@ caseSheetUpdatedAt?: string;
 
 interface PatientStore {
   patients: Patient[];
+setPatients: (
+  patients: Patient[]
+) => void;
 
+loadPatients: () => Promise<void>;
   addPatient: (
     patient: Patient
   ) => void;
@@ -63,6 +67,27 @@ export const usePatientStore =
         diagnosis: 'Post Operative Care',
       },
     ],
+setPatients: (patients) =>
+  set({
+    patients,
+  }),
+
+loadPatients: async () => {
+  const { data, error } =
+    await supabase
+      .from('patients')
+      .select('*');
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  set({
+    patients:
+      data as Patient[],
+  });
+},
 
     addPatient: (patient) =>
       set((state) => ({

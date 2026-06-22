@@ -1,5 +1,6 @@
 import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
+import { supabase } from '../lib/supabase';
 import {
   SafeAreaView,
   View,
@@ -204,7 +205,7 @@ return (
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => {
+        onPress={async () => {
 if (isEditMode) {
   updatePatient(
     editPatient.id,
@@ -221,6 +222,31 @@ if (isEditMode) {
 }
   );
 } else {
+const newPatient = {
+  id: `PAT${Date.now()}`,
+  name,
+  age: Number(age),
+  gender,
+  ward,
+  diagnosis,
+  mobile,
+  doctor_assigned:
+    doctorAssigned,
+  billing_type:
+    billingType,
+  billing_remarks:
+    billingRemarks,
+};
+
+const { error } =
+  await supabase
+    .from('patients')
+    .insert([newPatient]);
+
+if (error) {
+  alert(error.message);
+  return;
+}
   addPatient({
   id: `PAT${Date.now()}`,
   name,
