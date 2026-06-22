@@ -22,6 +22,8 @@ import PatientCaseSheetScreen from '../screens/PatientCaseSheetScreen';
 import LoginScreen from '../screens/LoginScreen';
 import { COLORS } from '../theme/colors';
 import UserManagementScreen from '../screens/UserManagementScreen';
+import EditUserScreen from '../screens/EditUserScreen';
+import AddUserScreen from '../screens/AddUserScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function MainTabs() {
@@ -134,6 +136,10 @@ export default function AppNavigator() {
     component={TaskDetailScreen}
   />
   <Stack.Screen
+  name="EditUser"
+  component={EditUserScreen}
+/>
+  <Stack.Screen
   name="PatientDetail"
   component={PatientDetailScreen}
 />
@@ -156,6 +162,10 @@ export default function AppNavigator() {
 <Stack.Screen
   name="EvidenceViewer"
   component={EvidenceViewerScreen}
+/>
+<Stack.Screen
+  name="AddUser"
+  component={AddUserScreen}
 />
 </Stack.Navigator>
         </NavigationContainer>

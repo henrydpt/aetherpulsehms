@@ -38,10 +38,18 @@ export default function UserManagementScreen() {
   const renderUserCard = (
     user: any
   ) => (
-    <View
-      key={user.id}
-      style={styles.userCard}
-    >
+<TouchableOpacity
+  key={user.id}
+  style={styles.userCard}
+  onPress={() =>
+    navigation.navigate(
+      'EditUser',
+      {
+        user,
+      }
+    )
+  }
+>
       <View style={{ flex: 1 }}>
         <Text style={styles.userName}>
           {user.name}
@@ -86,7 +94,16 @@ export default function UserManagementScreen() {
             : 'Inactive'}
         </Text>
       </View>
-    </View>
+<Text
+  style={{
+    color: COLORS.primary,
+    fontWeight: '700',
+    marginLeft: 12,
+  }}
+>
+  Edit ›
+</Text>
+    </TouchableOpacity>
   );
 
   return (
@@ -118,7 +135,35 @@ export default function UserManagementScreen() {
 
           <View style={{ width: 20 }} />
         </View>
-
+<View
+  style={{
+    paddingHorizontal: 16,
+    paddingTop: 16,
+  }}
+>
+  <TouchableOpacity
+    style={{
+      backgroundColor: COLORS.primary,
+      borderRadius: 14,
+      paddingVertical: 14,
+      alignItems: 'center',
+    }}
+    onPress={() =>
+      navigation.navigate(
+        'AddUser'
+      )
+    }
+  >
+    <Text
+      style={{
+        color: '#FFFFFF',
+        fontWeight: '700',
+      }}
+    >
+      + Add User
+    </Text>
+  </TouchableOpacity>
+</View>
         <Section
           title={`Administrators (${admins.length})`}
         >
