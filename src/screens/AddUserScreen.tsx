@@ -87,15 +87,12 @@ department:
     : undefined,
   active: true,
 };
-console.log('ABOUT TO INSERT', newUser);
+
 const { error } =
   await supabase
     .from('users')
     .insert([newUser]);
-console.log(
-  'INSERT ERROR',
-  error
-);
+
 if (error) {
   alert(error.message);
   return;

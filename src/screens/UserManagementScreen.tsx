@@ -26,10 +26,7 @@ export default function UserManagementScreen() {
 useEffect(() => {
   loadUsers();
 }, []);
-console.log(
-  'SUPABASE URL',
-  process.env.EXPO_PUBLIC_SUPABASE_URL
-);
+
 const allUsers = useUserStore(
   (state) => state.users
 );
