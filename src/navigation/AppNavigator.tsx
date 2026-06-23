@@ -24,6 +24,9 @@ import { COLORS } from '../theme/colors';
 import UserManagementScreen from '../screens/UserManagementScreen';
 import EditUserScreen from '../screens/EditUserScreen';
 import AddUserScreen from '../screens/AddUserScreen';
+import { useEffect } from 'react';
+import { usePatientStore } from '../store/patientStore';
+import { useTaskStore } from '../store/taskStore';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function MainTabs() {
@@ -31,6 +34,20 @@ function MainTabs() {
     const role = useAuthStore(
   (state) => state.role
 );
+const loadPatients =
+  usePatientStore(
+    (state) => state.loadPatients
+  );
+
+const loadTasks =
+  useTaskStore(
+    (state) => state.loadTasks
+  );
+
+useEffect(() => {
+  loadPatients();
+  loadTasks();
+}, []);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({

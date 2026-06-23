@@ -2,6 +2,9 @@ import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react';
 import { supabase } from '../lib/supabase';
 import {
+  generateVitalsTasks,
+} from '../services/taskGenerator';
+import {
   SafeAreaView,
   View,
   Text,
@@ -236,6 +239,7 @@ const newPatient = {
     billingType,
   billing_remarks:
     billingRemarks,
+    active: true,
 };
 
 const { error } =
@@ -247,6 +251,63 @@ if (error) {
   alert(error.message);
   return;
 }
+const vitalsTasks =
+  generateVitalsTasks({
+    id: newPatient.id,
+    name: newPatient.name,
+    ward: newPatient.ward,
+  });
+  console.log(
+  'VITALS TASK COUNT',
+  vitalsTasks.length
+);
+await supabase
+  .from('tasks')
+  .insert(
+    vitalsTasks.map(
+      (task) => ({
+        id: task.id,
+        title: task.title,
+        status: task.status,
+
+        status_color:
+          task.statusColor,
+
+        assigned:
+          task.assigned,
+
+        due:
+          task.due,
+
+        due_date:
+          task.dueDate,
+
+        due_time:
+          task.dueTime,
+
+        priority:
+          task.priority,
+
+        escalation_minutes:
+          task.escalationMinutes,
+
+        location:
+          task.location,
+
+        task_category:
+          task.taskCategory,
+
+        patient_id:
+          task.patientId,
+
+        patient_name:
+          task.patientName,
+
+        type:
+          task.type,
+      })
+    )
+  );
   addPatient({
   id: `PAT${Date.now()}`,
   name,

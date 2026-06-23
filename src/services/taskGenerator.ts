@@ -19,7 +19,10 @@ export function generateDailyTasks() {
       location: 'Hospital',
 
       due: 'Today',
-
+dueDate:
+  new Date()
+    .toISOString()
+    .split('T')[0],
       assigned: template.category,
         type: 'ADMIN',
         taskCategory: 'ADMIN',

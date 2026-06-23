@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { supabase } from '../lib/supabase';
 import {
   SafeAreaView,
   ScrollView,
@@ -469,7 +470,7 @@ selectedTime
 </View>
 <TouchableOpacity
   style={styles.button}
-  onPress={() => {
+  onPress={async () => {
     const selectedTemplate =
       taskTemplates.find(
         (template) =>
@@ -547,6 +548,61 @@ if (isEditMode) {
     taskPayload
   );
 } else {
+  const taskId =
+  `TASK-${Date.now()}`;
+
+const { error } =
+  await supabase
+    .from('tasks')
+    .insert([
+{
+  id: taskId,
+
+  title: taskPayload.title,
+  status: taskPayload.status,
+
+  status_color:
+    taskPayload.statusColor,
+
+  assigned:
+    taskPayload.assigned,
+
+  due:
+    taskPayload.due,
+
+  due_date:
+    taskPayload.dueDate,
+
+  due_time:
+    taskPayload.dueTime,
+
+  priority:
+    taskPayload.priority,
+
+  escalation_minutes:
+    taskPayload.escalationMinutes,
+
+  location:
+    taskPayload.location,
+
+  task_category:
+    taskPayload.taskCategory,
+
+  patient_id:
+    taskPayload.patientId,
+
+  patient_name:
+    taskPayload.patientName,
+
+  type:
+    taskPayload.type,
+}
+    ]);
+
+if (error) {
+  alert(error.message);
+  return;
+}
   addTask({
     id: `TASK-${Date.now()}`,
     ...taskPayload,

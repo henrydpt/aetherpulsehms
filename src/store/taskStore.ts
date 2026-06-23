@@ -33,10 +33,7 @@ deleteTask: (
 
 export const useTaskStore =
   create<TaskStore>((set) => ({
-  tasks: [
-  ...generateDailyTasks(),
-  ...seedPatientTasks(),
-],
+tasks: [],
 setTasks: (tasks) =>
   set({
     tasks,

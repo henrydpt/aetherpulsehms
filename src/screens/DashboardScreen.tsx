@@ -14,7 +14,13 @@ import { useTaskStore } from '../store/taskStore';
 import { useNavigation } from '@react-navigation/native';
 import { COLORS } from '../theme/colors';
 import { Ionicons } from '@expo/vector-icons';
-
+import { useEffect } from 'react';
+import { supabase } from '../lib/supabase';
+import { taskTemplates } from '../data/taskTemplates';
+import {
+  generateVitalsTasks,
+  generateDailyTasks,
+} from '../services/taskGenerator';
 export default function DashboardScreen() {
 const navigation = useNavigation<any>();
 const role = useAuthStore(
@@ -35,7 +41,98 @@ const patients = usePatientStore(
 const userName = useAuthStore(
   (state) => state.userName
 );
+useEffect(() => {
+  const checkDailyTasks =
+    async () => {
+      const today =
+        new Date()
+          .toISOString()
+          .split('T')[0];
 
+const { data } =
+  await supabase
+    .from('tasks')
+    .select(
+      'id,task_category'
+    )
+    .eq(
+      'due_date',
+      today
+    );
+
+
+const adminTasksToday =
+  (data || []).filter(
+    (task) =>
+      task.task_category ===
+      'ADMIN'
+  ).length;
+
+const patientTasksToday =
+  (data || []).filter(
+    (task) =>
+      task.task_category ===
+      'PATIENT'
+  );
+
+if (adminTasksToday === 0) {
+  const adminTasks =
+    generateDailyTasks();
+
+  const { error } =
+    await supabase
+      .from('tasks')
+      .insert(
+        adminTasks.map(
+          (task: any) => ({
+            id: task.id,
+            title: task.title,
+            task_category:
+              task.taskCategory,
+            status:
+              task.status,
+            assigned:
+              task.assigned,
+            location:
+              task.location,
+            due:
+              task.due,
+            due_date:
+              task.dueDate,
+            type:
+              task.type,
+            status_color:
+              task.statusColor,
+          })
+        )
+      );
+
+  if (error) {
+    console.log(error);
+  }
+}
+const { data: activePatients } =
+  await supabase
+    .from('patients')
+    .select('*')
+    .eq('active', true);
+
+const vitalsTasks =
+  (activePatients || [])
+    .flatMap((patient: any) =>
+      generateVitalsTasks(patient)
+    );
+
+const existingTaskIds =
+  new Set(
+    (data || []).map(
+      (task: any) => task.id
+    )
+  );
+    };
+
+  checkDailyTasks();
+}, []);
 const visiblePatients =
   role === 'Doctor'
     ? patients.filter(
@@ -47,7 +144,6 @@ const visiblePatients =
 
 const patientCount =
   visiblePatients.length;
-
 const doctorPatientIds =
   visiblePatients.map(
     (patient) => patient.id

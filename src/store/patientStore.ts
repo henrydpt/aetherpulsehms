@@ -41,42 +41,18 @@ loadPatients: () => Promise<void>;
 
 export const usePatientStore =
   create<PatientStore>((set) => ({
-    patients: [
-      {
-        id: 'PAT001',
-        name: 'Ravi Kumar',
-        age: 40,
-        gender: 'Male',
-        ward: 'General Ward - 2 / 205',
-        diagnosis: 'Chest Pain',
-      },
-      {
-        id: 'PAT002',
-        name: 'Lakshmi Devi',
-        age: 52,
-        gender: 'Female',
-        ward: 'General Ward - 1 / 103',
-        diagnosis: 'Fever',
-      },
-      {
-        id: 'PAT003',
-        name: 'Ramesh Babu',
-        age: 61,
-        gender: 'Male',
-        ward: 'General Ward - 1 / 104',
-        diagnosis: 'Post Operative Care',
-      },
-    ],
+patients: [],
 setPatients: (patients) =>
   set({
     patients,
   }),
 
 loadPatients: async () => {
-  const { data, error } =
-    await supabase
-      .from('patients')
-      .select('*');
+const { data, error } =
+  await supabase
+    .from('patients')
+    .select('*')
+    .eq('active', true);
 
   if (error) {
     console.log(error);

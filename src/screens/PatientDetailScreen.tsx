@@ -1,4 +1,5 @@
 import React from 'react';
+import { supabase } from '../lib/supabase';
 import {
   SafeAreaView,
   ScrollView,
@@ -213,15 +214,22 @@ return (
         },
         {
           text: 'Discharge',
-          onPress: () => {
+onPress: async () => {
 if (!patient) return;
+
+await supabase
+  .from('patients')
+  .update({
+    active: false,
+  })
+  .eq('id', patient.id);
 
 dischargePatient(
   patient.id
 );
 
-            navigation.goBack();
-          },
+navigation.goBack();
+},
         },
       ]
     )
