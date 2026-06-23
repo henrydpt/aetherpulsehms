@@ -23,6 +23,14 @@ import { COLORS } from '../theme/colors';
 export default function TasksScreen() {
 const navigation = useNavigation<any>();
 const route = useRoute<any>();
+const loadTasks =
+  useTaskStore(
+    (state) => state.loadTasks
+  );
+
+useEffect(() => {
+  loadTasks();
+}, []);
 const tasks = useTaskStore(
   (state) => state.tasks
 );

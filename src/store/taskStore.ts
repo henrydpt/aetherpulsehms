@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { supabase } from '../lib/supabase';
 import {
   generateDailyTasks,
   seedPatientTasks,
@@ -6,7 +7,11 @@ import {
 
 interface TaskStore {
   tasks: any[];
+setTasks: (
+  tasks: any[]
+) => void;
 
+loadTasks: () => Promise<void>;
   addTask: (
     task: any
   ) => void;
@@ -32,6 +37,61 @@ export const useTaskStore =
   ...generateDailyTasks(),
   ...seedPatientTasks(),
 ],
+setTasks: (tasks) =>
+  set({
+    tasks,
+  }),
+
+loadTasks: async () => {
+  const { data, error } =
+    await supabase
+      .from('tasks')
+      .select('*');
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+set({
+  tasks:
+    (data || []).map(
+      (task: any) => ({
+        ...task,
+
+        patientId:
+          task.patient_id,
+
+        patientName:
+          task.patient_name,
+
+        statusColor:
+          task.status_color,
+
+        taskCategory:
+          task.task_category,
+
+        dueDate:
+          task.due_date,
+
+        dueTime:
+          task.due_time,
+
+        escalationMinutes:
+          task.escalation_minutes,
+
+        completedBy:
+          task.completed_by,
+
+        completedAt:
+          task.completed_at,
+
+        evidenceUri:
+          task.evidence_uri,
+      })
+    ),
+});
+},
 addTask: (task) =>
   set((state) => ({
     tasks: [
