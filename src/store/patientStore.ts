@@ -29,10 +29,10 @@ loadPatients: () => Promise<void>;
     patient: Patient
   ) => void;
 
-  updatePatient: (
-    id: string,
-    updates: Partial<Patient>
-  ) => void;
+updatePatient: (
+  id: string,
+  updates: Partial<Patient>
+) => Promise<void>;
 
   dischargePatient: (
     id: string
@@ -73,21 +73,44 @@ const { data, error } =
         ],
       })),
 
-    updatePatient: (
-      id,
-      updates
-    ) =>
-      set((state) => ({
-        patients: state.patients.map(
-          (patient) =>
-            patient.id === id
-              ? {
-                  ...patient,
-                  ...updates,
-                }
-              : patient
-        ),
-      })),
+updatePatient: async (
+  id,
+  updates
+) => {
+  const { error } =
+    await supabase
+      .from('patients')
+      .update({
+        chief_complaint:
+          updates.chiefComplaint,
+        clinical_history:
+          updates.clinicalHistory,
+        treatment_plan:
+          updates.treatmentPlan,
+        doctor_notes:
+          updates.doctorNotes,
+        case_sheet_updated_at:
+          updates.caseSheetUpdatedAt,
+      })
+      .eq('id', id);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  set((state) => ({
+    patients: state.patients.map(
+      (patient) =>
+        patient.id === id
+          ? {
+              ...patient,
+              ...updates,
+            }
+          : patient
+    ),
+  }));
+},
 
     dischargePatient: (id) =>
       set((state) => ({
