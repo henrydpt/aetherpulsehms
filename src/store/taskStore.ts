@@ -25,10 +25,10 @@ deleteTask: (
   taskId: string
 ) => void;
 
-  completeTask: (
-    taskId: string,
-    completionData?: any
-  ) => void;
+completeTask: (
+  taskId: string,
+  completionData?: any
+) => Promise<void>;
 }
 
 export const useTaskStore =
@@ -121,10 +121,36 @@ deleteTask: (taskId) =>
     ),
   })),
   
-completeTask: (
+completeTask: async (
   taskId,
   completionData = {}
-) =>
+) => {
+  const completedAt =
+    new Date().toISOString();
+
+  const { error } =
+    await supabase
+      .from('tasks')
+      .update({
+        status: 'COMPLETED',
+        status_color: '#16A34A',
+        completed_by:
+          completionData.completedBy ||
+          'Nursing Staff',
+        completed_at:
+          completedAt,
+        evidence_uri:
+          completionData.evidenceUri,
+        remarks:
+          completionData.remarks || '',
+      })
+      .eq('id', taskId);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
   set((state) => ({
     tasks: state.tasks.map(
       (task) =>
@@ -133,25 +159,21 @@ completeTask: (
               ...task,
               status: 'COMPLETED',
               statusColor: '#16A34A',
-
               completedBy:
                 completionData.completedBy ||
                 'Nursing Staff',
-
               completedAt:
-                new Date().toISOString(),
-
+                completedAt,
               evidenceAttached: true,
-
               evidenceUri:
                 completionData.evidenceUri,
-
               remarks:
                 completionData.remarks || '',
-                vitals:
+              vitals:
                 completionData.vitals || null,
             }
           : task
     ),
-  })),
   }));
+},
+}));

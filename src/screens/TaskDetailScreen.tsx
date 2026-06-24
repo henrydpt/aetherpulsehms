@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { uploadEvidence } from '../lib/storage';
 import {
   useRoute,
   useNavigation,
@@ -55,13 +56,26 @@ const task =
       quality: 0.7,
     });
 
-  if (!result.canceled) {
+if (!result.canceled) {
+  try {
+    const publicUrl =
+      await uploadEvidence(
+        result.assets[0].uri
+      );
+
     setPhotoUri(
-      result.assets[0].uri
+      publicUrl
     );
 
     setPhotoAttached(true);
+  } catch (error) {
+    console.log(error);
+
+    alert(
+      'Evidence upload failed'
+    );
   }
+}
 };
 return (
   <SafeAreaView style={styles.container}>

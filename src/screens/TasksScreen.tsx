@@ -9,6 +9,7 @@ import {
   ScrollView,
   View,
   Text,
+  TextInput,
   StyleSheet,
   TouchableOpacity,
   StatusBar,
@@ -62,6 +63,8 @@ const [activeFilter, setActiveFilter] =
     route.params?.initialFilter ||
       'ALL'
   );
+  const [searchText, setSearchText] =
+  useState('');
 useEffect(() => {
   if (
     route.params?.initialFilter
@@ -161,6 +164,26 @@ const isEscalated = (task: any) => {
 const filteredTasks =
   tasks.filter((task) => {
 
+const matchesSearch =
+  !searchText ||
+  [
+    task.title,
+    task.patientName,
+    task.location,
+    task.assigned,
+    task.type,
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase()
+    .includes(
+      searchText.toLowerCase()
+    );
+
+if (!matchesSearch) {
+  return false;
+}
+
 if (role === 'Doctor') {
   return doctorPatientIds.includes(
     task.patientId
@@ -255,7 +278,20 @@ return (
   <Text style={styles.icon}>＋</Text>
 </TouchableOpacity>
         </View>
-
+<TextInput
+  value={searchText}
+  onChangeText={setSearchText}
+  placeholder="Search tasks, patients, ward..."
+  style={{
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#E5E7EB',
+    borderRadius: 12,
+    paddingHorizontal: 14,
+    height: 48,
+    marginBottom: 12,
+  }}
+/>
         <View style={styles.filterRow}>
 <TouchableOpacity
   onPress={() =>
