@@ -85,6 +85,28 @@ set({
 
         evidenceUri:
           task.evidence_uri,
+vitals:
+  task.bp_systolic
+    ? {
+        bpSystolic:
+          task.bp_systolic,
+
+        bpDiastolic:
+          task.bp_diastolic,
+
+        pulse:
+          task.pulse,
+
+        spo2:
+          task.spo2,
+
+        temperature:
+          task.temperature,
+
+        respiratoryRate:
+          task.respiratory_rate,
+      }
+    : null,
       })
     ),
 });
@@ -131,19 +153,37 @@ completeTask: async (
   const { error } =
     await supabase
       .from('tasks')
-      .update({
-        status: 'COMPLETED',
-        status_color: '#16A34A',
-        completed_by:
-          completionData.completedBy ||
-          'Nursing Staff',
-        completed_at:
-          completedAt,
-        evidence_uri:
-          completionData.evidenceUri,
-        remarks:
-          completionData.remarks || '',
-      })
+.update({
+  status: 'COMPLETED',
+  status_color: '#16A34A',
+  completed_by:
+    completionData.completedBy ||
+    'Nursing Staff',
+  completed_at:
+    completedAt,
+  evidence_uri:
+    completionData.evidenceUri,
+  remarks:
+    completionData.remarks || '',
+
+  bp_systolic:
+    completionData.vitals?.bpSystolic,
+
+  bp_diastolic:
+    completionData.vitals?.bpDiastolic,
+
+  pulse:
+    completionData.vitals?.pulse,
+
+  spo2:
+    completionData.vitals?.spo2,
+
+  temperature:
+    completionData.vitals?.temperature,
+
+  respiratory_rate:
+    completionData.vitals?.respiratoryRate,
+})
       .eq('id', taskId);
 
   if (error) {

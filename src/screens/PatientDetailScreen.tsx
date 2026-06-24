@@ -42,6 +42,24 @@ const vitalsTasks = tasks.filter(
   (task) =>
     task.patientId === patient?.id
 );
+
+const vitalsHistory =
+  vitalsTasks
+    .filter(
+      (task) =>
+        task.type === 'VITALS' &&
+        task.status === 'COMPLETED' &&
+        task.vitals
+    )
+    .sort(
+      (a, b) =>
+        new Date(
+          b.completedAt || 0
+        ).getTime() -
+        new Date(
+          a.completedAt || 0
+        ).getTime()
+    );
 return (
   <SafeAreaView style={styles.container}>
     <StatusBar
@@ -152,12 +170,85 @@ return (
   {patient?.treatmentPlan || '-'}
 </Text>
 </View>
+
+<View
+  style={{
+    marginTop: 18,
+    paddingTop: 18,
+    borderTopWidth: 1,
+    borderTopColor: '#E2E8F0',
+  }}
+>
+  <Text
+    style={{
+      fontSize: 16,
+      fontWeight: '700',
+      color: '#234A7A',
+      marginBottom: 10,
+    }}
+  >
+    Vitals History
+  </Text>
+
+  {vitalsHistory.length === 0 ? (
+    <Text style={styles.info}>
+      No vitals recorded yet.
+    </Text>
+  ) : (
+    vitalsHistory
+      .slice(0, 5)
+      .map((task, index) => (
+        <View
+          key={index}
+          style={{
+            marginBottom: 12,
+            padding: 12,
+            backgroundColor: '#F8FAFC',
+            borderRadius: 12,
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: '700',
+              color: '#234A7A',
+            }}
+          >
+            {new Date(
+              task.completedAt
+            ).toLocaleString()}
+          </Text>
+
+          <Text style={styles.info}>
+            BP: {task.vitals.bpSystolic}/
+            {task.vitals.bpDiastolic}
+          </Text>
+
+          <Text style={styles.info}>
+            Pulse: {task.vitals.pulse}
+          </Text>
+
+          <Text style={styles.info}>
+            SpO₂: {task.vitals.spo2}
+          </Text>
+
+          <Text style={styles.info}>
+            Temp: {task.vitals.temperature}
+          </Text>
+
+          <Text style={styles.info}>
+            RR: {task.vitals.respiratoryRate}
+          </Text>
+        </View>
+      ))
+  )}
+</View>
           <View
   style={{
     flexDirection: 'row',
     marginTop: 18,
   }}
 >
+
 <TouchableOpacity
   style={styles.actionButton}
   onPress={() =>
@@ -170,6 +261,7 @@ return (
     )
   }
 >
+  
     <Text style={styles.actionButtonText}>
       Edit Patient
     </Text>
