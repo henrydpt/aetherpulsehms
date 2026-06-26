@@ -81,10 +81,17 @@ const parseTaskDateTime = (task: any) => {
     return null;
   }
 
+let hours = 0;
+let minutes = 0;
+
+if (
+  task.dueTime.includes('AM') ||
+  task.dueTime.includes('PM')
+) {
   const [time, period] =
     task.dueTime.split(' ');
 
-  let [hours, minutes] =
+  [hours, minutes] =
     time.split(':').map(Number);
 
   if (
@@ -100,6 +107,12 @@ const parseTaskDateTime = (task: any) => {
   ) {
     hours = 0;
   }
+} else {
+  [hours, minutes] =
+    task.dueTime
+      .split(':')
+      .map(Number);
+}
 
   const dueDateTime =
     new Date(task.dueDate);
@@ -184,16 +197,20 @@ if (!matchesSearch) {
   return false;
 }
 
-if (role === 'Doctor') {
-  return doctorPatientIds.includes(
+if (
+  role === 'Doctor' &&
+  !doctorPatientIds.includes(
     task.patientId
-  );
+  )
+) {
+  return false;
 }
 
-if (role === 'Executive') {
-  return (
-    task.assigned === userName
-  );
+if (
+  role === 'Executive' &&
+  task.assigned !== userName
+) {
+  return false;
 }
     if (activeFilter === 'ALL') {
       return true;

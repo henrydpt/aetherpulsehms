@@ -14,6 +14,7 @@ import {
   Alert,
   StatusBar,
 } from 'react-native';
+import { useUserStore } from '../store/userStore';
 import {
   useNavigation,
   useRoute,
@@ -72,6 +73,10 @@ const [diagnosis, setDiagnosis] = useState(
 );
 const updatePatient = usePatientStore(
   (state) => state.updatePatient
+);
+
+const users = useUserStore(
+  (state) => state.users
 );
 return (
   <SafeAreaView style={styles.container}>
@@ -140,15 +145,19 @@ return (
       label="Select Doctor"
       value=""
     />
-<Picker.Item
-  label="Dr Udumula Ashok Reddy"
-  value="Dr Udumula Ashok Reddy"
-/>
-
-<Picker.Item
-  label="Dr S.V. Geethika Reddy"
-  value="Dr S.V. Geethika Reddy"
-/>
+{users
+  .filter(
+    (user) =>
+      user.role === 'Doctor' &&
+      user.active
+  )
+  .map((doctor) => (
+    <Picker.Item
+      key={doctor.id}
+      label={doctor.name}
+      value={doctor.name}
+    />
+  ))}
   </Picker>
 </View>
       </View>

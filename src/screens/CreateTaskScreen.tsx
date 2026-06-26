@@ -120,7 +120,8 @@ return (
 
           <View style={{ width: 20 }} />
         </View>
-
+        {!isEditMode && (
+        <>
         <View style={styles.card}>
           <Text style={styles.sectionTitle}>
             Task Category
@@ -311,6 +312,8 @@ return (
       Due Date / Time
     </Text>
   </View>
+)}
+  </>
 )}
 <View style={styles.card}>
   <Text style={styles.sectionTitle}>

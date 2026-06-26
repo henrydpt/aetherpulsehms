@@ -38,7 +38,18 @@ const task =
     assigned: 'Nurse Lakshmi',
     type: 'VITALS',
   };
+const isOverdue =
+  task.status !== 'COMPLETED' &&
+  task.dueDate &&
+  task.dueTime &&
+  new Date(
+    `${task.dueDate} ${task.dueTime}`
+  ) < new Date();
 
+const displayStatus =
+  isOverdue
+    ? 'OVERDUE'
+    : task.status;
     const [photoAttached, setPhotoAttached] = useState(false);
     const [photoUri, setPhotoUri] = useState<string | null>(null);
     const [bpSystolic, setBpSystolic] = useState('');
@@ -133,9 +144,9 @@ return (
         </View>
 
         <View style={styles.statusCard}>
-          <Text style={styles.statusText}>
-            {task.status}
-          </Text>
+<Text style={styles.statusText}>
+  {displayStatus}
+</Text>
 
           <Text style={styles.taskTitle}>
             {task.title}
