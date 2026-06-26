@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+  useEffect,
+} from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useUserStore } from '../store/userStore';
 import {
@@ -28,6 +31,13 @@ const setRoleInStore =
   const users = useUserStore(
   (state) => state.users
 );
+const loadUsers =
+  useUserStore(
+    (state) => state.loadUsers
+  );
+  useEffect(() => {
+  loadUsers();
+}, []);
 const [username, setUsername] =
   useState('');
 
@@ -51,18 +61,18 @@ contentContainerStyle={{
   paddingBottom: 120,
 }}
 >
-      <View style={styles.hero}>
+<View style={styles.hero}>
 <Image
-  source={require('../../assets/aetherpulsetransparent.png')}
+  source={require('../assets/images/udumulatransparent1.png')}
   style={styles.logo}
   resizeMode="contain"
 />
 <Text style={styles.hospital}>
-  Udumula Hospitals
+  Udumula Pulse
 </Text>
 
 <Text style={styles.tagline}>
-  HOSPITAL OPERATIONS PLATFORM
+  Real-time Care. Better Outcomes.
 </Text>
 
       </View>
@@ -120,7 +130,7 @@ onPress={() => {
       </View>
 
       <Text style={styles.footer}>
-        Powered by Aether Interactions
+        Powered by Aether Interactions.
       </Text>
       </KeyboardAwareScrollView>
     </SafeAreaView>

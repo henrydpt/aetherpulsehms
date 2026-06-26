@@ -59,10 +59,37 @@ const { data, error } =
     return;
   }
 
-  set({
-    patients:
-      data as Patient[],
-  });
+set({
+  patients: data.map(
+    (patient: any) => ({
+      ...patient,
+
+      doctorAssigned:
+        patient.doctor_assigned,
+
+      billingType:
+        patient.billing_type,
+
+      billingRemarks:
+        patient.billing_remarks,
+
+      chiefComplaint:
+        patient.chief_complaint,
+
+      clinicalHistory:
+        patient.clinical_history,
+
+      treatmentPlan:
+        patient.treatment_plan,
+
+      doctorNotes:
+        patient.doctor_notes,
+
+      caseSheetUpdatedAt:
+        patient.case_sheet_updated_at,
+    })
+  ),
+});
 },
 
     addPatient: (patient) =>
@@ -78,20 +105,40 @@ updatePatient: async (
   updates
 ) => {
   const { error } =
-    await supabase
-      .from('patients')
-      .update({
-        chief_complaint:
-          updates.chiefComplaint,
-        clinical_history:
-          updates.clinicalHistory,
-        treatment_plan:
-          updates.treatmentPlan,
-        doctor_notes:
-          updates.doctorNotes,
-        case_sheet_updated_at:
-          updates.caseSheetUpdatedAt,
-      })
+await supabase
+  .from('patients')
+  .update({
+    name: updates.name,
+    age: updates.age,
+    gender: updates.gender,
+    ward: updates.ward,
+    diagnosis: updates.diagnosis,
+    mobile: updates.mobile,
+
+    doctor_assigned:
+      updates.doctorAssigned,
+
+    billing_type:
+      updates.billingType,
+
+    billing_remarks:
+      updates.billingRemarks,
+
+    chief_complaint:
+      updates.chiefComplaint,
+
+    clinical_history:
+      updates.clinicalHistory,
+
+    treatment_plan:
+      updates.treatmentPlan,
+
+    doctor_notes:
+      updates.doctorNotes,
+
+    case_sheet_updated_at:
+      updates.caseSheetUpdatedAt,
+  })
       .eq('id', id);
 
   if (error) {

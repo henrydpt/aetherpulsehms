@@ -189,6 +189,12 @@ if (role === 'Doctor') {
     task.patientId
   );
 }
+
+if (role === 'Executive') {
+  return (
+    task.assigned === userName
+  );
+}
     if (activeFilter === 'ALL') {
       return true;
     }

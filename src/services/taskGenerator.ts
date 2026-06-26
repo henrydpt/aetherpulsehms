@@ -39,7 +39,11 @@ export function generateVitalsTasks(patient: any) {
     '10:00 PM',
     '02:00 AM',
   ].map((time) => ({
-    id: `VITALS-${patient.id}-${time}`,
+    id: `VITALS-${
+  new Date()
+    .toISOString()
+    .split('T')[0]
+}-${patient.id}-${time}`,
     status: 'PENDING',
     statusColor: '#D97706',
     dueText: '',

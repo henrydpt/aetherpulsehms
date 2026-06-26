@@ -16,15 +16,19 @@ setUsers: (
   users: AppUser[]
 ) => void;
 
+deactivateUser: (
+  userId: string
+) => Promise<void>;
+
 loadUsers: () => Promise<void>;
   addUser: (
     user: AppUser
   ) => void;
 
-  updateUser: (
-    userId: string,
-    updates: Partial<AppUser>
-  ) => void;
+updateUser: (
+  userId: string,
+  updates: Partial<AppUser>
+) => Promise<void>;
 }
 
 export const useUserStore =
@@ -134,19 +138,59 @@ if (error) {
         ],
       })),
 
-    updateUser: (
-      userId,
-      updates
-    ) =>
-      set((state) => ({
-        users: state.users.map(
-          (user) =>
-            user.id === userId
-              ? {
-                  ...user,
-                  ...updates,
-                }
-              : user
-        ),
-      })),
+updateUser: async (
+  userId,
+  updates
+) => {
+  const { error } =
+    await supabase
+      .from('users')
+      .update(updates)
+      .eq('id', userId);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  set((state) => ({
+    users: state.users.map(
+      (user) =>
+        user.id === userId
+          ? {
+              ...user,
+              ...updates,
+            }
+          : user
+    ),
+  }));
+},
+deactivateUser: async (
+  userId
+) => {
+  const { error } =
+    await supabase
+      .from('users')
+      .update({
+        active: false,
+      })
+      .eq('id', userId);
+
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  set((state) => ({
+    users: state.users.map(
+      (user) =>
+        user.id === userId
+          ? {
+              ...user,
+              active: false,
+            }
+          : user
+    ),
+  }));
+},
   }));

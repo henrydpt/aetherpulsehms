@@ -17,7 +17,9 @@ import {
 import { taskTemplates } from '../data/taskTemplates';
 import { usePatientStore } from '../store/patientStore';
 import { useTaskStore } from '../store/taskStore';
+import { useUserStore } from '../store/userStore';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Picker } from '@react-native-picker/picker';
 import { COLORS } from '../theme/colors';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 export default function CreateTaskScreen() {
@@ -36,6 +38,11 @@ const isEditMode =
   const patients = usePatientStore(
   (state) => state.patients
 );
+
+const users = useUserStore(
+  (state) => state.users
+);
+
 const addTask = useTaskStore(
   (state) => state.addTask
 );
@@ -80,7 +87,17 @@ const [showDatePicker, setShowDatePicker] =
 
 const [showTimePicker, setShowTimePicker] =
   useState(false);
+const [assignedTo, setAssignedTo] =
+  useState(
+    editTask?.assigned || ''
+  );
 
+const executiveUsers =
+  users.filter(
+    (user) =>
+      user.role === 'Executive' &&
+      user.active
+  );
 return (
   <SafeAreaView style={styles.container}>
     <StatusBar
@@ -362,31 +379,74 @@ return (
 
       if (selectedTime) {
         setDueTime(
-selectedTime
-  .toLocaleTimeString(
-    'en-GB',
-    {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    }
-  )
+          selectedTime
+            .toLocaleTimeString(
+              'en-GB',
+              {
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: false,
+              }
+            )
         );
       }
     }}
   />
 )}
 
-  <Text
-    style={{
-      marginTop: 10,
-      marginBottom: 8,
-      fontWeight: '700',
-      color: '#234A7A',
-    }}
+<Text
+  style={{
+    marginTop: 10,
+    marginBottom: 8,
+    fontWeight: '700',
+    color: '#234A7A',
+  }}
+>
+  Assign To
+</Text>
+
+<View
+  style={{
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 12,
+    backgroundColor: '#FFFFFF',
+    overflow: 'hidden',
+  }}
+>
+  <Picker
+    selectedValue={assignedTo}
+    onValueChange={(value) =>
+      setAssignedTo(value)
+    }
   >
-    Priority
-  </Text>
+    <Picker.Item
+      label="Select Executive"
+      value=""
+    />
+
+    {executiveUsers.map(
+      (user) => (
+        <Picker.Item
+          key={user.id}
+          label={user.name}
+          value={user.name}
+        />
+      )
+    )}
+  </Picker>
+</View>
+
+<Text
+  style={{
+    marginTop: 10,
+    marginBottom: 8,
+    fontWeight: '700',
+    color: '#234A7A',
+  }}
+>
+  Priority
+</Text>
 
   <View
     style={{
@@ -497,10 +557,13 @@ selectedTime
     selectedTemplate?.name ||
     'Custom Task',
 
-  assigned:
+assigned:
+  assignedTo ||
+  (
     taskCategory === 'ADMIN'
       ? 'Administration'
-      : 'Nursing Staff',
+      : 'Nursing Staff'
+  ),
 
   due:
     dueDate && dueTime
@@ -543,10 +606,62 @@ escalatedTo: null,
 };
 
 if (isEditMode) {
+
+  const { error } =
+    await supabase
+      .from('tasks')
+      .update({
+        title:
+          taskPayload.title,
+
+        assigned:
+          taskPayload.assigned,
+
+        due:
+          taskPayload.due,
+
+        due_date:
+          taskPayload.dueDate,
+
+        due_time:
+          taskPayload.dueTime,
+
+        priority:
+          taskPayload.priority,
+
+        escalation_minutes:
+          taskPayload.escalationMinutes,
+
+        location:
+          taskPayload.location,
+
+        task_category:
+          taskPayload.taskCategory,
+
+        patient_id:
+          taskPayload.patientId,
+
+        patient_name:
+          taskPayload.patientName,
+
+        type:
+          taskPayload.type,
+      })
+      .eq(
+        'id',
+        editTask.id
+      );
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
   updateTask(
     editTask.id,
     taskPayload
   );
+
 } else {
   const taskId =
   `TASK-${Date.now()}`;

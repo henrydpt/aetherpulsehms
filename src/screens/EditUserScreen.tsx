@@ -23,7 +23,10 @@ export default function EditUserScreen() {
   const updateUser = useUserStore(
     (state) => state.updateUser
   );
-
+const deactivateUser =
+  useUserStore(
+    (state) => state.deactivateUser
+  );
   const user = route.params?.user;
 
   const [name, setName] =
@@ -141,6 +144,35 @@ export default function EditUserScreen() {
             Save Changes
           </Text>
         </TouchableOpacity>
+<TouchableOpacity
+  style={[
+    styles.saveButton,
+    {
+      backgroundColor: active
+  ? '#B91C1C'
+  : '#15803D',
+      marginTop: 12,
+    },
+  ]}
+onPress={async () => {
+  await updateUser(
+    user.id,
+    {
+      active: !active,
+    }
+  );
+
+  setActive(!active);
+
+  navigation.goBack();
+}}
+>
+  <Text style={styles.saveText}>
+    {active
+      ? 'Deactivate User'
+      : 'Activate User'}
+  </Text>
+</TouchableOpacity>
       </KeyboardAwareScrollView>
     </SafeAreaView>
   );

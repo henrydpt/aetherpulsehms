@@ -1,21 +1,24 @@
 {
   "expo": {
-    "name": "Aether Pulse",
+    "name": "Udumula Pulse",
     "slug": "AetherPulseMobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ulogo5.png",
     "userInterfaceStyle": "light",
+    "splash": {
+  "image": "./assets/udumulalogo2.png",
+  "resizeMode": "contain",
+  "backgroundColor": "#FFFFFF"
+},
     "ios": {
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
-    },
+"adaptiveIcon": {
+  "foregroundImage": "./assets/ulogo5.png",
+  "backgroundColor": "#FFFFFF"
+},
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "resize",
       "package": "com.aetherint.AetherPulseMobile"
