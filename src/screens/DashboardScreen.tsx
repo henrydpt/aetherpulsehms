@@ -16,6 +16,8 @@ import { COLORS } from '../theme/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect } from 'react';
 import { taskTemplates } from '../data/taskTemplates';
+import { testWardLoad } from '../services/testWardService';
+import { getHospitalStats } from '../services/hospitalStatsService';
 export default function DashboardScreen() {
 const navigation = useNavigation<any>();
 const role = useAuthStore(
@@ -37,7 +39,19 @@ const userName = useAuthStore(
   (state) => state.userName
 );
 useEffect(() => {
+  async function loadData() {
+    testWardLoad();
 
+    const stats =
+      await getHospitalStats();
+
+    console.log(
+      'HMS STATS',
+      stats
+    );
+  }
+
+  loadData();
 }, []);
 const visiblePatients =
   role === 'Doctor'
@@ -235,7 +249,22 @@ const greeting =
         <Text style={styles.sectionTitle}>
           Today's Overview
         </Text>
+<TouchableOpacity
+  style={styles.attentionCard}
+  onPress={() =>
+    navigation.navigate(
+      'Admissions'
+    )
+  }
+>
+  <Text style={styles.attentionTitle}>
+    HMS Admissions
+  </Text>
 
+  <Text style={styles.attentionItem}>
+    View Admissions Module
+  </Text>
+</TouchableOpacity>
         <View style={styles.kpiGrid}>
           <TouchableOpacity
   style={[

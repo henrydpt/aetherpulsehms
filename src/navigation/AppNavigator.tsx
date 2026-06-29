@@ -27,6 +27,9 @@ import AddUserScreen from '../screens/AddUserScreen';
 import { useEffect } from 'react';
 import { usePatientStore } from '../store/patientStore';
 import { useTaskStore } from '../store/taskStore';
+import AdmissionsScreen from '../screens/AdmissionsScreen';
+import OpQueueScreen
+  from '../screens/OpQueueScreen';
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 function MainTabs() {
@@ -111,6 +114,10 @@ tabBarLabelStyle: {
         name="Patients"
         component={PatientsScreen}
       />
+<Tab.Screen
+  name="OP Queue"
+  component={OpQueueScreen}
+/>
 
 {(
   role === 'Admin' ||
@@ -167,6 +174,10 @@ export default function AppNavigator() {
 <Stack.Screen
   name="AddPatient"
   component={AddPatientScreen}
+/>
+<Stack.Screen
+  name="Admissions"
+  component={AdmissionsScreen}
 />
 <Stack.Screen
   name="CreateTask"

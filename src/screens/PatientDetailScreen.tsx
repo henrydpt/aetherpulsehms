@@ -1,5 +1,16 @@
 import React from 'react';
 import { supabase } from '../lib/supabase';
+import { createOpEncounter }
+  from '../services/opdService';
+
+import { getActiveOpEncounter }
+  from '../services/opEncounterQueryService';
+import {
+  getActiveAdmission,
+} from '../services/admissionLookupService';
+import {
+  dischargeAdmission,
+} from '../services/dischargeService';
 import {
   SafeAreaView,
   ScrollView,
@@ -242,10 +253,12 @@ return (
       ))
   )}
 </View>
-          <View
+<View
   style={{
     flexDirection: 'row',
+    flexWrap: 'wrap',
     marginTop: 18,
+    gap: 10,
   }}
 >
 
@@ -266,6 +279,67 @@ return (
       Edit Patient
     </Text>
   </TouchableOpacity>
+<TouchableOpacity
+  style={[
+    styles.actionButton,
+    {
+      marginLeft: 10,
+      backgroundColor: '#0F766E',
+    },
+  ]}
+  onPress={() =>
+    navigation.navigate(
+      'Admissions',
+      {
+        patient,
+      }
+    )
+  }
+>
+  <Text style={styles.actionButtonText}>
+    Admit Patient
+  </Text>
+
+</TouchableOpacity>
+<TouchableOpacity
+  style={[
+    styles.actionButton,
+    {
+      backgroundColor: '#166534',
+    },
+  ]}
+  onPress={async () => {
+
+    if (!patient) return;
+
+    const existing =
+      await getActiveOpEncounter(
+        patient.id
+      );
+
+    if (existing) {
+      alert(
+        'Patient already in OP queue'
+      );
+      return;
+    }
+
+    const encounter =
+      await createOpEncounter(
+        patient.id
+      );
+
+    alert(
+      `Token: ${encounter.token_number}`
+    );
+  }}
+>
+  <Text
+    style={styles.actionButtonText}
+  >
+    OP Registration
+  </Text>
+</TouchableOpacity>
 <TouchableOpacity
   style={[
     styles.actionButton,
@@ -308,6 +382,17 @@ return (
           text: 'Discharge',
 onPress: async () => {
 if (!patient) return;
+
+const admission =
+  await getActiveAdmission(
+    patient.id
+  );
+
+if (admission) {
+  await dischargeAdmission(
+    admission.id
+  );
+}
 
 await supabase
   .from('patients')
