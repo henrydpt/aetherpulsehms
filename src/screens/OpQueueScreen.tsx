@@ -14,6 +14,10 @@ import {
 import {
   getOpQueueWithPatients,
 } from '../services/opQueueListService';
+import {
+  startConsultation,
+  completeConsultation,
+} from '../services/opConsultationService';
 
 export default function OpQueueScreen() {
 
@@ -39,11 +43,11 @@ const data =
         OP Queue
       </Text>
 
-      <Text>
-        Waiting:
-        {' '}
-        {queue.length}
-      </Text>
+<Text>
+  Active Queue:
+  {' '}
+  {queue.length}
+</Text>
 
       <FlatList
         data={queue}
@@ -71,6 +75,46 @@ const data =
   {' '}
   {item.status}
 </Text>
+
+{item.status ===
+  'WAITING' && (
+  <Text
+    onPress={async () => {
+      await startConsultation(
+        item.id
+      );
+
+      loadQueue();
+    }}
+    style={{
+      color: 'green',
+      marginTop: 8,
+      fontWeight: '700',
+    }}
+  >
+    Start Consultation
+  </Text>
+)}
+
+{item.status ===
+  'IN_CONSULTATION' && (
+  <Text
+    onPress={async () => {
+      await completeConsultation(
+        item.id
+      );
+
+      loadQueue();
+    }}
+    style={{
+      color: 'blue',
+      marginTop: 8,
+      fontWeight: '700',
+    }}
+  >
+    Complete Consultation
+  </Text>
+)}
           </View>
         )}
       />

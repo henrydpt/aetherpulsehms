@@ -46,6 +46,10 @@ const patient = patients.find(
   usePatientStore(
     (state) => state.dischargePatient
   );
+  const loadPatients =
+  usePatientStore(
+    (state) => state.loadPatients
+  );
   const tasks = useTaskStore(
   (state) => state.tasks
 );
@@ -394,16 +398,11 @@ if (admission) {
   );
 }
 
-await supabase
-  .from('patients')
-  .update({
-    active: false,
-  })
-  .eq('id', patient.id);
-
-dischargePatient(
-  patient.id
+console.log(
+  'Patient discharged'
 );
+
+loadPatients();
 
 navigation.goBack();
 },
