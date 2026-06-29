@@ -2,7 +2,6 @@ import React from 'react';
 import { supabase } from '../lib/supabase';
 import { createOpEncounter }
   from '../services/opdService';
-
 import { getActiveOpEncounter }
   from '../services/opEncounterQueryService';
 import {
