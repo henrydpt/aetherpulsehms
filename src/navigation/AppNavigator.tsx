@@ -97,42 +97,32 @@ tabBarLabelStyle: {
         },
       })}
     >
-      <Tab.Screen
-        name="Dashboard"
-        component={DashboardScreen}
-        options={{
-          tabBarLabel: 'Home',
-        }}
-      />
-
 <Tab.Screen
-  name="Tasks"
-  component={TasksScreen}
+  name="Dashboard"
+  component={DashboardScreen}
+  options={{
+  tabBarLabel: 'Home',}}
 />
 
-      <Tab.Screen
-        name="Patients"
-        component={PatientsScreen}
-      />
 <Tab.Screen
-  name="OP Queue"
+  name="Patients"
+  component={PatientsScreen}
+/>
+
+<Tab.Screen
+  name="OPD"
   component={OpQueueScreen}
 />
 
-{(
-  role === 'Admin' ||
-  role === 'Super User'
-) && (
-  <Tab.Screen
-    name="Analytics"
-    component={ComplianceScreen}
-  />
-)}
+<Tab.Screen
+  name="IPD"
+  component={TasksScreen}
+/>
 
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-      />
+<Tab.Screen
+  name="Profile"
+  component={ProfileScreen}
+/>
     </Tab.Navigator>
   );
 }
