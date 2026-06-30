@@ -300,7 +300,7 @@ return (
   }
 >
   <Text style={styles.actionButtonText}>
-    Admit Patient
+    Admissions
   </Text>
 
 </TouchableOpacity>
