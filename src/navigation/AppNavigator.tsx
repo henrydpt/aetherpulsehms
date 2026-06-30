@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import DashboardScreen from '../screens/DashboardScreen';
+import HomeScreen from '../screens/HomeScreen';
 import TasksScreen from '../screens/TasksScreen';
 import PatientsScreen from '../screens/PatientsScreen';
 import ComplianceScreen from '../screens/ComplianceScreen';
@@ -75,7 +76,7 @@ tabBarLabelStyle: {
         tabBarIcon: ({ color, size }) => {
           let iconName: any;
 
-          if (route.name === 'Dashboard') {
+          if (route.name === 'Home') {
             iconName = 'home';
           } else if (route.name === 'Tasks') {
             iconName = 'clipboard';
@@ -98,10 +99,8 @@ tabBarLabelStyle: {
       })}
     >
 <Tab.Screen
-  name="Dashboard"
-  component={DashboardScreen}
-  options={{
-  tabBarLabel: 'Home',}}
+  name="Home"
+  component={HomeScreen}
 />
 
 <Tab.Screen
@@ -116,7 +115,7 @@ tabBarLabelStyle: {
 
 <Tab.Screen
   name="IPD"
-  component={TasksScreen}
+  component={AdmissionsScreen}
 />
 
 <Tab.Screen

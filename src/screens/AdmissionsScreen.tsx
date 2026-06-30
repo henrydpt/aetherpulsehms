@@ -5,14 +5,14 @@ import React, {
 import { useRoute } from '@react-navigation/native';
 import {
   SafeAreaView,
+  ScrollView,
   View,
   Text,
   StyleSheet,
-  FlatList,
 } from 'react-native';
 import {
   TextInput,
-  Button,
+  TouchableOpacity,
 } from 'react-native';
 import { loadBeds } from '../services/bedQueryService';
 import {
@@ -24,6 +24,12 @@ import {
 import { testAdmission } from '../services/testAdmissionService';
 import { allocateBed }
   from '../services/bedAllocationService';
+  import { COLORS }
+  from '../theme/colors';
+  import {
+  StatusBar,
+  Platform,
+} from 'react-native';
 export default function AdmissionsScreen() {
   const route = useRoute<any>();
   const patient =
@@ -106,17 +112,58 @@ const data =
 }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>
-          Admissions
-        </Text>
+<SafeAreaView style={styles.container}>
+  <StatusBar
+    backgroundColor={COLORS.primary}
+    barStyle="light-content"
+  />
 
-<Text style={styles.subtitle}>
-  Active Admissions:
-  {' '}
-  {admissions.length}
-</Text>
+  <ScrollView
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={styles.content}
+  >
+<View
+style={styles.topBar}
+>
+  <View style={{ width: 24 }} />
+
+  <Text style={styles.topBarTitle}>
+    IPD Admissions
+  </Text>
+
+  <TouchableOpacity>
+    <Text style={styles.icon}>＋</Text>
+  </TouchableOpacity>
+</View>
+
+<View
+  style={{
+    backgroundColor: '#FFFFFF',
+    marginBottom: 16,
+    borderRadius: 16,
+    padding: 16,
+    alignItems: 'center',
+  }}
+>
+  <Text
+    style={{
+      fontSize: 28,
+      fontWeight: '700',
+      color: COLORS.primary,
+    }}
+  >
+    {admissions.length}
+  </Text>
+
+  <Text
+    style={{
+      color: '#64748B',
+      marginTop: 4,
+    }}
+  >
+    Active Admissions
+  </Text>
+</View>
 
 {patient && (
   <>
@@ -138,18 +185,28 @@ const data =
 </Text>
 
 {wards.map((ward) => (
-  <Button
+  <TouchableOpacity
     key={ward.id}
-    title={ward.name}
-onPress={async () => {
-  setSelectedWard(ward.id);
+    style={[
+  styles.selectionCard,
+  selectedWard === ward.id && {
+    borderColor: '#1C146B',
+    borderWidth: 2,
+  },
+]}
+    onPress={async () => {
+      setSelectedWard(ward.id);
 
-  const bedData =
-    await loadBeds(ward.id);
+      const bedData =
+        await loadBeds(ward.id);
 
-  setBeds(bedData);
-}}
-  />
+      setBeds(bedData);
+    }}
+  >
+    <Text style={styles.selectionText}>
+      {ward.name}
+    </Text>
+  </TouchableOpacity>
 ))}
 
 <Text
@@ -162,13 +219,23 @@ onPress={async () => {
 </Text>
 
 {beds.map((bed) => (
-  <Button
+  <TouchableOpacity
     key={bed.id}
-    title={bed.bed_number}
+    style={[
+  styles.selectionCard,
+  selectedBed === bed.id && {
+    borderColor: '#1C146B',
+    borderWidth: 2,
+  },
+]}
     onPress={() =>
       setSelectedBed(bed.id)
     }
-  />
+  >
+    <Text style={styles.selectionText}>
+      {bed.bed_number}
+    </Text>
+  </TouchableOpacity>
 ))}
 <TextInput
   placeholder="Doctor"
@@ -181,15 +248,28 @@ onPress={async () => {
   value={diagnosis}
   onChangeText={setDiagnosis}
 />
-    <Button
-      title="Create Admission"
-      onPress={handleCreateAdmission}
-    />
+<TouchableOpacity
+  style={{
+    backgroundColor: '#1C146B',
+    padding: 14,
+    borderRadius: 12,
+    marginTop: 16,
+    alignItems: 'center',
+  }}
+  onPress={handleCreateAdmission}
+>
+  <Text
+    style={{
+      color: '#FFFFFF',
+      fontWeight: '700',
+    }}
+  >
+    Create Admission
+  </Text>
+</TouchableOpacity>
   </>
 )}
-
-<FlatList
-data={
+{(
   patient
     ? admissions.filter(
         (a) =>
@@ -197,10 +277,11 @@ data={
           patient.id
       )
     : admissions
-}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
+).map((item) => (
+  <View
+    key={item.id}
+    style={styles.card}
+  >
 <Text
   style={styles.admissionNo}
 >
@@ -231,10 +312,9 @@ data={
   {item.status}
 </Text>
             </View>
-          )}
-        />
-      </View>
-    </SafeAreaView>
+))}
+</ScrollView>
+</SafeAreaView>
   );
 }
 
@@ -244,15 +324,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8FAFC',
   },
 
-  content: {
-    padding: 20,
-    flex: 1,
-  },
-
-  title: {
-    fontSize: 24,
-    fontWeight: '700',
-  },
+content: {
+  paddingBottom: 24,
+},
 
   subtitle: {
     marginTop: 8,
@@ -271,4 +345,36 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     marginBottom: 4,
   },
+  selectionCard: {
+  backgroundColor: '#FFFFFF',
+  borderRadius: 12,
+  padding: 14,
+  marginTop: 8,
+  borderWidth: 1,
+  borderColor: '#EEE7D8',
+},
+
+selectionText: {
+  fontWeight: '600',
+},
+topBar: {
+  minHeight: 90,
+  paddingTop: 20,
+  backgroundColor: COLORS.primary,
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  paddingHorizontal: 18,
+},
+
+topBarTitle: {
+  color: COLORS.card,
+  fontSize: 18,
+  fontWeight: '700',
+},
+
+icon: {
+  color: '#FFFFFF',
+  fontSize: 22,
+},
 });
