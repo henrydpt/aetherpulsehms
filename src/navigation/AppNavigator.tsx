@@ -29,6 +29,8 @@ import { useEffect } from 'react';
 import { usePatientStore } from '../store/patientStore';
 import { useTaskStore } from '../store/taskStore';
 import AdmissionsScreen from '../screens/AdmissionsScreen';
+import ConsultationScreen
+  from '../screens/ConsultationScreen';
 import OpQueueScreen
   from '../screens/OpQueueScreen';
 const Tab = createBottomTabNavigator();
@@ -113,9 +115,14 @@ tabBarLabelStyle: {
   component={OpQueueScreen}
 />
 
-<Tab.Screen
-  name="IPD"
+<Stack.Screen
+  name="Admissions"
   component={AdmissionsScreen}
+/>
+
+<Stack.Screen
+  name="Consultation"
+  component={ConsultationScreen}
 />
 
 <Tab.Screen

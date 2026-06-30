@@ -2,7 +2,10 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-
+import { useRoute }
+  from '@react-navigation/native';
+import { useNavigation }
+  from '@react-navigation/native';
 import {
   SafeAreaView,
   ScrollView,
@@ -22,7 +25,8 @@ import {
 } from '../services/opConsultationService';
 
 export default function OpQueueScreen() {
-
+const navigation =
+  useNavigation<any>();
   const [queue, setQueue] =
     useState<any[]>([]);
 
@@ -128,11 +132,19 @@ const data =
       {item.status === 'WAITING' && (
         <TouchableOpacity
           onPress={async () => {
-            await startConsultation(
-              item.id
-            );
+await startConsultation(
+  item.id
+);
 
-            loadQueue();
+navigation.navigate(
+  'Consultation',
+  {
+    patient: item,
+    queueId: item.id,
+  }
+);
+
+loadQueue();
           }}
         >
           <Text
