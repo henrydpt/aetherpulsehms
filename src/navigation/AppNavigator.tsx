@@ -31,6 +31,8 @@ import { useTaskStore } from '../store/taskStore';
 import AdmissionsScreen from '../screens/AdmissionsScreen';
 import ConsultationScreen
   from '../screens/ConsultationScreen';
+import IpdPatientDetailScreen
+  from '../screens/IpdPatientDetailScreen';
 import OpQueueScreen
   from '../screens/OpQueueScreen';
 const Tab = createBottomTabNavigator();
@@ -173,6 +175,11 @@ export default function AppNavigator() {
 <Stack.Screen
   name="Consultation"
   component={ConsultationScreen}
+/>
+
+<Stack.Screen
+  name="IpdPatientDetail"
+  component={IpdPatientDetailScreen}
 />
 
 <Stack.Screen

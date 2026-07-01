@@ -2,7 +2,10 @@ import React, {
   useEffect,
   useState,
 } from 'react';
-import { useRoute } from '@react-navigation/native';
+import {
+  useRoute,
+  useNavigation,
+} from '@react-navigation/native';
 import {
   SafeAreaView,
   ScrollView,
@@ -37,6 +40,9 @@ export default function AdmissionsScreen() {
   const route = useRoute<any>();
 const patient =
   route.params?.patient;
+
+const navigation =
+  useNavigation<any>();
 const encounterId =
   route.params?.encounterId;
   const [
@@ -318,10 +324,18 @@ style={styles.topBar}
       )
     : admissions
 ).map((item) => (
-  <View
-    key={item.id}
-    style={styles.card}
-  >
+<TouchableOpacity
+  key={item.id}
+  style={styles.card}
+  onPress={() =>
+    navigation.navigate(
+      'IpdPatientDetail',
+      {
+        admission: item,
+      }
+    )
+  }
+>
 <Text
   style={styles.admissionNo}
 >
@@ -351,7 +365,7 @@ style={styles.topBar}
   {' '}
   {item.status}
 </Text>
-            </View>
+</TouchableOpacity>
 ))}
 </ScrollView>
 </SafeAreaView>
