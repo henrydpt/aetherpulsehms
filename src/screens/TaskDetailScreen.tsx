@@ -467,7 +467,10 @@ return (
   disabled={!photoAttached}
   onPress={() => {
   if (task.id) {
-    completeTask(task.id, {
+
+completeTask(task.id, {
+  patientId:
+    task.patient_id,
   completedBy: task.assigned,
   remarks,
   evidenceUri: photoUri,

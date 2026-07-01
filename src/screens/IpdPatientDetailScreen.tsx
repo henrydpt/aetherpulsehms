@@ -4,27 +4,40 @@ import React, {
 } from 'react';
 import {
   SafeAreaView,
+  ScrollView,
   View,
   Text,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import {
+  useRoute,
+  useNavigation,
+} from '@react-navigation/native';
 import { COLORS } from '../theme/colors';
 
 import {
   getLatestConsultation,
 } from '../services/consultationQueryService';
-
+import {
+  getPatientTasks,
+} from '../services/patientTaskQueryService';
 export default function
 IpdPatientDetailScreen() {
   const route = useRoute<any>();
 
   const admission =
     route.params?.admission;
+const navigation =
+  useNavigation<any>();
 const [
   consultation,
   setConsultation,
 ] = useState<any>(null);
+const [
+  tasks,
+  setTasks,
+] = useState<any[]>([]);
 
 useEffect(() => {
   loadConsultation();
@@ -38,19 +51,31 @@ loadConsultation() {
     );
 
   setConsultation(data);
+
+  const patientTasks =
+    await getPatientTasks(
+      admission?.patient_id
+    );
+
+  setTasks(patientTasks);
 }
   return (
-    <SafeAreaView
-      style={styles.container}
-    >
-      <View style={styles.topBar}>
+<SafeAreaView
+  style={styles.container}
+>
+  <View style={styles.topBar}>
         <Text
           style={styles.topBarTitle}
         >
           IPD Patient Detail
         </Text>
       </View>
-
+<ScrollView
+  showsVerticalScrollIndicator={false}
+  contentContainerStyle={{
+    paddingBottom: 24,
+  }}
+>
 <View style={styles.card}>
   <Text
     style={styles.sectionTitle}
@@ -69,6 +94,55 @@ loadConsultation() {
   </Text>
 </View>
 
+<View style={styles.card}>
+  <Text
+    style={styles.sectionTitle}
+  >
+    Today's Care Tasks
+  </Text>
+
+  {tasks
+    .slice(0, 6)
+    .map((task) => (
+<TouchableOpacity
+  key={task.id}
+  style={{
+    marginTop: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor:
+      '#E2E8F0',
+  }}
+  onPress={() =>
+    navigation.navigate(
+      'TaskDetail',
+      { task }
+    )
+  }
+>
+        <Text
+          style={{
+            fontWeight: '600',
+          }}
+        >
+          {task.title}
+        </Text>
+
+        <Text
+          style={{
+            color:
+              task.status ===
+              'COMPLETED'
+                ? '#16A34A'
+                : '#D97706',
+            marginTop: 4,
+          }}
+        >
+          {task.status}
+        </Text>
+      </TouchableOpacity>
+    ))}
+</View>
 <View style={styles.card}>
   <Text
     style={styles.sectionTitle}
@@ -150,7 +224,9 @@ loadConsultation() {
   {consultation?.spo2 || '-'}
 </Text>
 </View>
+    </ScrollView>
     </SafeAreaView>
+
   );
 }
 

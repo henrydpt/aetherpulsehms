@@ -151,7 +151,7 @@ completeTask: async (
     new Date().toISOString();
 
   const { error } =
-    await supabase
+await supabase
       .from('tasks')
 .update({
   status: 'COMPLETED',
@@ -186,6 +186,58 @@ completeTask: async (
 })
       .eq('id', taskId);
 
+if (
+  completionData.vitals &&
+  completionData.patientId
+) {
+
+  const {
+    data: admission,
+  } = await supabase
+    .from('admissions')
+    .select('id')
+    .eq(
+      'patient_id',
+      completionData.patientId
+    )
+    .eq(
+      'status',
+      'ACTIVE'
+    )
+    .single();
+
+  if (admission) {
+
+    await supabase
+      .from('vitals')
+      .insert({
+        admission_id:
+          admission.id,
+
+        bp: `${
+          completionData.vitals.bpSystolic
+        }/${
+          completionData.vitals.bpDiastolic
+        }`,
+
+        pulse:
+          completionData.vitals.pulse,
+
+        spo2:
+          completionData.vitals.spo2,
+
+        temperature:
+          completionData.vitals.temperature,
+
+        respiratory_rate:
+          completionData.vitals.respiratoryRate,
+
+        recorded_by:
+          completionData.completedBy ||
+          'Nursing Staff',
+      });
+  }
+}
   if (error) {
     console.log(error);
     return;
