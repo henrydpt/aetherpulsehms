@@ -1,8 +1,10 @@
 import React, {
   useState,
 } from 'react';
-import { useRoute }
-  from '@react-navigation/native';
+import {
+  useRoute,
+  useNavigation,
+} from '@react-navigation/native';
 import {
   SafeAreaView,
   ScrollView,
@@ -30,6 +32,8 @@ export default function ConsultationScreen() {
 
   const queueId =
     route.params?.queueId;
+const navigation =
+  useNavigation<any>();
     const [
   chiefComplaint,
   setChiefComplaint,
@@ -93,9 +97,20 @@ async function saveConsultation() {
 }
 
 async function admitToIpd() {
-  console.log(
-    'Admit To IPD'
-  );
+navigation.navigate(
+  'Admissions',
+  {
+    patient: {
+      id:
+        patient?.patient_id,
+      name:
+        patient?.patientName,
+    },
+
+    encounterId:
+      queueId,
+  }
+);
 }
 
 async function completeVisit() {

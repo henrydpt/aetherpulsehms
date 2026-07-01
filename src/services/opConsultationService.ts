@@ -21,3 +21,13 @@ export async function completeConsultation(
     })
     .eq('id', encounterId);
 }
+export async function admitEncounter(
+  encounterId: string
+) {
+  await supabase
+    .from('op_encounters')
+    .update({
+      status: 'ADMITTED',
+    })
+    .eq('id', encounterId);
+}

@@ -78,18 +78,17 @@ tabBarLabelStyle: {
         tabBarIcon: ({ color, size }) => {
           let iconName: any;
 
-          if (route.name === 'Home') {
-            iconName = 'home';
-          } else if (route.name === 'Tasks') {
-            iconName = 'clipboard';
-          } else if (route.name === 'Patients') {
-            iconName = 'people';
-          } else if (route.name === 'Analytics') {
-            iconName = 'bar-chart';
-          } else {
-            iconName = 'person';
-          }
-
+if (route.name === 'Home') {
+  iconName = 'home';
+} else if (route.name === 'Patients') {
+  iconName = 'people';
+} else if (route.name === 'OPD') {
+  iconName = 'medical';
+} else if (route.name === 'IPD') {
+  iconName = 'bed';
+} else {
+  iconName = 'person';
+}
           return (
             <Ionicons
               name={iconName}
@@ -115,14 +114,9 @@ tabBarLabelStyle: {
   component={OpQueueScreen}
 />
 
-<Stack.Screen
-  name="Admissions"
+<Tab.Screen
+  name="IPD"
   component={AdmissionsScreen}
-/>
-
-<Stack.Screen
-  name="Consultation"
-  component={ConsultationScreen}
 />
 
 <Tab.Screen
@@ -175,6 +169,12 @@ export default function AppNavigator() {
   name="Admissions"
   component={AdmissionsScreen}
 />
+
+<Stack.Screen
+  name="Consultation"
+  component={ConsultationScreen}
+/>
+
 <Stack.Screen
   name="CreateTask"
   component={CreateTaskScreen}

@@ -24,6 +24,9 @@ import {
 import { testAdmission } from '../services/testAdmissionService';
 import { allocateBed }
   from '../services/bedAllocationService';
+import {
+  admitEncounter,
+} from '../services/opConsultationService';
   import { COLORS }
   from '../theme/colors';
   import {
@@ -32,8 +35,10 @@ import { allocateBed }
 } from 'react-native';
 export default function AdmissionsScreen() {
   const route = useRoute<any>();
-  const patient =
-    route.params?.patient;
+const patient =
+  route.params?.patient;
+const encounterId =
+  route.params?.encounterId;
   const [
     admissions,
     setAdmissions,
@@ -77,10 +82,16 @@ async function handleCreateAdmission() {
         patient.id
       );
 
-    await allocateBed(
-      admission.id,
-      selectedBed
-    );
+await allocateBed(
+  admission.id,
+  selectedBed
+);
+
+if (encounterId) {
+  await admitEncounter(
+    encounterId
+  );
+}
 
     console.log(
       'CREATED',
@@ -167,14 +178,43 @@ style={styles.topBar}
 
 {patient && (
   <>
-    <Text
+    <View
       style={{
-        marginTop: 12,
-        fontWeight: '700',
+        backgroundColor: '#FFFFFF',
+        borderRadius: 16,
+        padding: 16,
+        marginBottom: 16,
       }}
     >
-      Patient: {patient.name}
-    </Text>
+      <Text
+        style={{
+          fontSize: 16,
+          fontWeight: '700',
+          color: COLORS.primary,
+        }}
+      >
+        Patient Selected
+      </Text>
+
+      <Text
+        style={{
+          marginTop: 8,
+          fontSize: 18,
+          fontWeight: '700',
+        }}
+      >
+        {patient.name}
+      </Text>
+
+      <Text
+        style={{
+          marginTop: 4,
+          color: '#64748B',
+        }}
+      >
+        {patient.id}
+      </Text>
+    </View>
 <Text
   style={{
     marginTop: 16,
