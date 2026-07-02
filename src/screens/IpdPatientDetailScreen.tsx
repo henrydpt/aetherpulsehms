@@ -35,6 +35,12 @@ import {
   saveDoctorRound,
   getDoctorRounds,
 } from '../services/doctorRoundService';
+
+import {
+  dischargeAdmission,
+  saveDischargeSummary,
+  getDischargeSummary,
+} from '../services/dischargeService';
 export default function
 IpdPatientDetailScreen() {
   const route = useRoute<any>();
@@ -88,7 +94,35 @@ const [
   vitalsHistory,
   setVitalsHistory,
 ] = useState<any[]>([]);
+const [
+  dischargeDiagnosis,
+  setDischargeDiagnosis,
+] = useState('');
 
+const [
+  hospitalCourse,
+  setHospitalCourse,
+] = useState('');
+
+const [
+  dischargeMedications,
+  setDischargeMedications,
+] = useState('');
+
+const [
+  dischargeInstructions,
+  setDischargeInstructions,
+] = useState('');
+
+const [
+  dischargeFollowUpDate,
+  setDischargeFollowUpDate,
+] = useState('');
+
+const [
+  dischargeSummary,
+  setDischargeSummary,
+] = useState<any>(null);
 useEffect(() => {
   loadConsultation();
 }, []);
@@ -127,7 +161,15 @@ const rounds =
   );
 
 setDoctorRounds(rounds);
-  setVitalsHistory(vitals);
+
+setVitalsHistory(vitals);
+
+const summary =
+  await getDischargeSummary(
+    admission?.id
+  );
+
+setDischargeSummary(summary);
 }
 
 async function
@@ -628,6 +670,35 @@ handleSaveDoctorRound() {
     )
   )}
 </View>
+
+<TouchableOpacity
+  onPress={() =>
+    navigation.navigate(
+      'Discharge',
+      {
+        admission,
+      }
+    )
+  }
+  style={{
+    margin: 16,
+    backgroundColor:
+      '#DC2626',
+    padding: 16,
+    borderRadius: 12,
+    alignItems: 'center',
+  }}
+>
+  <Text
+    style={{
+      color: '#FFFFFF',
+      fontWeight: '700',
+      fontSize: 16,
+    }}
+  >
+    Begin Discharge
+  </Text>
+</TouchableOpacity>
 
     </ScrollView>
     </SafeAreaView>

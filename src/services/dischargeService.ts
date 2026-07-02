@@ -47,3 +47,54 @@ export async function dischargeAdmission(
     })
     .eq('id', admissionId);
 }
+export async function saveDischargeSummary(
+  admissionId: string,
+  dischargeDiagnosis: string,
+  hospitalCourse: string,
+  dischargeMedications: string,
+  dischargeInstructions: string,
+  followUpDate: string,
+  dischargedBy = 'Doctor'
+) {
+  const { error } = await supabase
+    .from('discharge_summaries')
+    .insert({
+      admission_id: admissionId,
+      discharge_diagnosis: dischargeDiagnosis,
+      hospital_course: hospitalCourse,
+      discharge_medications: dischargeMedications,
+      discharge_instructions: dischargeInstructions,
+      follow_up_date: followUpDate,
+      discharged_by: dischargedBy,
+    });
+
+  if (error) {
+    throw error;
+  }
+}
+
+export async function getDischargeSummary(
+  admissionId: string
+) {
+  const { data, error } =
+    await supabase
+      .from('discharge_summaries')
+      .select('*')
+      .eq(
+        'admission_id',
+        admissionId
+      )
+      .order(
+        'discharged_at',
+        {
+          ascending: false,
+        }
+      )
+      .limit(1);
+
+  if (error) {
+    throw error;
+  }
+
+  return data?.[0] || null;
+}
