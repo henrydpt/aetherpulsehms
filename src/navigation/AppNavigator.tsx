@@ -35,6 +35,12 @@ import IpdPatientDetailScreen
   from '../screens/IpdPatientDetailScreen';
 import DischargeScreen
   from '../screens/DischargeScreen';
+import DoctorRoundsScreen
+  from '../screens/DoctorRoundsScreen';
+import NursingNotesScreen
+  from '../screens/NursingNotesScreen';
+import MedicationOrdersScreen
+  from '../screens/MedicationOrdersScreen';
 import OpQueueScreen
   from '../screens/OpQueueScreen';
 const Tab = createBottomTabNavigator();
@@ -182,6 +188,21 @@ export default function AppNavigator() {
 <Stack.Screen
   name="IpdPatientDetail"
   component={IpdPatientDetailScreen}
+/>
+
+<Stack.Screen
+  name="DoctorRounds"
+  component={DoctorRoundsScreen}
+/>
+
+<Stack.Screen
+  name="NursingNotes"
+  component={NursingNotesScreen}
+/>
+
+<Stack.Screen
+  name="MedicationOrders"
+  component={MedicationOrdersScreen}
 />
 
 <Stack.Screen

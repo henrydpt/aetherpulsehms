@@ -15,7 +15,8 @@ import {
   useNavigation,
 } from '@react-navigation/native';
 import { COLORS } from '../theme/colors';
-
+import PatientModuleHeader
+  from '../components/patient/PatientModuleHeader';
 import {
   getLatestConsultation,
 } from '../services/consultationQueryService';
@@ -47,8 +48,9 @@ import {
   saveDischargeSummary,
   getDischargeSummary,
 } from '../services/dischargeService';
+
 export default function
-IpdPatientDetailScreen() {
+MedicationOrdersScreen() {
   const route = useRoute<any>();
 
   const admission =
@@ -316,391 +318,210 @@ handleSaveMedicationOrder() {
     medications
   );
 }
-  return (
+return (
 <SafeAreaView
   style={styles.container}
 >
   <View style={styles.topBar}>
-        <Text
-          style={styles.topBarTitle}
-        >
-          IPD Patient Detail
-        </Text>
-      </View>
-<ScrollView
-  showsVerticalScrollIndicator={false}
-  contentContainerStyle={{
-    paddingBottom: 24,
-  }}
->
+    <Text
+      style={styles.topBarTitle}
+    >
+      Medication Orders
+    </Text>
+  </View>
+
+  <ScrollView
+    showsVerticalScrollIndicator={false}
+    contentContainerStyle={{
+      paddingBottom: 24,
+    }}
+  >
+
+  <PatientModuleHeader
+    admission={admission}
+  />
+
 <View style={styles.card}>
   <Text
     style={styles.sectionTitle}
   >
-    Patient Summary
+    Medication Orders
   </Text>
 
-  <Text style={styles.title}>
-    {admission?.patientName}
-  </Text>
+  <TextInput
+    placeholder="Medication Name"
+    value={medicationName}
+    onChangeText={
+      setMedicationName
+    }
+    style={{
+  borderWidth: 1,
+  borderColor: '#CBD5E1',
+  borderRadius: 12,
+  padding: 12,
+  marginTop: 12,
+}}
+  />
 
-  <Text style={styles.detailText}>
-    Patient ID:
-    {' '}
-    {admission?.patient_id}
-  </Text>
+  <TextInput
+    placeholder="Dose (e.g. 500 mg)"
+    value={medicationDose}
+    onChangeText={
+      setMedicationDose
+    }
+    style={{
+  borderWidth: 1,
+  borderColor: '#CBD5E1',
+  borderRadius: 12,
+  padding: 12,
+  marginTop: 12,
+}}
+  />
+
+  <TextInput
+    placeholder="Route (Oral / IV)"
+    value={medicationRoute}
+    onChangeText={
+      setMedicationRoute
+    }
+    style={{
+  borderWidth: 1,
+  borderColor: '#CBD5E1',
+  borderRadius: 12,
+  padding: 12,
+  marginTop: 12,
+}}
+  />
+
+  <TextInput
+    placeholder="Frequency (BD / TID)"
+    value={medicationFrequency}
+    onChangeText={
+      setMedicationFrequency
+    }
+    style={{
+  borderWidth: 1,
+  borderColor: '#CBD5E1',
+  borderRadius: 12,
+  padding: 12,
+  marginTop: 12,
+}}
+  />
+
+  <TextInput
+    placeholder="Duration (Days)"
+    value={medicationDuration}
+    onChangeText={
+      setMedicationDuration
+    }
+    keyboardType="numeric"
+    style={{
+  borderWidth: 1,
+  borderColor: '#CBD5E1',
+  borderRadius: 12,
+  padding: 12,
+  marginTop: 12,
+}}
+  />
+
+  <TextInput
+    placeholder="Instructions"
+    value={medicationInstructions}
+    onChangeText={
+      setMedicationInstructions
+    }
+    multiline
+    style={{
+  borderWidth: 1,
+  borderColor: '#CBD5E1',
+  borderRadius: 12,
+  padding: 12,
+  minHeight: 80,
+  marginTop: 12,
+}}
+  />
+
+  <TouchableOpacity
+    onPress={
+      handleSaveMedicationOrder
+    }
+    style={{
+      marginTop: 12,
+      backgroundColor:
+        COLORS.primary,
+      padding: 12,
+      borderRadius: 12,
+      alignItems: 'center',
+    }}
+  >
+    <Text
+      style={{
+        color: '#FFFFFF',
+        fontWeight: '700',
+      }}
+    >
+      Save Medication Order
+    </Text>
+  </TouchableOpacity>
 </View>
+{medicationOrders.map(
+  (order: any) => (
+    <View
+      key={order.id}
+      style={{
+        marginTop: 16,
+        paddingTop: 12,
+        borderTopWidth: 1,
+        borderTopColor: '#E2E8F0',
+      }}
+    >
+      <Text
+        style={{
+          fontWeight: '700',
+        }}
+      >
+        {order.medication_name}
+      </Text>
 
-<View style={styles.card}>
-  <Text
-    style={styles.sectionTitle}
-  >
-    Today's Care Tasks
-  </Text>
+      <Text>
+        {order.dose}
+      </Text>
 
-  {tasks
-    .slice(0, 6)
-    .map((task) => (
-<TouchableOpacity
-  key={task.id}
-  style={{
-    marginTop: 10,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor:
-      '#E2E8F0',
-  }}
-  onPress={() =>
-    navigation.navigate(
-      'TaskDetail',
-      { task }
-    )
-  }
->
+      <Text>
+        {order.route}
+        {' • '}
+        {order.frequency}
+      </Text>
+
+      <Text>
+        {order.duration_days} Days
+      </Text>
+
+      {order.instructions ? (
         <Text
           style={{
-            fontWeight: '600',
-          }}
-        >
-          {task.title}
-        </Text>
-
-        <Text
-          style={{
-            color:
-              task.status ===
-              'COMPLETED'
-                ? '#16A34A'
-                : '#D97706',
             marginTop: 4,
+            color: '#64748B',
           }}
         >
-          {task.status}
+          {order.instructions}
         </Text>
-      </TouchableOpacity>
-    ))}
-</View>
-<View style={styles.card}>
-  <Text
-    style={styles.sectionTitle}
-  >
-    Admission Details
-  </Text>
-
-  <Text style={styles.detailText}>
-    Admission No:
-    {' '}
-    {admission?.admission_number}
-  </Text>
-
-  <Text style={styles.detailText}>
-    Ward:
-    {' '}
-    {admission?.wardName}
-  </Text>
-
-  <Text style={styles.detailText}>
-    Bed:
-    {' '}
-    {admission?.bedNumber}
-  </Text>
-
-  <Text style={styles.detailText}>
-    Status:
-    {' '}
-    {admission?.status}
-  </Text>
-</View>
-
-<View style={styles.card}>
-  <Text
-    style={styles.sectionTitle}
-  >
-    Latest Consultation
-  </Text>
-
-<Text style={styles.detailText}>
-  Complaint:
-  {' '}
-  {consultation?.chief_complaint || '-'}
-</Text>
-
-<Text style={styles.detailText}>
-  Diagnosis:
-  {' '}
-  {consultation?.diagnosis || '-'}
-</Text>
-
-<Text style={styles.detailText}>
-  Prescription:
-  {' '}
-  {consultation?.prescription || '-'}
-</Text>
-
-<Text style={styles.detailText}>
-  Notes:
-  {' '}
-  {consultation?.notes || '-'}
-</Text>
-
-<Text style={styles.detailText}>
-  BP:
-  {' '}
-  {consultation?.bp || '-'}
-</Text>
-
-<Text style={styles.detailText}>
-  Pulse:
-  {' '}
-  {consultation?.pulse || '-'}
-</Text>
-<Text style={styles.detailText}>
-  SPO2:
-  {' '}
-  {consultation?.spo2 || '-'}
-</Text>
-</View>
-
-<View style={styles.card}>
-  <Text
-    style={styles.sectionTitle}
-  >
-    Vitals History
-  </Text>
-
-  {vitalsHistory.length === 0 ? (
-    <Text
-      style={{
-        marginTop: 12,
-        color: '#64748B',
-      }}
-    >
-      No vitals recorded.
-    </Text>
-  ) : (
-    vitalsHistory.map(
-      (vital) => (
-        <View
-          key={vital.id}
-          style={{
-            marginTop: 12,
-            paddingTop: 12,
-            borderTopWidth: 1,
-            borderTopColor:
-              '#E2E8F0',
-          }}
-        >
-          <Text>
-            BP: {vital.bp}
-          </Text>
-
-          <Text>
-            Pulse: {vital.pulse}
-          </Text>
-
-          <Text>
-            SpO2: {vital.spo2}
-          </Text>
-
-          <Text>
-            Temp: {vital.temperature}
-          </Text>
-
-          <Text>
-            RR:
-            {' '}
-            {vital.respiratory_rate}
-          </Text>
-
-          <Text
-            style={{
-              marginTop: 4,
-              color: '#64748B',
-              fontSize: 12,
-            }}
-          >
-            {vital.recorded_by}
-          </Text>
-        </View>
-      )
-    )
-  )}
-</View>
-<View style={styles.card}>
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate(
-        'NursingNotes',
-        {
-          admission,
-        }
-      )
-    }
-    style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    }}
-  >
-    <View>
-      <Text
-        style={styles.sectionTitle}
-      >
-        📝 Nursing Notes
-      </Text>
+      ) : null}
 
       <Text
-        style={styles.detailText}
+        style={{
+          marginTop: 4,
+          color: '#64748B',
+          fontSize: 12,
+        }}
       >
-        Record and review nursing notes
+        Ordered by {order.ordered_by}
       </Text>
     </View>
-
-    <Text
-      style={{
-        fontSize: 26,
-        color: COLORS.primary,
-        fontWeight: '700',
-      }}
-    >
-      ›
-    </Text>
-  </TouchableOpacity>
-</View>
-<View style={styles.card}>
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate(
-        'DoctorRounds',
-        {
-          admission,
-        }
-      )
-    }
-    style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    }}
-  >
-    <View>
-      <Text
-        style={styles.sectionTitle}
-      >
-        🩺 Doctor Rounds
-      </Text>
-
-      <Text
-        style={styles.detailText}
-      >
-        Record and review physician rounds
-      </Text>
-    </View>
-
-    <Text
-      style={{
-        fontSize: 26,
-        color: COLORS.primary,
-        fontWeight: '700',
-      }}
-    >
-      ›
-    </Text>
-  </TouchableOpacity>
-</View>
-<View style={styles.card}>
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate(
-        'MedicationOrders',
-        {
-          admission,
-        }
-      )
-    }
-    style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    }}
-  >
-    <View>
-      <Text
-        style={styles.sectionTitle}
-      >
-        💊 Medication Orders
-      </Text>
-
-      <Text
-        style={styles.detailText}
-      >
-        Prescribe and review medications
-      </Text>
-    </View>
-
-    <Text
-      style={{
-        fontSize: 26,
-        color: COLORS.primary,
-        fontWeight: '700',
-      }}
-    >
-      ›
-    </Text>
-  </TouchableOpacity>
-</View>
-<TouchableOpacity
-  onPress={() =>
-    navigation.navigate(
-      'Discharge',
-      {
-        admission,
-      }
-    )
-  }
-  style={{
-    margin: 16,
-    backgroundColor:
-      '#DC2626',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-  }}
->
-  <Text
-    style={{
-      color: '#FFFFFF',
-      fontWeight: '700',
-      fontSize: 16,
-    }}
-  >
-    Begin Discharge
-  </Text>
-</TouchableOpacity>
-
+  )
+)}
     </ScrollView>
     </SafeAreaView>
-
   );
 }
 

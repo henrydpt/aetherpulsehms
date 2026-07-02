@@ -19,8 +19,7 @@ interface AdmissionStore {
 
 export const useAdmissionStore =
   create<AdmissionStore>((set, get) => ({
-    admissions: [],
-
+admissions: [],
     addAdmission: (admission) =>
       set((state) => ({
         admissions: [

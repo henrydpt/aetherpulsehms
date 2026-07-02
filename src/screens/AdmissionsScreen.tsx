@@ -5,6 +5,7 @@ import React, {
 import {
   useRoute,
   useNavigation,
+  useFocusEffect,
 } from '@react-navigation/native';
 import {
   SafeAreaView,
@@ -36,6 +37,9 @@ import {
   StatusBar,
   Platform,
 } from 'react-native';
+import {
+  useAdmissionStore,
+} from '../store/admissionStore';
 export default function AdmissionsScreen() {
   const route = useRoute<any>();
 const patient =
@@ -43,16 +47,28 @@ const patient =
 
 const navigation =
   useNavigation<any>();
+
 const encounterId =
   route.params?.encounterId;
-  const [
-    admissions,
-    setAdmissions,
-  ] = useState<any[]>([]);
-
-  useEffect(() => {
+const [
+  admissions,
+  setAdmissions,
+] = useState<any[]>([]);
+const [
+  admissionFilter,
+  setAdmissionFilter,
+] = useState<'ACTIVE' | 'DISCHARGED'>(
+  'ACTIVE'
+);
+useEffect(() => {
+  loadAdmissions();
+}, [admissionFilter]);
+useFocusEffect(
+  React.useCallback(() => {
     loadAdmissions();
-  }, []);
+  }, [])
+);
+
 const [wards, setWards] =
   useState<any[]>([]);
 
@@ -120,7 +136,13 @@ async function loadAdmissions() {
 const data =
   await getAdmissionsWithPatients();
 
-  setAdmissions(data);
+setAdmissions(
+  data.filter(
+    (admission: any) =>
+      admission.status ===
+      admissionFilter
+  )
+);
 
   const wardData =
     await loadWardOptions();
@@ -172,14 +194,86 @@ style={styles.topBar}
     {admissions.length}
   </Text>
 
-  <Text
+<Text
+  style={{
+    color: '#64748B',
+    marginTop: 4,
+  }}
+>
+  {admissionFilter === 'ACTIVE'
+    ? 'Active Admissions'
+    : 'Discharged Patients'}
+</Text>
+</View>
+
+<View
+  style={{
+    flexDirection: 'row',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 12,
+    marginBottom: 16,
+    overflow: 'hidden',
+  }}
+>
+  <TouchableOpacity
+    onPress={() =>
+      setAdmissionFilter(
+        'ACTIVE'
+      )
+    }
     style={{
-      color: '#64748B',
-      marginTop: 4,
+      flex: 1,
+      padding: 14,
+      alignItems: 'center',
+      backgroundColor:
+        admissionFilter === 'ACTIVE'
+          ? COLORS.primary
+          : '#FFFFFF',
     }}
   >
-    Active Admissions
-  </Text>
+    <Text
+      style={{
+        fontWeight: '700',
+        color:
+          admissionFilter === 'ACTIVE'
+            ? '#FFFFFF'
+            : COLORS.primary,
+      }}
+    >
+      Active
+    </Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    onPress={() =>
+      setAdmissionFilter(
+        'DISCHARGED'
+      )
+    }
+    style={{
+      flex: 1,
+      padding: 14,
+      alignItems: 'center',
+      backgroundColor:
+        admissionFilter ===
+        'DISCHARGED'
+          ? COLORS.primary
+          : '#FFFFFF',
+    }}
+  >
+    <Text
+      style={{
+        fontWeight: '700',
+        color:
+          admissionFilter ===
+          'DISCHARGED'
+            ? '#FFFFFF'
+            : COLORS.primary,
+      }}
+    >
+      Discharged
+    </Text>
+  </TouchableOpacity>
 </View>
 
 {patient && (
@@ -327,14 +421,30 @@ style={styles.topBar}
 <TouchableOpacity
   key={item.id}
   style={styles.card}
-  onPress={() =>
+onPress={() => {
+
+  if (
+    item.status ===
+    'DISCHARGED'
+  ) {
+
     navigation.navigate(
-      'IpdPatientDetail',
+      'Discharge',
       {
         admission: item,
       }
-    )
+    );
+
+    return;
   }
+
+  navigation.navigate(
+    'IpdPatientDetail',
+    {
+      admission: item,
+    }
+  );
+}}
 >
 <Text
   style={styles.admissionNo}

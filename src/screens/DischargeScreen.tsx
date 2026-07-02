@@ -139,6 +139,18 @@ handleCompleteDischarge() {
     return;
   }
 
+Alert.alert(
+  'Confirm Patient Discharge',
+  'You are about to:\n\n• Complete the patient admission\n• Release the assigned bed\n• Mark the patient as discharged\n\nPlease confirm if you wish to continue.',
+    [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'Continue',
+        onPress: async () => {
+
   await saveDischargeSummary(
     admission.id,
     dischargeDiagnosis,
@@ -160,6 +172,11 @@ handleCompleteDischarge() {
         text: 'OK',
         onPress: () =>
           navigation.goBack(),
+      },
+    ]
+  );
+
+        },
       },
     ]
   );
@@ -371,60 +388,88 @@ handleCompleteDischarge() {
     Discharge Summary
   </Text>
 
-  <TextInput
-    placeholder="Discharge Diagnosis"
-    value={dischargeDiagnosis}
-    onChangeText={
-      setDischargeDiagnosis
-    }
-    style={styles.input}
-  />
+<TextInput
+  editable={
+    admission?.status !==
+    'DISCHARGED'
+  }
+  placeholder="Discharge Diagnosis"
+  value={dischargeDiagnosis}
+  onChangeText={
+    setDischargeDiagnosis
+  }
+  style={styles.input}
+/>
 
-  <TextInput
-    placeholder="Hospital Course"
-    value={hospitalCourse}
-    onChangeText={
-      setHospitalCourse
-    }
-    multiline
-    style={styles.textArea}
-  />
+<TextInput
+  editable={
+    admission?.status !==
+    'DISCHARGED'
+  }
+  placeholder="Hospital Course"
+  value={hospitalCourse}
+  onChangeText={
+    setHospitalCourse
+  }
+  multiline
+  style={styles.textArea}
+/>
 
-  <TextInput
-    placeholder="Discharge Medications"
-    value={dischargeMedications}
-    onChangeText={
-      setDischargeMedications
-    }
-    multiline
-    style={styles.textArea}
-  />
+<TextInput
+  editable={
+    admission?.status !==
+    'DISCHARGED'
+  }
+  placeholder="Discharge Medications"
+  value={dischargeMedications}
+  onChangeText={
+    setDischargeMedications
+  }
+  multiline
+  style={styles.textArea}
+/>
 
-  <TextInput
-    placeholder="Discharge Instructions"
-    value={dischargeInstructions}
-    onChangeText={
-      setDischargeInstructions
-    }
-    multiline
-    style={styles.textArea}
-  />
+<TextInput
+  editable={
+    admission?.status !==
+    'DISCHARGED'
+  }
+  placeholder="Discharge Instructions"
+  value={dischargeInstructions}
+  onChangeText={
+    setDischargeInstructions
+  }
+  multiline
+  style={styles.textArea}
+/>
 
-  <TextInput
-    placeholder="Follow-up Date (YYYY-MM-DD)"
-    value={dischargeFollowUpDate}
-    onChangeText={
-      setDischargeFollowUpDate
-    }
-    style={styles.input}
-  />
+<TextInput
+  editable={
+    admission?.status !==
+    'DISCHARGED'
+  }
+  placeholder="Follow-up Date (YYYY-MM-DD)"
+  value={dischargeFollowUpDate}
+  onChangeText={
+    setDischargeFollowUpDate
+  }
+  style={styles.input}
+/>
 <TouchableOpacity
+  disabled={
+    admission?.status ===
+    'DISCHARGED'
+  }
   onPress={
     handleCompleteDischarge
   }
   style={{
     marginTop: 20,
-    backgroundColor: '#16A34A',
+    backgroundColor:
+      admission?.status ===
+      'DISCHARGED'
+        ? '#94A3B8'
+        : '#16A34A',
     borderRadius: 12,
     paddingVertical: 16,
     alignItems: 'center',
@@ -437,7 +482,10 @@ handleCompleteDischarge() {
       fontSize: 16,
     }}
   >
-    Complete Discharge
+    {admission?.status ===
+'DISCHARGED'
+  ? 'Already Discharged'
+  : 'Complete Discharge'}
   </Text>
 </TouchableOpacity>
 </View>

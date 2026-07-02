@@ -64,7 +64,10 @@ export async function saveDischargeSummary(
       hospital_course: hospitalCourse,
       discharge_medications: dischargeMedications,
       discharge_instructions: dischargeInstructions,
-      follow_up_date: followUpDate,
+      follow_up_date:
+  followUpDate.trim()
+    ? followUpDate
+    : null,
       discharged_by: dischargedBy,
     });
 
