@@ -22,6 +22,7 @@ import { getHospitalStats }
   from '../services/opDashboardService';
 import {
   useNavigation,
+  DrawerActions,
 } from '@react-navigation/native';
 export default function HomeScreen() {
 
@@ -88,14 +89,21 @@ async function loadStats() {
           styles.content
         }
       >
-<View style={styles.topBar}>
-  <View style={styles.headerButton}>
-    <Ionicons
-      name="menu"
-      size={22}
-      color="#FFFFFF"
-    />
-  </View>
+        <View style={styles.topBar}>
+<TouchableOpacity
+  style={styles.headerButton}
+  onPress={() =>
+    navigation.dispatch(
+      DrawerActions.toggleDrawer()
+    )
+  }
+>
+  <Ionicons
+    name="menu"
+    size={22}
+    color="#FFFFFF"
+  />
+</TouchableOpacity>
 
   <Text style={styles.title}>
     Aether Pulse HMS

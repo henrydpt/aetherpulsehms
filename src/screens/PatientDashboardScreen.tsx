@@ -420,6 +420,7 @@ setDischargeSummary(summary);
     </Text>
   </TouchableOpacity>
 </View>
+<>
 <View style={styles.card}>
   <TouchableOpacity
     onPress={() =>
@@ -461,6 +462,50 @@ setDischargeSummary(summary);
     </Text>
   </TouchableOpacity>
 </View>
+
+<View style={styles.card}>
+  <TouchableOpacity
+    onPress={() =>
+      navigation.navigate(
+        'MedicationAdministration',
+        {
+          admission,
+        }
+      )
+    }
+    style={{
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    }}
+  >
+    <View>
+      <Text
+        style={styles.sectionTitle}
+      >
+        💉 Medication Administration
+      </Text>
+
+      <Text
+        style={styles.detailText}
+      >
+        Administer prescribed medications
+      </Text>
+    </View>
+
+    <Text
+      style={{
+        fontSize: 26,
+        color: COLORS.primary,
+        fontWeight: '700',
+      }}
+    >
+      ›
+    </Text>
+  </TouchableOpacity>
+</View>
+</>
+
 <View style={styles.card}>
   <TouchableOpacity
     onPress={() =>
@@ -478,6 +523,7 @@ setDischargeSummary(summary);
     }}
   >
     <View>
+
       <Text
         style={styles.sectionTitle}
       >

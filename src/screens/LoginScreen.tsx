@@ -117,9 +117,9 @@ onPress={() => {
     user.name
   );
 
-  navigation.replace(
-    'MainTabs'
-  );
+navigation.replace(
+  'MainDrawer'
+);
 }}
         >
           <Text style={styles.buttonText}>

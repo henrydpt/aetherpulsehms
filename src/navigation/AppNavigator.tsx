@@ -2,6 +2,7 @@ import React from 'react';
 import { useAuthStore } from '../store/authStore';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import { Ionicons } from '@expo/vector-icons';
 import DashboardScreen from '../screens/DashboardScreen';
 import HomeScreen from '../screens/HomeScreen';
@@ -41,9 +42,16 @@ import NursingNotesScreen
   from '../screens/NursingNotesScreen';
 import MedicationOrdersScreen
   from '../screens/MedicationOrdersScreen';
+import MedicationAdministrationScreen
+  from '../screens/MedicationAdministrationScreen';
+import MedicationAdministrationRecordScreen
+  from '../screens/MedicationAdministrationRecordScreen';
 import OpQueueScreen
   from '../screens/OpQueueScreen';
+import AppDrawerContent
+  from '../components/navigation/AppDrawerContent';
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
 function MainTabs() {
     const insets = useSafeAreaInsets();
@@ -136,6 +144,48 @@ if (route.name === 'Home') {
     </Tab.Navigator>
   );
 }
+function MainDrawer() {
+  return (
+<Drawer.Navigator
+  drawerContent={(props) => (
+    <AppDrawerContent {...props} />
+  )}
+  screenOptions={{
+    headerShown: false,
+  }}
+>
+<Drawer.Screen
+  name="MainTabs"
+  component={MainTabs}
+/>
+
+      <Drawer.Screen
+        name="Consultations"
+        component={ConsultationScreen}
+      />
+
+      <Drawer.Screen
+        name="Tasks"
+        component={TasksScreen}
+      />
+
+      <Drawer.Screen
+        name="Evidence Viewer"
+        component={EvidenceViewerScreen}
+      />
+
+      <Drawer.Screen
+        name="User Management"
+        component={UserManagementScreen}
+      />
+
+      <Drawer.Screen
+        name="NABH Dashboard"
+        component={ComplianceScreen}
+      />
+    </Drawer.Navigator>
+  );
+}
 export default function AppNavigator() {
   return (
   <SafeAreaProvider>
@@ -150,10 +200,10 @@ export default function AppNavigator() {
     component={LoginScreen}
   />
 
-  <Stack.Screen
-    name="MainTabs"
-    component={MainTabs}
-  />
+<Stack.Screen
+  name="MainDrawer"
+  component={MainDrawer}
+/>
 
   <Stack.Screen
     name="TaskDetail"
@@ -203,6 +253,16 @@ export default function AppNavigator() {
 <Stack.Screen
   name="MedicationOrders"
   component={MedicationOrdersScreen}
+/>
+
+<Stack.Screen
+  name="MedicationAdministration"
+  component={MedicationAdministrationScreen}
+/>
+
+<Stack.Screen
+  name="MedicationAdministrationRecord"
+  component={MedicationAdministrationRecordScreen}
 />
 
 <Stack.Screen
