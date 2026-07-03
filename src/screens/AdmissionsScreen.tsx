@@ -438,8 +438,8 @@ onPress={() => {
     return;
   }
 
-  navigation.navigate(
-    'IpdPatientDetail',
+navigation.navigate(
+  'PatientDashboard',
     {
       admission: item,
     }

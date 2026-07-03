@@ -9,6 +9,10 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {
   useRoute,
@@ -30,8 +34,7 @@ import {
 import {
   TextInput,
   Alert,
-}
-  from 'react-native';
+} from 'react-native';
 import {
   getVitalsHistory,
 } from '../services/vitalsQueryService';
@@ -318,10 +321,22 @@ handleSaveMedicationOrder() {
     medications
   );
 }
-  return (
+return (
 <SafeAreaView
   style={styles.container}
 >
+<KeyboardAvoidingView
+  style={{ flex: 1 }}
+  behavior={
+    Platform.OS === 'ios'
+      ? 'padding'
+      : 'height'
+  }
+>
+<TouchableWithoutFeedback
+  onPress={Keyboard.dismiss}
+>
+  <View style={{ flex: 1 }}>
   <View style={styles.topBar}>
         <Text
           style={styles.topBarTitle}
@@ -330,6 +345,7 @@ handleSaveMedicationOrder() {
         </Text>
       </View>
 <ScrollView
+keyboardShouldPersistTaps="handled"
   showsVerticalScrollIndicator={false}
   contentContainerStyle={{
     paddingBottom: 24,
@@ -478,8 +494,11 @@ handleSaveMedicationOrder() {
     )
   )}
 </View>
-    </ScrollView>
-    </SafeAreaView>
+</ScrollView>
+</View>
+</TouchableWithoutFeedback>
+</KeyboardAvoidingView>
+</SafeAreaView>
   );
 }
 

@@ -9,6 +9,10 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  KeyboardAvoidingView,
+Platform,
+Keyboard,
+TouchableWithoutFeedback,
 } from 'react-native';
 import {
   useRoute,
@@ -322,6 +326,18 @@ return (
 <SafeAreaView
   style={styles.container}
 >
+<KeyboardAvoidingView
+  style={{ flex: 1 }}
+  behavior={
+    Platform.OS === 'ios'
+      ? 'padding'
+      : 'height'
+  }
+>
+<TouchableWithoutFeedback
+  onPress={Keyboard.dismiss}
+>
+<View style={{ flex: 1 }}>
   <View style={styles.topBar}>
     <Text
       style={styles.topBarTitle}
@@ -331,6 +347,7 @@ return (
   </View>
 
   <ScrollView
+  keyboardShouldPersistTaps="handled"
     showsVerticalScrollIndicator={false}
     contentContainerStyle={{
       paddingBottom: 24,
@@ -520,8 +537,11 @@ return (
     </View>
   )
 )}
-    </ScrollView>
-    </SafeAreaView>
+</ScrollView>
+</View>
+</TouchableWithoutFeedback>
+</KeyboardAvoidingView>
+</SafeAreaView>
   );
 }
 

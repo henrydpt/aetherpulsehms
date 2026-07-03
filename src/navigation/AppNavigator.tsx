@@ -31,8 +31,8 @@ import { useTaskStore } from '../store/taskStore';
 import AdmissionsScreen from '../screens/AdmissionsScreen';
 import ConsultationScreen
   from '../screens/ConsultationScreen';
-import IpdPatientDetailScreen
-  from '../screens/IpdPatientDetailScreen';
+import PatientDashboardScreen
+  from '../screens/PatientDashboardScreen';
 import DischargeScreen
   from '../screens/DischargeScreen';
 import DoctorRoundsScreen
@@ -186,8 +186,8 @@ export default function AppNavigator() {
 />
 
 <Stack.Screen
-  name="IpdPatientDetail"
-  component={IpdPatientDetailScreen}
+  name="PatientDashboard"
+  component={PatientDashboardScreen}
 />
 
 <Stack.Screen

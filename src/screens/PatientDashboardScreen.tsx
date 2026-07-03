@@ -22,10 +22,7 @@ import {
 import {
   getPatientTasks,
 } from '../services/patientTaskQueryService';
-import {
-  saveNursingNote,
-  getNursingNotes,
-} from '../services/nursingNoteService';
+
 import {
   TextInput,
   Alert,
@@ -34,21 +31,14 @@ import {
 import {
   getVitalsHistory,
 } from '../services/vitalsQueryService';
-import {
-  saveDoctorRound,
-  getDoctorRounds,
-} from '../services/doctorRoundService';
-import {
-  saveMedicationOrder,
-  getMedicationOrders,
-} from '../services/medicationOrderService';
+
 import {
   dischargeAdmission,
   saveDischargeSummary,
   getDischargeSummary,
 } from '../services/dischargeService';
 export default function
-IpdPatientDetailScreen() {
+PatientDashboardScreen() {
   const route = useRoute<any>();
 
   const admission =
@@ -72,64 +62,7 @@ const [
   nursingNotes,
   setNursingNotes,
 ] = useState<any[]>([]);
-const [
-  doctorName,
-  setDoctorName,
-] = useState('');
 
-const [
-  progressNote,
-  setProgressNote,
-] = useState('');
-
-const [
-  treatmentPlan,
-  setTreatmentPlan,
-] = useState('');
-
-const [
-  followUpDate,
-  setFollowUpDate,
-] = useState('');
-
-const [
-  doctorRounds,
-  setDoctorRounds,
-] = useState<any[]>([]);
-const [
-  medicationName,
-  setMedicationName,
-] = useState('');
-
-const [
-  medicationDose,
-  setMedicationDose,
-] = useState('');
-
-const [
-  medicationRoute,
-  setMedicationRoute,
-] = useState('');
-
-const [
-  medicationFrequency,
-  setMedicationFrequency,
-] = useState('');
-
-const [
-  medicationDuration,
-  setMedicationDuration,
-] = useState('');
-
-const [
-  medicationInstructions,
-  setMedicationInstructions,
-] = useState('');
-
-const [
-  medicationOrders,
-  setMedicationOrders,
-] = useState<any[]>([]);
 const [
   vitalsHistory,
   setVitalsHistory,
@@ -184,32 +117,10 @@ loadConsultation() {
 
   setTasks(patientTasks);
 
-  const notes =
-    await getNursingNotes(
-      admission?.id
-    );
-
-  setNursingNotes(notes);
-
   const vitals =
     await getVitalsHistory(
       admission?.id
     );
-const rounds =
-  await getDoctorRounds(
-    admission?.id
-  );
-
-setDoctorRounds(rounds);
-
-const medications =
-  await getMedicationOrders(
-    admission?.id
-  );
-
-setMedicationOrders(
-  medications
-);
 
 setVitalsHistory(vitals);
 
@@ -221,101 +132,6 @@ const summary =
 setDischargeSummary(summary);
 }
 
-async function
-handleSaveNote() {
-
-  if (!nursingNote.trim()) {
-    return;
-  }
-
-  await saveNursingNote(
-    admission.id,
-    nursingNote
-  );
-
-  setNursingNote('');
-
-  const notes =
-    await getNursingNotes(
-      admission.id
-    );
-
-  setNursingNotes(notes);
-}
-async function
-handleSaveDoctorRound() {
-
-  if (
-    !doctorName ||
-    !progressNote
-  ) {
-    return;
-  }
-
-  await saveDoctorRound(
-    admission.id,
-    doctorName,
-    progressNote,
-    treatmentPlan,
-    followUpDate
-  );
-
-  setDoctorName('');
-  setProgressNote('');
-  setTreatmentPlan('');
-  setFollowUpDate('');
-
-  const rounds =
-    await getDoctorRounds(
-      admission.id
-    );
-
-  setDoctorRounds(rounds);
-}
-async function
-handleSaveMedicationOrder() {
-
-  if (
-    !medicationName.trim() ||
-    !medicationDose.trim()
-  ) {
-
-    Alert.alert(
-      'Validation',
-      'Medication name and dose are required.'
-    );
-
-    return;
-  }
-
-  await saveMedicationOrder(
-    admission.id,
-    medicationName,
-    medicationDose,
-    medicationRoute,
-    medicationFrequency,
-    Number(
-      medicationDuration || 0
-    ),
-    medicationInstructions
-  );
-
-  setMedicationName('');
-  setMedicationDose('');
-  setMedicationRoute('');
-  setMedicationFrequency('');
-  setMedicationDuration('');
-  setMedicationInstructions('');
-
-  const medications =
-    await getMedicationOrders(
-      admission.id
-    );
-
-  setMedicationOrders(
-    medications
-  );
-}
   return (
 <SafeAreaView
   style={styles.container}
@@ -324,13 +140,13 @@ handleSaveMedicationOrder() {
         <Text
           style={styles.topBarTitle}
         >
-          IPD Patient Detail
+          Patient Dashboard
         </Text>
       </View>
 <ScrollView
   showsVerticalScrollIndicator={false}
   contentContainerStyle={{
-    paddingBottom: 24,
+    paddingBottom: 100,
   }}
 >
 <View style={styles.card}>
@@ -351,55 +167,6 @@ handleSaveMedicationOrder() {
   </Text>
 </View>
 
-<View style={styles.card}>
-  <Text
-    style={styles.sectionTitle}
-  >
-    Today's Care Tasks
-  </Text>
-
-  {tasks
-    .slice(0, 6)
-    .map((task) => (
-<TouchableOpacity
-  key={task.id}
-  style={{
-    marginTop: 10,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor:
-      '#E2E8F0',
-  }}
-  onPress={() =>
-    navigation.navigate(
-      'TaskDetail',
-      { task }
-    )
-  }
->
-        <Text
-          style={{
-            fontWeight: '600',
-          }}
-        >
-          {task.title}
-        </Text>
-
-        <Text
-          style={{
-            color:
-              task.status ===
-              'COMPLETED'
-                ? '#16A34A'
-                : '#D97706',
-            marginTop: 4,
-          }}
-        >
-          {task.status}
-        </Text>
-      </TouchableOpacity>
-    ))}
-</View>
 <View style={styles.card}>
   <Text
     style={styles.sectionTitle}
@@ -547,45 +314,70 @@ handleSaveMedicationOrder() {
   )}
 </View>
 <View style={styles.card}>
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate(
-        'NursingNotes',
-        {
-          admission,
-        }
-      )
-    }
+  <Text
+    style={styles.sectionTitle}
+  >
+    Today's Care Tasks
+  </Text>
+
+  {tasks
+    .slice(0, 6)
+    .map((task) => (
+<TouchableOpacity
+  key={task.id}
+  style={{
+    marginTop: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor:
+      '#E2E8F0',
+  }}
+  onPress={() =>
+    navigation.navigate(
+      'TaskDetail',
+      { task }
+    )
+  }
+>
+        <Text
+          style={{
+            fontWeight: '600',
+          }}
+        >
+          {task.title}
+        </Text>
+
+        <Text
+          style={{
+            color:
+              task.status ===
+              'COMPLETED'
+                ? '#16A34A'
+                : '#D97706',
+            marginTop: 4,
+          }}
+        >
+          {task.status}
+        </Text>
+      </TouchableOpacity>
+    ))}
+</View>
+<View
+  style={{
+    marginHorizontal: 16,
+    marginTop: 8,
+    marginBottom: -8,
+  }}
+>
+  <Text
     style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
+      color: COLORS.primary,
+      fontWeight: '700',
+      fontSize: 18,
     }}
   >
-    <View>
-      <Text
-        style={styles.sectionTitle}
-      >
-        📝 Nursing Notes
-      </Text>
-
-      <Text
-        style={styles.detailText}
-      >
-        Record and review nursing notes
-      </Text>
-    </View>
-
-    <Text
-      style={{
-        fontSize: 26,
-        color: COLORS.primary,
-        fontWeight: '700',
-      }}
-    >
-      ›
-    </Text>
-  </TouchableOpacity>
+    Clinical Modules
+  </Text>
 </View>
 <View style={styles.card}>
   <TouchableOpacity
@@ -655,6 +447,47 @@ handleSaveMedicationOrder() {
         style={styles.detailText}
       >
         Prescribe and review medications
+      </Text>
+    </View>
+
+    <Text
+      style={{
+        fontSize: 26,
+        color: COLORS.primary,
+        fontWeight: '700',
+      }}
+    >
+      ›
+    </Text>
+  </TouchableOpacity>
+</View>
+<View style={styles.card}>
+  <TouchableOpacity
+    onPress={() =>
+      navigation.navigate(
+        'NursingNotes',
+        {
+          admission,
+        }
+      )
+    }
+    style={{
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    }}
+  >
+    <View>
+      <Text
+        style={styles.sectionTitle}
+      >
+        📝 Nursing Notes
+      </Text>
+
+      <Text
+        style={styles.detailText}
+      >
+        Record and review nursing notes
       </Text>
     </View>
 
