@@ -214,7 +214,55 @@ const currentRoute =
           )
         }
       />
+<DrawerSection
+  title="PHARMACY"
+/>
 
+<DrawerRow
+  icon="medkit"
+  title="Medicine Master"
+  onPress={() =>
+    navigation.navigate(
+      'Medicine Master'
+    )
+  }
+/>
+<DrawerRow
+  icon="cube"
+  title="Receive Stock"
+  onPress={() =>
+    navigation.navigate(
+      'Receive Stock'
+    )
+  }
+/>
+<DrawerRow
+  icon="archive"
+  title="Inventory"
+  onPress={() =>
+    navigation.navigate(
+      'Inventory'
+    )
+  }
+/>
+<DrawerRow
+  icon="cube-outline"
+  title="Dispensing Queue"
+  onPress={() =>
+    navigation.navigate(
+      'Dispensing Queue'
+    )
+  }
+/>
+<DrawerRow
+  icon="checkmark-done"
+  title="Dispensed Medications"
+  onPress={() =>
+    navigation.navigate(
+      'Dispensed Medications'
+    )
+  }
+/>
       <DrawerSection
         title="QUALITY"
       />

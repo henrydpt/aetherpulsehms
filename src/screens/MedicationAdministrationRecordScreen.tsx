@@ -26,8 +26,8 @@ import PatientModuleHeader
   from '../components/patient/PatientModuleHeader';
 
 import {
-  saveMedicationAdministration,
-} from '../services/medicationAdministrationService';
+  administerMedicationWorkflow,
+} from '../workflows/administerMedicationWorkflow';
 
 export default function MedicationAdministrationRecordScreen() {
 
@@ -50,25 +50,37 @@ export default function MedicationAdministrationRecordScreen() {
   ] = useState('');
 
   async function handleSave() {
-    await saveMedicationAdministration(
-      medicationOrder.id,
-      status,
-      new Date().toISOString(),
-      'Nurse',
-      remarks
-    );
+const result =
+  await administerMedicationWorkflow(
+    medicationOrder.id,
+    status,
+    new Date().toISOString(),
+    'Nurse',
+    remarks
+  );
 
-    Alert.alert(
-      'Success',
-      'Medication administration recorded.',
-      [
-        {
-          text: 'OK',
-          onPress: () =>
-            navigation.goBack(),
-        },
-      ]
-    );
+if (!result.success) {
+
+  Alert.alert(
+    'Error',
+    result.message
+  );
+
+  return;
+
+}
+
+Alert.alert(
+  'Success',
+  result.message,
+  [
+    {
+      text: 'OK',
+      onPress: () =>
+        navigation.goBack(),
+    },
+  ]
+);
   }
 
   return (

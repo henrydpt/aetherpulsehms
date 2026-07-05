@@ -14,9 +14,11 @@ export default function PatientModuleHeader({
 }: Props) {
   return (
     <View style={styles.card}>
-      <Text style={styles.title}>
-        {admission?.patientName}
-      </Text>
+<Text style={styles.title}>
+  {admission?.patient?.name ||
+    admission?.patientName ||
+    '-'}
+</Text>
 
 <View
   style={{
@@ -28,11 +30,19 @@ export default function PatientModuleHeader({
   </Text>
 
   <Text style={styles.detail}>
-    Ward: {admission?.wardName || '-'}
+    Ward: {
+  admission?.patient?.ward ||
+  admission?.wardName ||
+  '-'
+}
   </Text>
 
   <Text style={styles.detail}>
-    Bed: {admission?.bedNumber || '-'}
+    Bed: {
+  admission?.bed?.bed_number ||
+  admission?.bedNumber ||
+  '-'
+}
   </Text>
 
   <Text style={styles.detail}>

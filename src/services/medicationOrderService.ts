@@ -21,6 +21,7 @@ export async function saveMedicationOrder(
       duration_days: durationDays,
       instructions,
       ordered_by: orderedBy,
+      status: 'PENDING',
     });
 
   if (error) {
@@ -34,10 +35,14 @@ export async function getMedicationOrders(
   const { data, error } = await supabase
     .from('medication_orders')
     .select('*')
-    .eq(
-      'admission_id',
-      admissionId
-    )
+.eq(
+  'admission_id',
+  admissionId
+)
+.eq(
+  'status',
+  'DISPENSED'
+)
     .order(
       'ordered_at',
       {
@@ -50,4 +55,26 @@ export async function getMedicationOrders(
   }
 
   return data || [];
+}
+
+export async function updateMedicationOrderStatus(
+  medicationOrderId: string,
+  status: string
+) {
+
+  const { error } =
+    await supabase
+      .from('medication_orders')
+      .update({
+        status,
+      })
+      .eq(
+        'id',
+        medicationOrderId
+      );
+
+  if (error) {
+    throw error;
+  }
+
 }

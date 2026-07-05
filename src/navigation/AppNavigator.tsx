@@ -46,6 +46,20 @@ import MedicationAdministrationScreen
   from '../screens/MedicationAdministrationScreen';
 import MedicationAdministrationRecordScreen
   from '../screens/MedicationAdministrationRecordScreen';
+import MedicineMasterScreen
+  from '../screens/MedicineMasterScreen';
+import ReceiveStockScreen
+  from '../screens/ReceiveStockScreen';
+import InventoryScreen
+  from '../screens/InventoryScreen';
+import DispensingQueueScreen
+  from '../screens/DispensingQueueScreen';
+import DispensedMedicationsScreen
+  from '../screens/DispensedMedicationsScreen';
+import MedicationTimelineScreen
+  from '../screens/MedicationTimelineScreen';
+import DispenseMedicationScreen
+  from '../screens/DispenseMedicationScreen';
 import OpQueueScreen
   from '../screens/OpQueueScreen';
 import AppDrawerContent
@@ -178,7 +192,26 @@ function MainDrawer() {
         name="User Management"
         component={UserManagementScreen}
       />
-
+<Drawer.Screen
+  name="Medicine Master"
+  component={MedicineMasterScreen}
+/>
+<Drawer.Screen
+  name="Receive Stock"
+  component={ReceiveStockScreen}
+/>
+<Drawer.Screen
+  name="Inventory"
+  component={InventoryScreen}
+/>
+<Drawer.Screen
+  name="Dispensing Queue"
+  component={DispensingQueueScreen}
+/>
+<Drawer.Screen
+  name="Dispensed Medications"
+  component={DispensedMedicationsScreen}
+/>
       <Drawer.Screen
         name="NABH Dashboard"
         component={ComplianceScreen}
@@ -264,7 +297,14 @@ export default function AppNavigator() {
   name="MedicationAdministrationRecord"
   component={MedicationAdministrationRecordScreen}
 />
-
+<Stack.Screen
+  name="Dispense Medication"
+  component={DispenseMedicationScreen}
+/>
+<Stack.Screen
+  name="Medication Timeline"
+  component={MedicationTimelineScreen}
+/>
 <Stack.Screen
   name="Discharge"
   component={DischargeScreen}

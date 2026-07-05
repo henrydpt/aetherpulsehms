@@ -375,41 +375,71 @@ return (
         </Text>
       ) : null}
 
-      <View
-        style={{
-          flexDirection: 'row',
-          marginTop: 16,
-        }}
-      >
-        <TouchableOpacity
-          style={{
-            flex: 1,
-            backgroundColor: '#16A34A',
-            padding: 12,
-            borderRadius: 10,
-            marginRight: 6,
-            alignItems: 'center',
-          }}
-onPress={() =>
-  navigation.navigate(
-    'MedicationAdministrationRecord',
-    {
-      admission,
-      medicationOrder: order,
+<View
+  style={{
+    flexDirection: 'row',
+    marginTop: 16,
+  }}
+>
+
+  <TouchableOpacity
+    style={{
+      flex: 1,
+      backgroundColor: COLORS.primary,
+      padding: 12,
+      borderRadius: 10,
+      marginRight: 6,
+      alignItems: 'center',
+    }}
+    onPress={() =>
+      navigation.navigate(
+        'Medication Timeline',
+        {
+          admission,
+          medicationOrder: order,
+        }
+      )
     }
-  )
-}
-        >
-          <Text
-            style={{
-              color: '#FFFFFF',
-              fontWeight: '700',
-            }}
-          >
-            Administer
-          </Text>
-</TouchableOpacity>
-      </View>
+  >
+    <Text
+      style={{
+        color: '#FFFFFF',
+        fontWeight: '700',
+      }}
+    >
+      Timeline
+    </Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    style={{
+      flex: 1,
+      backgroundColor: '#16A34A',
+      padding: 12,
+      borderRadius: 10,
+      alignItems: 'center',
+    }}
+    onPress={() =>
+      navigation.navigate(
+        'MedicationAdministrationRecord',
+        {
+          admission,
+          medicationOrder: order,
+        }
+      )
+    }
+  >
+    <Text
+      style={{
+        color: '#FFFFFF',
+        fontWeight: '700',
+      }}
+    >
+      Administer
+    </Text>
+  </TouchableOpacity>
+
+</View>
 
       {(administrationHistory[
         order.id

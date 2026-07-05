@@ -37,14 +37,16 @@ import {
   saveDischargeSummary,
   getDischargeSummary,
 } from '../services/dischargeService';
+
 export default function
 PatientDashboardScreen() {
   const route = useRoute<any>();
 
-  const admission =
-    route.params?.admission;
+const admission =
+  route.params?.admission;
 const navigation =
   useNavigation<any>();
+
 const [
   consultation,
   setConsultation,
@@ -119,14 +121,14 @@ loadConsultation() {
 
   const vitals =
     await getVitalsHistory(
-      admission?.id
+      route.params?.admission?.id
     );
 
 setVitalsHistory(vitals);
 
 const summary =
   await getDischargeSummary(
-    admission?.id
+    route.params?.admission?.id
   );
 
 setDischargeSummary(summary);
@@ -163,7 +165,7 @@ setDischargeSummary(summary);
   <Text style={styles.detailText}>
     Patient ID:
     {' '}
-    {admission?.patient_id}
+    {route.params?.admission?.patient_id}
   </Text>
 </View>
 
