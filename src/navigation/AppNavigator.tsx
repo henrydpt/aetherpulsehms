@@ -73,6 +73,8 @@ import LabResultsScreen
   from '../screens/LabResultsScreen';
 import AddTestScreen
   from '../screens/AddTestScreen';
+import LabOrdersScreen
+  from '../screens/LabOrdersScreen';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -333,6 +335,10 @@ export default function AppNavigator() {
 <Stack.Screen
   name="Lab Results"
   component={LabResultsScreen}
+/>
+<Stack.Screen
+  name="Lab Orders"
+  component={LabOrdersScreen}
 />
 <Stack.Screen
   name="Discharge"
