@@ -273,6 +273,39 @@ const currentRoute =
     )
   }
 />
+<DrawerSection
+  title="LABORATORY"
+/>
+
+<DrawerRow
+  icon="flask"
+  title="Test Master"
+  onPress={() =>
+    navigation.navigate(
+      'Test Master'
+    )
+  }
+/>
+
+<DrawerRow
+  icon="beaker"
+  title="Lab Queue"
+  onPress={() =>
+    navigation.navigate(
+      'Lab Queue'
+    )
+  }
+/>
+
+<DrawerRow
+  icon="document-text"
+  title="Lab Results"
+  onPress={() =>
+    navigation.navigate(
+      'Lab Results'
+    )
+  }
+/>
       <DrawerSection
         title="QUALITY"
       />

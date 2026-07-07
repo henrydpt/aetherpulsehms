@@ -65,6 +65,14 @@ import OpQueueScreen
 import AppDrawerContent
   from '../components/navigation/AppDrawerContent';
 import OPRegistrationScreen from '../screens/OPRegistrationScreen';
+import TestMasterScreen
+  from '../screens/TestMasterScreen';
+import LabQueueScreen
+  from '../screens/LabQueueScreen';
+import LabResultsScreen
+  from '../screens/LabResultsScreen';
+import AddTestScreen
+  from '../screens/AddTestScreen';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -308,6 +316,23 @@ export default function AppNavigator() {
 <Stack.Screen
   name="Medication Timeline"
   component={MedicationTimelineScreen}
+/>
+<Stack.Screen
+  name="Test Master"
+  component={TestMasterScreen}
+/>
+<Stack.Screen
+  name="Add Test"
+  component={AddTestScreen}
+/>
+<Stack.Screen
+  name="Lab Queue"
+  component={LabQueueScreen}
+/>
+
+<Stack.Screen
+  name="Lab Results"
+  component={LabResultsScreen}
 />
 <Stack.Screen
   name="Discharge"
