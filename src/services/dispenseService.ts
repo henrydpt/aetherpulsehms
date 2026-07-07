@@ -2,13 +2,19 @@ import { supabase } from '../lib/supabase';
 import {
   getAdmissionContext,
 } from './admissionContextService';
+import {
+  MEDICATION_STATUS,
+} from '../constants/medicationStatus';
 export async function getPendingMedicationOrders() {
 
   const { data: orders, error } =
     await supabase
       .from('medication_orders')
       .select('*')
-      .eq('status', 'PENDING')
+      .eq(
+  'status',
+  MEDICATION_STATUS.PENDING
+)
       .order(
         'ordered_at',
         {
@@ -74,7 +80,10 @@ export async function getDispensedMedicationOrders() {
     await supabase
       .from('medication_orders')
       .select('*')
-      .eq('status', 'DISPENSED')
+      .eq(
+  'status',
+  MEDICATION_STATUS.DISPENSED
+)
       .order(
         'ordered_at',
         {

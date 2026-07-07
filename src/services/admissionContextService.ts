@@ -64,15 +64,7 @@ export async function getAdmissionContext(
     bed = data;
 
   }
-console.log(
-  'Admission Context Service:',
-  {
-    admission,
-    patient,
-    bedAllocation,
-    bed,
-  }
-);
+
   return {
     ...admission,
     patient,

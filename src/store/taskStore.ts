@@ -46,7 +46,7 @@ loadTasks: async () => {
       .select('*');
 
   if (error) {
-    console.log(error);
+    console.error('Task Store Error:', error);
     return;
   }
 
@@ -239,7 +239,7 @@ if (
   }
 }
   if (error) {
-    console.log(error);
+    console.error('Task Store Error:', error);
     return;
   }
 

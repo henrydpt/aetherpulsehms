@@ -1,5 +1,7 @@
 import { supabase } from '../lib/supabase';
-
+import {
+  MEDICATION_STATUS,
+} from '../constants/medicationStatus';
 export async function saveMedicationOrder(
   admissionId: string,
   medicationName: string,
@@ -21,7 +23,8 @@ export async function saveMedicationOrder(
       duration_days: durationDays,
       instructions,
       ordered_by: orderedBy,
-      status: 'PENDING',
+      status:
+  MEDICATION_STATUS.PENDING,
     });
 
   if (error) {

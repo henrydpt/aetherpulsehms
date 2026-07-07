@@ -55,7 +55,7 @@ const { data, error } =
     .eq('active', true);
 
   if (error) {
-    console.log(error);
+    console.error('Patient Store Error:', error);
     return;
   }
 
@@ -142,7 +142,7 @@ await supabase
       .eq('id', id);
 
   if (error) {
-    console.log(error);
+    console.error('Patient Store Error:', error);
     return;
   }
 

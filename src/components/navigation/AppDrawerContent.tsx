@@ -167,9 +167,19 @@ const currentRoute =
         }
       />
 
+<DrawerRow
+  icon="clipboard"
+  title="OP Registration"
+  onPress={() =>
+    navigation.navigate(
+      'OPRegistration'
+    )
+  }
+/>
+
       <DrawerRow
         icon="bed"
-        title="OPD"
+        title="OP Queue"
         onPress={() =>
           navigation.navigate(
             'OPD'

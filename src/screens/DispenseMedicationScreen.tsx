@@ -72,14 +72,6 @@ export default function DispenseMedicationScreen() {
 
     const data =
       await getInventory();
-      console.log('Order Medicine:', order.medication_name);
-
-console.log(
-  'Inventory Medicines:',
-  data.map(
-    (x: any) => x.medicines?.name
-  )
-);
 
     const matching =
     
@@ -88,8 +80,6 @@ console.log(
           item.medicines?.name ===
           order.medication_name
       );
-      console.log('Matching:', matching);
-
     setInventory(matching);
 
     if (matching.length > 0) {

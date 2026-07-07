@@ -14,6 +14,8 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import { COLORS }
   from '../theme/colors';
@@ -29,7 +31,7 @@ export default function ConsultationScreen() {
 
   const patient =
     route.params?.patient;
-
+console.log(patient);
   const queueId =
     route.params?.queueId;
 const navigation =
@@ -114,13 +116,25 @@ navigation.navigate(
 }
 
 async function completeVisit() {
-  console.log(
-    'Complete Consultation'
-  );
+Alert.alert(
+  'Coming Soon',
+  'Complete Consultation workflow is under development.'
+);
 }
-  return (
-    <SafeAreaView style={styles.container}>
+return (
+  <SafeAreaView style={styles.container}>
+
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={
+        Platform.OS === 'ios'
+          ? 'padding'
+          : 'height'
+      }
+    >
+
       <ScrollView
+        keyboardShouldPersistTaps="handled"
         contentContainerStyle={
           styles.content
         }
@@ -339,8 +353,11 @@ async function completeVisit() {
   </TouchableOpacity>
 </View>
 
-</ScrollView>
-    </SafeAreaView>
+      </ScrollView>
+
+    </KeyboardAvoidingView>
+
+  </SafeAreaView>
   );
 }
 
@@ -371,13 +388,13 @@ const styles =
       fontWeight: '700',
     },
 
-    card: {
-      backgroundColor:
-        '#FFFFFF',
-      margin: 16,
-      borderRadius: 16,
-      padding: 16,
-    },
+card: {
+  backgroundColor: '#FFFFFF',
+  marginHorizontal: 16,
+  marginTop: 10,
+  borderRadius: 16,
+  padding: 16,
+},
 
     label: {
       fontWeight: '600',

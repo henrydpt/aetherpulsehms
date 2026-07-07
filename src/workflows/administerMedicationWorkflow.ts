@@ -6,6 +6,9 @@ import {
   updateMedicationOrderStatus,
 } from '../services/medicationOrderService';
 
+import {
+  MEDICATION_STATUS,
+} from '../constants/medicationStatus';
 export async function administerMedicationWorkflow(
   medicationOrderId: string,
   status: string,
@@ -26,7 +29,7 @@ export async function administerMedicationWorkflow(
 
     await updateMedicationOrderStatus(
       medicationOrderId,
-      'COMPLETED'
+      MEDICATION_STATUS.COMPLETED
     );
 
     return {

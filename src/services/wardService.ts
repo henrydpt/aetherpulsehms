@@ -16,7 +16,7 @@ export async function getWards() {
     .order('name');
 
   if (error) {
-    console.log(error);
+    console.error('Ward Service Error:', error);
     return [];
   }
 

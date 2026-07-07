@@ -11,10 +11,5 @@ testAdmission(patientId: string) {
         'General Observation',
     });
 
-  console.log(
-    'ADMISSION CREATED',
-    admission
-  );
-
   return admission;
 }

@@ -115,11 +115,6 @@ if (encounterId) {
   );
 }
 
-    console.log(
-      'CREATED',
-      admission
-    );
-
     loadAdmissions();
 
   } catch (error: any) {

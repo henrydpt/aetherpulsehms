@@ -13,7 +13,10 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { usePatientStore } from '../store/patientStore';
-import { useNavigation } from '@react-navigation/native';
+import {
+  useNavigation,
+  useFocusEffect,
+} from '@react-navigation/native';
 import { COLORS } from '../theme/colors';
 import { StatusBar } from 'react-native';
 export default function PatientsScreen() {
@@ -26,6 +29,11 @@ export default function PatientsScreen() {
 useEffect(() => {
   loadPatients();
 }, []);
+useFocusEffect(
+  React.useCallback(() => {
+    loadPatients();
+  }, [])
+);
     const [searchQuery, setSearchQuery] = useState('');
 
 const patients = usePatientStore(

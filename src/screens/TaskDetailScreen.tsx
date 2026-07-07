@@ -80,7 +80,7 @@ if (!result.canceled) {
 
     setPhotoAttached(true);
   } catch (error) {
-    console.log(error);
+    console.error('Task Detail Error:', error);
 
     alert(
       'Evidence upload failed'

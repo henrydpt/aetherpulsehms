@@ -20,7 +20,7 @@ export async function getAvailableBeds(
     .order('bed_number');
 
   if (error) {
-    console.log(error);
+    console.error('Bed Service Error:', error);
     return [];
   }
 

@@ -64,6 +64,7 @@ import OpQueueScreen
   from '../screens/OpQueueScreen';
 import AppDrawerContent
   from '../components/navigation/AppDrawerContent';
+import OPRegistrationScreen from '../screens/OPRegistrationScreen';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -262,7 +263,10 @@ export default function AppNavigator() {
   name="Admissions"
   component={AdmissionsScreen}
 />
-
+<Stack.Screen
+  name="OPRegistration"
+  component={OPRegistrationScreen}
+/>
 <Stack.Screen
   name="Consultation"
   component={ConsultationScreen}
@@ -326,6 +330,7 @@ export default function AppNavigator() {
   name="AddUser"
   component={AddUserScreen}
 />
+
 </Stack.Navigator>
         </NavigationContainer>
   </SafeAreaProvider>

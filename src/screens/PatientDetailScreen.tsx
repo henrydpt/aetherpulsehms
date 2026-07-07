@@ -1,15 +1,5 @@
 import React from 'react';
 import { supabase } from '../lib/supabase';
-import { createOpEncounter }
-  from '../services/opdService';
-import { getActiveOpEncounter }
-  from '../services/opEncounterQueryService';
-import {
-  getActiveAdmission,
-} from '../services/admissionLookupService';
-import {
-  dischargeAdmission,
-} from '../services/dischargeService';
 import {
   SafeAreaView,
   ScrollView,
@@ -128,6 +118,57 @@ return (
 <Text style={styles.info}>
   Billing Remarks: {patient?.billingRemarks || '-'}
 </Text>
+<View
+style={{
+  flexDirection: 'row',
+  justifyContent: 'center',
+  gap: 12,
+  marginTop: 18,
+  marginBottom: 20,
+}}
+>
+
+<TouchableOpacity
+  style={styles.actionButton}
+  onPress={() =>
+    navigation.navigate(
+      'AddPatient',
+      {
+        mode: 'EDIT',
+        patient,
+      }
+    )
+  }
+>
+  
+    <Text style={styles.actionButtonText}>
+      Edit Patient
+    </Text>
+  </TouchableOpacity>
+
+<TouchableOpacity
+  style={[
+    styles.actionButton,
+    {
+      marginLeft: 10,
+      backgroundColor: '#475569'
+    },
+  ]}
+  onPress={() =>
+    navigation.navigate(
+      'PatientCaseSheet',
+      {
+        patient,
+      }
+    )
+  }
+>
+  <Text style={styles.actionButtonText}>
+    Case Sheet
+  </Text>
+</TouchableOpacity>
+
+</View>
 <View
   style={{
     marginTop: 18,
@@ -255,165 +296,6 @@ return (
         </View>
       ))
   )}
-</View>
-<View
-  style={{
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginTop: 18,
-    gap: 10,
-  }}
->
-
-<TouchableOpacity
-  style={styles.actionButton}
-  onPress={() =>
-    navigation.navigate(
-      'AddPatient',
-      {
-        mode: 'EDIT',
-        patient,
-      }
-    )
-  }
->
-  
-    <Text style={styles.actionButtonText}>
-      Edit Patient
-    </Text>
-  </TouchableOpacity>
-<TouchableOpacity
-  style={[
-    styles.actionButton,
-    {
-      marginLeft: 10,
-      backgroundColor: '#0F766E',
-    },
-  ]}
-  onPress={() =>
-    navigation.navigate(
-      'Admissions',
-      {
-        patient,
-      }
-    )
-  }
->
-  <Text style={styles.actionButtonText}>
-    Admissions
-  </Text>
-
-</TouchableOpacity>
-<TouchableOpacity
-  style={[
-    styles.actionButton,
-    {
-      backgroundColor: '#166534',
-    },
-  ]}
-  onPress={async () => {
-
-    if (!patient) return;
-
-    const existing =
-      await getActiveOpEncounter(
-        patient.id
-      );
-
-    if (existing) {
-      alert(
-        'Patient already in OP queue'
-      );
-      return;
-    }
-
-    const encounter =
-      await createOpEncounter(
-        patient.id
-      );
-
-    alert(
-      `Token: ${encounter.token_number}`
-    );
-  }}
->
-  <Text
-    style={styles.actionButtonText}
-  >
-    OP Registration
-  </Text>
-</TouchableOpacity>
-<TouchableOpacity
-  style={[
-    styles.actionButton,
-    {
-      marginLeft: 10,
-      backgroundColor: '#475569'
-    },
-  ]}
-  onPress={() =>
-    navigation.navigate(
-      'PatientCaseSheet',
-      {
-        patient,
-      }
-    )
-  }
->
-  <Text style={styles.actionButtonText}>
-    Case Sheet
-  </Text>
-</TouchableOpacity>
-<TouchableOpacity
-  style={[
-    styles.actionButton,
-    {
-      marginLeft: 10,
-      backgroundColor: '#7F1D1D'
-    },
-  ]}
-  onPress={() =>
-    Alert.alert(
-      'Discharge Patient',
-      `Discharge ${patient?.name}?`,
-      [
-        {
-          text: 'Cancel',
-          style: 'cancel',
-        },
-        {
-          text: 'Discharge',
-onPress: async () => {
-if (!patient) return;
-
-const admission =
-  await getActiveAdmission(
-    patient.id
-  );
-
-if (admission) {
-  await dischargeAdmission(
-    admission.id
-  );
-}
-
-console.log(
-  'Patient discharged'
-);
-
-loadPatients();
-
-navigation.goBack();
-},
-        },
-      ]
-    )
-  }
->
-    <Text style={styles.actionButtonText}>
-      Discharge
-    </Text>
-  </TouchableOpacity>
 </View>
         </View>
         <View style={styles.card}>

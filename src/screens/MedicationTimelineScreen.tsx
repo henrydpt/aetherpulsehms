@@ -35,7 +35,7 @@ export default function MedicationTimelineScreen() {
     admission,
     medicationOrder,
   } = route.params;
-console.log('Admission Context:', admission);
+
   const [
     dispense,
     setDispense,

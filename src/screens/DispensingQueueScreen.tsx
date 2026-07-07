@@ -14,6 +14,7 @@ import {
 
 import {
   useNavigation,
+  useFocusEffect,
 } from '@react-navigation/native';
 
 import { COLORS } from '../theme/colors';
@@ -35,7 +36,11 @@ export default function DispensingQueueScreen() {
   useEffect(() => {
     loadOrders();
   }, []);
-
+useFocusEffect(
+  React.useCallback(() => {
+    loadOrders();
+  }, [])
+);
   async function loadOrders() {
     const data =
       await getPendingMedicationOrders();

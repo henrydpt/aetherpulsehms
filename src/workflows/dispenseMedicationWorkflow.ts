@@ -9,6 +9,9 @@ import {
 import {
   updateMedicationOrderStatus,
 } from '../services/medicationOrderService';
+import {
+  MEDICATION_STATUS,
+} from '../constants/medicationStatus';
 
 export async function dispenseMedicationWorkflow(
   medicationOrderId: string,
@@ -35,7 +38,7 @@ export async function dispenseMedicationWorkflow(
 
     await updateMedicationOrderStatus(
       medicationOrderId,
-      'DISPENSED'
+      MEDICATION_STATUS.DISPENSED
     );
 
     return {

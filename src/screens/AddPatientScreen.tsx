@@ -260,16 +260,24 @@ if (error) {
   alert(error.message);
   return;
 }
+const { data: savedPatient } =
+  await supabase
+    .from('patients')
+    .select('id,name')
+    .eq('id', newPatient.id)
+    .maybeSingle();
+
+console.log(
+  'Saved Patient:',
+  savedPatient
+);
 const vitalsTasks =
   generateVitalsTasks({
     id: newPatient.id,
     name: newPatient.name,
     ward: newPatient.ward,
   });
-  console.log(
-  'VITALS TASK COUNT',
-  vitalsTasks.length
-);
+
 await supabase
   .from('tasks')
   .insert(

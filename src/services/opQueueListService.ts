@@ -23,17 +23,40 @@ export async function getOpQueueWithPatients() {
   const { data: patients } =
     await supabase
       .from('patients')
-      .select('id,name');
+      .select(`
+  id,
+  name,
+  age,
+  gender,
+  doctor_assigned
+`);
 
-  return (queue || []).map(
-    (encounter) => ({
+return (queue || []).map(
+  (encounter) => {
+
+    const patient =
+      patients?.find(
+        (p) =>
+          p.id ===
+          encounter.patient_id
+      );
+
+    return {
       ...encounter,
+
       patientName:
-        patients?.find(
-          (p) =>
-            p.id ===
-            encounter.patient_id
-        )?.name || 'Unknown',
-    })
-  );
+        patient?.name || 'Unknown',
+
+      patientAge:
+        patient?.age,
+
+      patientGender:
+        patient?.gender,
+
+      doctorAssigned:
+        patient?.doctor_assigned,
+    };
+
+  }
+);
 }

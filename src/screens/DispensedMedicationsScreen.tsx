@@ -41,11 +41,6 @@ export default function DispensedMedicationsScreen() {
 const data =
   await getDispensedMedicationOrders();
 
-console.log(
-  'Dispensed Orders:',
-  JSON.stringify(data, null, 2)
-);
-
 setOrders(data);
 
   }

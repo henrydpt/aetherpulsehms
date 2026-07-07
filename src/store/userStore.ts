@@ -149,7 +149,7 @@ updateUser: async (
       .eq('id', userId);
 
   if (error) {
-    console.log(error);
+    console.error('User Store Error:', error);
     return;
   }
 
@@ -177,7 +177,7 @@ deactivateUser: async (
       .eq('id', userId);
 
   if (error) {
-    console.log(error);
+    console.error('User Store Error:', error);
     return;
   }
 

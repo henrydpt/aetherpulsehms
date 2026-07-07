@@ -25,13 +25,11 @@ export async function getInventory() {
     );
 
   if (error) {
-    console.log(error);
+    console.error('Inventory Service Error:', error);
     throw error;
   }
 
-  console.log(data);
-
-  return data || [];
+   return data || [];
 }
 
 export async function addInventory(

@@ -45,10 +45,6 @@ useEffect(() => {
     const stats =
       await getHospitalStats();
 
-    console.log(
-      'HMS STATS',
-      stats
-    );
   }
 
   loadData();

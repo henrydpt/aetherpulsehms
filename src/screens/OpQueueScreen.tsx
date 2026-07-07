@@ -95,94 +95,152 @@ const data =
     </Text>
   </View>
 
-  {queue.map((item: any) => (
+{queue.map((item: any) => (
+
+  <View
+    key={item.id}
+    style={styles.card}
+  >
+
     <View
-      key={item.id}
-      style={styles.card}
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
     >
+
       <Text
         style={{
-          fontSize: 20,
+          fontSize: 16,
           fontWeight: '700',
           color: COLORS.primary,
         }}
       >
-        #{item.token_number}
+        {item.token_number}
       </Text>
 
       <Text
         style={{
-          marginTop: 8,
-          fontSize: 18,
-          fontWeight: '600',
-        }}
-      >
-        {item.patientName}
-      </Text>
-
-      <Text
-        style={{
-          marginTop: 4,
-          color: '#64748B',
+          color:
+            item.status === 'WAITING'
+              ? '#D97706'
+              : '#16A34A',
+          fontWeight: '700',
         }}
       >
         {item.status}
       </Text>
 
-      {item.status === 'WAITING' && (
-        <TouchableOpacity
-          onPress={async () => {
-await startConsultation(
-  item.id
-);
-
-navigation.navigate(
-  'Consultation',
-  {
-    patient: item,
-    queueId: item.id,
-  }
-);
-
-loadQueue();
-          }}
-        >
-          <Text
-            style={{
-              color: '#16A34A',
-              marginTop: 12,
-              fontWeight: '700',
-            }}
-          >
-            Start Consultation
-          </Text>
-        </TouchableOpacity>
-      )}
-
-      {item.status ===
-        'IN_CONSULTATION' && (
-        <TouchableOpacity
-          onPress={async () => {
-            await completeConsultation(
-              item.id
-            );
-
-            loadQueue();
-          }}
-        >
-          <Text
-            style={{
-              color: '#2563EB',
-              marginTop: 12,
-              fontWeight: '700',
-            }}
-          >
-            Complete Consultation
-          </Text>
-        </TouchableOpacity>
-      )}
     </View>
-  ))}
+
+    <Text
+      style={{
+        marginTop: 10,
+        fontSize: 18,
+        fontWeight: '700',
+      }}
+    >
+      {item.patientName}
+    </Text>
+
+    <Text
+      style={{
+        marginTop: 4,
+        color: '#64748B',
+      }}
+    >
+      {item.patient_id}
+    </Text>
+
+    <Text
+      style={{
+        marginTop: 4,
+        color: '#64748B',
+      }}
+    >
+      {item.patientAge} Y / {item.patientGender}
+    </Text>
+
+    <Text
+      style={{
+        marginTop: 4,
+        color: '#64748B',
+      }}
+    >
+      Doctor: {item.doctorAssigned || '-'}
+    </Text>
+
+    {item.status === 'WAITING' && (
+
+      <TouchableOpacity
+        onPress={async () => {
+
+          await startConsultation(
+            item.id
+          );
+
+          navigation.navigate(
+            'Consultation',
+            {
+              patient: item,
+              queueId: item.id,
+            }
+          );
+
+          loadQueue();
+
+        }}
+      >
+
+        <Text
+          style={{
+            color: '#16A34A',
+            marginTop: 16,
+            fontWeight: '700',
+            fontSize: 16,
+          }}
+        >
+          Start Consultation
+        </Text>
+
+      </TouchableOpacity>
+
+    )}
+
+    {item.status ===
+      'IN_CONSULTATION' && (
+
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate(
+            'Consultation',
+            {
+              patient: item,
+              queueId: item.id,
+            }
+          )
+        }
+      >
+
+        <Text
+          style={{
+            color: '#2563EB',
+            marginTop: 16,
+            fontWeight: '700',
+            fontSize: 16,
+          }}
+        >
+          Continue Consultation
+        </Text>
+
+      </TouchableOpacity>
+
+    )}
+
+  </View>
+
+))}
 </ScrollView>
 </SafeAreaView>
   );

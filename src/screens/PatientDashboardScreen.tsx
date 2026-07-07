@@ -250,120 +250,6 @@ setDischargeSummary(summary);
 </Text>
 </View>
 
-<View style={styles.card}>
-  <Text
-    style={styles.sectionTitle}
-  >
-    Vitals History
-  </Text>
-
-  {vitalsHistory.length === 0 ? (
-    <Text
-      style={{
-        marginTop: 12,
-        color: '#64748B',
-      }}
-    >
-      No vitals recorded.
-    </Text>
-  ) : (
-    vitalsHistory.map(
-      (vital) => (
-        <View
-          key={vital.id}
-          style={{
-            marginTop: 12,
-            paddingTop: 12,
-            borderTopWidth: 1,
-            borderTopColor:
-              '#E2E8F0',
-          }}
-        >
-          <Text>
-            BP: {vital.bp}
-          </Text>
-
-          <Text>
-            Pulse: {vital.pulse}
-          </Text>
-
-          <Text>
-            SpO2: {vital.spo2}
-          </Text>
-
-          <Text>
-            Temp: {vital.temperature}
-          </Text>
-
-          <Text>
-            RR:
-            {' '}
-            {vital.respiratory_rate}
-          </Text>
-
-          <Text
-            style={{
-              marginTop: 4,
-              color: '#64748B',
-              fontSize: 12,
-            }}
-          >
-            {vital.recorded_by}
-          </Text>
-        </View>
-      )
-    )
-  )}
-</View>
-<View style={styles.card}>
-  <Text
-    style={styles.sectionTitle}
-  >
-    Today's Care Tasks
-  </Text>
-
-  {tasks
-    .slice(0, 6)
-    .map((task) => (
-<TouchableOpacity
-  key={task.id}
-  style={{
-    marginTop: 10,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor:
-      '#E2E8F0',
-  }}
-  onPress={() =>
-    navigation.navigate(
-      'TaskDetail',
-      { task }
-    )
-  }
->
-        <Text
-          style={{
-            fontWeight: '600',
-          }}
-        >
-          {task.title}
-        </Text>
-
-        <Text
-          style={{
-            color:
-              task.status ===
-              'COMPLETED'
-                ? '#16A34A'
-                : '#D97706',
-            marginTop: 4,
-          }}
-        >
-          {task.status}
-        </Text>
-      </TouchableOpacity>
-    ))}
-</View>
 <View
   style={{
     marginHorizontal: 16,
@@ -550,6 +436,121 @@ setDischargeSummary(summary);
     </Text>
   </TouchableOpacity>
 </View>
+<View style={styles.card}>
+  <Text
+    style={styles.sectionTitle}
+  >
+    Today's Care Tasks
+  </Text>
+
+  {tasks
+    .slice(0, 6)
+    .map((task) => (
+<TouchableOpacity
+  key={task.id}
+  style={{
+    marginTop: 10,
+    paddingBottom: 10,
+    borderBottomWidth: 1,
+    borderBottomColor:
+      '#E2E8F0',
+  }}
+  onPress={() =>
+    navigation.navigate(
+      'TaskDetail',
+      { task }
+    )
+  }
+>
+        <Text
+          style={{
+            fontWeight: '600',
+          }}
+        >
+          {task.title}
+        </Text>
+
+        <Text
+          style={{
+            color:
+              task.status ===
+              'COMPLETED'
+                ? '#16A34A'
+                : '#D97706',
+            marginTop: 4,
+          }}
+        >
+          {task.status}
+        </Text>
+      </TouchableOpacity>
+    ))}
+</View>
+<View style={styles.card}>
+  <Text
+    style={styles.sectionTitle}
+  >
+    Vitals History
+  </Text>
+
+  {vitalsHistory.length === 0 ? (
+    <Text
+      style={{
+        marginTop: 12,
+        color: '#64748B',
+      }}
+    >
+      No vitals recorded.
+    </Text>
+  ) : (
+    vitalsHistory.map(
+      (vital) => (
+        <View
+          key={vital.id}
+          style={{
+            marginTop: 12,
+            paddingTop: 12,
+            borderTopWidth: 1,
+            borderTopColor:
+              '#E2E8F0',
+          }}
+        >
+          <Text>
+            BP: {vital.bp}
+          </Text>
+
+          <Text>
+            Pulse: {vital.pulse}
+          </Text>
+
+          <Text>
+            SpO2: {vital.spo2}
+          </Text>
+
+          <Text>
+            Temp: {vital.temperature}
+          </Text>
+
+          <Text>
+            RR:
+            {' '}
+            {vital.respiratory_rate}
+          </Text>
+
+          <Text
+            style={{
+              marginTop: 4,
+              color: '#64748B',
+              fontSize: 12,
+            }}
+          >
+            {vital.recorded_by}
+          </Text>
+        </View>
+      )
+    )
+  )}
+</View>
+
 <TouchableOpacity
   onPress={() =>
     navigation.navigate(
