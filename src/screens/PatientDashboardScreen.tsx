@@ -253,7 +253,7 @@ setDischargeSummary(summary);
 <View
   style={{
     marginHorizontal: 16,
-    marginTop: 8,
+    marginTop: 24,
     marginBottom: -8,
   }}
 >
@@ -654,13 +654,13 @@ const styles =
       fontWeight: '700',
     },
 
-    card: {
-      margin: 16,
-      backgroundColor:
-        '#FFFFFF',
-      borderRadius: 16,
-      padding: 16,
-    },
+card: {
+  marginHorizontal: 16,
+  marginTop: 10,
+  backgroundColor: '#FFFFFF',
+  borderRadius: 16,
+  padding: 16,
+},
 
 title: {
   fontSize: 22,

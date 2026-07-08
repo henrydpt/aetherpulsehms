@@ -30,10 +30,7 @@ const route =
 
 const admission =
   route.params?.admission;
-console.log(
-  'Admission:',
-  admission
-);
+
 const [
   tests,
   setTests,
@@ -100,24 +97,27 @@ async function placeOrder() {
 
   try {
 
-    await createLabOrder(
+await createLabOrder(
 
-      {
+  {
 
-        patient_id:
-          admission?.patient_id,
+    patient_id:
+      admission?.patient_id,
 
-        admission_id:
-          admission?.id,
+    patient_name:
+      admission?.patientName,
 
-        ordered_by:
-          'Doctor',
+    admission_id:
+      admission?.id,
 
-      },
+    ordered_by:
+      'Doctor',
 
-      selectedTests
+  },
 
-    );
+  selectedTests
+
+);
 
     Alert.alert(
 

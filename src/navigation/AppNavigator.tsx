@@ -69,6 +69,8 @@ import TestMasterScreen
   from '../screens/TestMasterScreen';
 import LabQueueScreen
   from '../screens/LabQueueScreen';
+import LabOrderDetailScreen
+  from '../screens/LabOrderDetailScreen';
 import LabResultsScreen
   from '../screens/LabResultsScreen';
 import AddTestScreen
@@ -331,7 +333,10 @@ export default function AppNavigator() {
   name="Lab Queue"
   component={LabQueueScreen}
 />
-
+<Stack.Screen
+  name="Lab Order Detail"
+  component={LabOrderDetailScreen}
+/>
 <Stack.Screen
   name="Lab Results"
   component={LabResultsScreen}
