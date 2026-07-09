@@ -267,10 +267,6 @@ const { data: savedPatient } =
     .eq('id', newPatient.id)
     .maybeSingle();
 
-console.log(
-  'Saved Patient:',
-  savedPatient
-);
 const vitalsTasks =
   generateVitalsTasks({
     id: newPatient.id,

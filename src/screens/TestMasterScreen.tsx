@@ -19,6 +19,8 @@ import {
   getLabTests,
   searchLabTests,
 } from '../services/labTestService';
+import FloatingActionButton
+  from '../components/FloatingActionButton';
 export default function TestMasterScreen() {
 const navigation =
   useNavigation<any>();
@@ -124,18 +126,14 @@ async function loadTests() {
     </TouchableOpacity>
 
   ))}
-  <TouchableOpacity
-  style={styles.fab}
+<FloatingActionButton
+  icon="add"
   onPress={() =>
-  navigation.navigate(
-    'Add Test'
-  )
-}
->
-  <Text style={styles.fabText}>
-    +
-  </Text>
-</TouchableOpacity>
+    navigation.navigate(
+      'Add Test'
+    )
+  }
+/>
 </View>
     </SafeAreaView>
   );
@@ -194,23 +192,5 @@ search: {
   padding: 14,
   marginBottom: 16,
 },
-fab: {
-  position: 'absolute',
-  right: 20,
-  bottom: 20,
-  width: 60,
-  height: 60,
-  borderRadius: 30,
-  backgroundColor: COLORS.primary,
-  justifyContent: 'center',
-  alignItems: 'center',
-  elevation: 8,
-},
 
-fabText: {
-  color: '#FFFFFF',
-  fontSize: 34,
-  fontWeight: '300',
-  marginTop: -2,
-},
 });

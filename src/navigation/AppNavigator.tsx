@@ -77,6 +77,10 @@ import AddTestScreen
   from '../screens/AddTestScreen';
 import LabOrdersScreen
   from '../screens/LabOrdersScreen';
+import RadiologyProcedureMasterScreen
+  from '../screens/RadiologyProcedureMasterScreen';
+import AddRadiologyProcedureScreen
+  from '../screens/AddRadiologyProcedureScreen';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -332,6 +336,14 @@ export default function AppNavigator() {
 <Stack.Screen
   name="Lab Queue"
   component={LabQueueScreen}
+/>
+<Stack.Screen
+  name="Radiology Procedure Master"
+  component={RadiologyProcedureMasterScreen}
+/>
+<Stack.Screen
+  name="Add Radiology Procedure"
+  component={AddRadiologyProcedureScreen}
 />
 <Stack.Screen
   name="Lab Order Detail"

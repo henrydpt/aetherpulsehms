@@ -141,9 +141,12 @@ const currentRoute =
   icon="people"
   title="Patients"
   onPress={() =>
-    navigation.navigate(
-      'Patients'
-    )
+navigation.navigate(
+  'MainTabs',
+  {
+    screen: 'Patients',
+  }
+)
   }
 />
 
@@ -151,9 +154,12 @@ const currentRoute =
   icon="people"
   title="IP Admissions"
   onPress={() =>
-    navigation.navigate(
-      'IPD'
-    )
+navigation.navigate(
+  'MainTabs',
+  {
+    screen: 'IPD',
+  }
+)
   }
 />
 
@@ -171,7 +177,7 @@ const currentRoute =
   icon="clipboard"
   title="OP Registration"
   onPress={() =>
-    navigation.navigate(
+    navigation.getParent()?.navigate(
       'OPRegistration'
     )
   }
@@ -181,9 +187,12 @@ const currentRoute =
         icon="bed"
         title="OP Queue"
         onPress={() =>
-          navigation.navigate(
-            'OPD'
-          )
+navigation.navigate(
+  'MainTabs',
+  {
+    screen: 'OPD',
+  }
+)
         }
       />
 
@@ -274,7 +283,7 @@ const currentRoute =
   }
 />
 <DrawerSection
-  title="LABORATORY"
+  title="DIAGNOSTICS"
 />
 
 <DrawerRow
@@ -303,6 +312,15 @@ const currentRoute =
   onPress={() =>
     navigation.navigate(
       'Lab Results'
+    )
+  }
+/>
+<DrawerRow
+  icon="scan"
+  title="Radiology"
+  onPress={() =>
+    navigation.navigate(
+      'Radiology Procedure Master'
     )
   }
 />

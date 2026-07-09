@@ -13,11 +13,16 @@ import {
   View,
   Text,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
+import {
+  Picker,
+} from '@react-native-picker/picker';
 import { loadBeds } from '../services/bedQueryService';
 import {
   loadWardOptions,
@@ -35,11 +40,13 @@ import {
   from '../theme/colors';
   import {
   StatusBar,
-  Platform,
 } from 'react-native';
 import {
   useAdmissionStore,
 } from '../store/admissionStore';
+import {
+  useUserStore,
+} from '../store/userStore';
 export default function AdmissionsScreen() {
   const route = useRoute<any>();
 const patient =
@@ -54,15 +61,10 @@ const [
   admissions,
   setAdmissions,
 ] = useState<any[]>([]);
-const [
-  admissionFilter,
-  setAdmissionFilter,
-] = useState<'ACTIVE' | 'DISCHARGED'>(
-  'ACTIVE'
-);
+
 useEffect(() => {
   loadAdmissions();
-}, [admissionFilter]);
+}, []);
 useFocusEffect(
   React.useCallback(() => {
     loadAdmissions();
@@ -85,6 +87,9 @@ const [beds, setBeds] =
 
 const [selectedBed, setSelectedBed] =
   useState('');
+const users = useUserStore(
+  (state) => state.users
+);
 async function handleCreateAdmission() {
 
   try {
@@ -135,7 +140,7 @@ setAdmissions(
   data.filter(
     (admission: any) =>
       admission.status ===
-      admissionFilter
+      'ACTIVE'
   )
 );
 
@@ -147,6 +152,14 @@ setAdmissions(
 
   return (
 <SafeAreaView style={styles.container}>
+<KeyboardAvoidingView
+  style={{ flex: 1 }}
+  behavior={
+    Platform.OS === 'ios'
+      ? 'padding'
+      : 'height'
+  }
+>
   <StatusBar
     backgroundColor={COLORS.primary}
     barStyle="light-content"
@@ -165,110 +178,7 @@ style={styles.topBar}
     IPD Admissions
   </Text>
 
-  <TouchableOpacity>
-    <Text style={styles.icon}>＋</Text>
-  </TouchableOpacity>
-</View>
-
-<View
-  style={{
-    backgroundColor: '#FFFFFF',
-    marginBottom: 16,
-    borderRadius: 16,
-    padding: 16,
-    alignItems: 'center',
-  }}
->
-  <Text
-    style={{
-      fontSize: 28,
-      fontWeight: '700',
-      color: COLORS.primary,
-    }}
-  >
-    {admissions.length}
-  </Text>
-
-<Text
-  style={{
-    color: '#64748B',
-    marginTop: 4,
-  }}
->
-  {admissionFilter === 'ACTIVE'
-    ? 'Active Admissions'
-    : 'Discharged Patients'}
-</Text>
-</View>
-
-<View
-  style={{
-    flexDirection: 'row',
-    backgroundColor: '#FFFFFF',
-    borderRadius: 12,
-    marginBottom: 16,
-    overflow: 'hidden',
-  }}
->
-  <TouchableOpacity
-    onPress={() =>
-      setAdmissionFilter(
-        'ACTIVE'
-      )
-    }
-    style={{
-      flex: 1,
-      padding: 14,
-      alignItems: 'center',
-      backgroundColor:
-        admissionFilter === 'ACTIVE'
-          ? COLORS.primary
-          : '#FFFFFF',
-    }}
-  >
-    <Text
-      style={{
-        fontWeight: '700',
-        color:
-          admissionFilter === 'ACTIVE'
-            ? '#FFFFFF'
-            : COLORS.primary,
-      }}
-    >
-      Active
-    </Text>
-  </TouchableOpacity>
-
-  <TouchableOpacity
-    onPress={() =>
-      setAdmissionFilter(
-        'DISCHARGED'
-      )
-    }
-    style={{
-      flex: 1,
-      padding: 14,
-      alignItems: 'center',
-      backgroundColor:
-        admissionFilter ===
-        'DISCHARGED'
-          ? COLORS.primary
-          : '#FFFFFF',
-    }}
-  >
-    <Text
-      style={{
-        fontWeight: '700',
-        color:
-          admissionFilter ===
-          'DISCHARGED'
-            ? '#FFFFFF'
-            : COLORS.primary,
-      }}
-    >
-      Discharged
-    </Text>
-  </TouchableOpacity>
+<View style={{ width: 24 }} />
 </View>
 
 {patient && (
@@ -312,96 +222,202 @@ style={styles.topBar}
     </View>
 <Text
   style={{
-    marginTop: 16,
+    marginTop: 8,
+    marginHorizontal: 16,
+    marginBottom: 8,
+    fontSize: 16,
     fontWeight: '700',
+    color: COLORS.primary,
   }}
 >
-  Ward
+  Select Ward
 </Text>
 
-{wards.map((ward) => (
-  <TouchableOpacity
-    key={ward.id}
-    style={[
-  styles.selectionCard,
-  selectedWard === ward.id && {
-    borderColor: '#1C146B',
-    borderWidth: 2,
-  },
-]}
-    onPress={async () => {
-      setSelectedWard(ward.id);
+<View
+  style={[
+    styles.selectionCard,
+    {
+      marginHorizontal: 12,
+    },
+    {
+      padding: 0,
+      justifyContent: 'center',
+    },
+  ]}
+>
+<Picker
+  style={styles.picker}
+    selectedValue={
+      selectedWard
+    }
+    onValueChange={async (
+      value
+    ) => {
+
+      setSelectedWard(value);
+
+      setSelectedBed('');
 
       const bedData =
-        await loadBeds(ward.id);
+        await loadBeds(value);
 
       setBeds(bedData);
+
     }}
   >
-    <Text style={styles.selectionText}>
-      {ward.name}
-    </Text>
-  </TouchableOpacity>
-))}
+
+    <Picker.Item
+      label="Select Ward"
+      value=""
+    />
+
+    {wards.map((ward) => (
+
+      <Picker.Item
+        key={ward.id}
+        label={ward.name}
+        value={ward.id}
+      />
+
+    ))}
+
+  </Picker>
+</View>
 
 <Text
   style={{
     marginTop: 16,
+    marginHorizontal: 16,
+    marginBottom: 8,
     fontWeight: '700',
+    color: COLORS.primary,
   }}
 >
-  Available Beds
+  Select Bed
 </Text>
 
-{beds.map((bed) => (
-  <TouchableOpacity
-    key={bed.id}
-    style={[
-  styles.selectionCard,
-  selectedBed === bed.id && {
-    borderColor: '#1C146B',
-    borderWidth: 2,
-  },
-]}
-    onPress={() =>
-      setSelectedBed(bed.id)
+<View
+  style={[
+    styles.selectionCard,
+    {
+      marginHorizontal: 16,
+      padding: 0,
+      justifyContent: 'center',
+      height: 50,
+    },
+  ]}
+>
+
+<Picker
+  style={styles.picker}
+    selectedValue={selectedBed}
+    onValueChange={(value) =>
+      setSelectedBed(value)
     }
   >
-    <Text style={styles.selectionText}>
-      {bed.bed_number}
-    </Text>
-  </TouchableOpacity>
-))}
-<TextInput
-  placeholder="Doctor"
-  value={doctor}
-  onChangeText={setDoctor}
-/>
+    <Picker.Item
+      label="Select Bed"
+      value=""
+    />
+
+    {beds.map((bed) => (
+      <Picker.Item
+        key={bed.id}
+        label={bed.bed_number}
+        value={bed.id}
+      />
+    ))}
+  </Picker>
+</View>
+<Text
+  style={{
+    marginTop: 16,
+    marginHorizontal: 16,
+    marginBottom: 8,
+    fontWeight: '700',
+    color: COLORS.primary,
+  }}
+>
+  Select Doctor
+</Text>
+
+<View style={styles.selectionCard}>
+  <Picker
+    style={styles.picker}
+    selectedValue={doctor}
+    onValueChange={setDoctor}
+  >
+    <Picker.Item
+      label="Select Doctor"
+      value=""
+    />
+
+    {users
+      .filter(
+        (user) =>
+          user.role === 'Doctor' &&
+          user.active
+      )
+      .map((doctor) => (
+        <Picker.Item
+          key={doctor.id}
+          label={doctor.name}
+          value={doctor.name}
+        />
+      ))}
+  </Picker>
+</View>
+
+<Text
+  style={{
+    marginTop: 16,
+    marginHorizontal: 16,
+    marginBottom: 8,
+    fontWeight: '700',
+    color: COLORS.primary,
+  }}
+>
+  Enter Diagnosis
+</Text>
 
 <TextInput
-  placeholder="Diagnosis"
+  placeholder="Enter diagnosis"
   value={diagnosis}
   onChangeText={setDiagnosis}
+  style={{
+    backgroundColor: '#FFFFFF',
+    marginHorizontal: 16,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#EEE7D8',
+    paddingHorizontal: 16,
+    paddingVertical: 14,
+    fontSize: 16,
+  }}
 />
 <TouchableOpacity
   style={{
-    backgroundColor: '#1C146B',
-    padding: 14,
-    borderRadius: 12,
-    marginTop: 16,
+    backgroundColor: COLORS.primary,
+    marginHorizontal: 16,
+    paddingVertical: 16,
+    borderRadius: 16,
+    marginTop: 20,
     alignItems: 'center',
   }}
   onPress={handleCreateAdmission}
 >
-  <Text
-    style={{
-      color: '#FFFFFF',
-      fontWeight: '700',
-    }}
-  >
-    Create Admission
-  </Text>
+<Text
+  style={{
+    color: '#FFFFFF',
+    fontWeight: '700',
+  }}
+>
+  Create Admission
+</Text>
 </TouchableOpacity>
+
+<View style={{ height: 24 }} />
+
   </>
 )}
 {(
@@ -473,6 +489,7 @@ navigation.navigate(
 </TouchableOpacity>
 ))}
 </ScrollView>
+</KeyboardAvoidingView>
 </SafeAreaView>
   );
 }
@@ -504,15 +521,19 @@ content: {
     fontWeight: '700',
     marginBottom: 4,
   },
-  selectionCard: {
+selectionCard: {
   backgroundColor: '#FFFFFF',
   borderRadius: 12,
-  padding: 14,
-  marginTop: 8,
   borderWidth: 1,
   borderColor: '#EEE7D8',
+  marginHorizontal: 16,
+  marginTop: 8,
+  justifyContent: 'center',
+  overflow: 'hidden',
 },
-
+picker: {
+  height: 56,
+},
 selectionText: {
   fontWeight: '600',
 },

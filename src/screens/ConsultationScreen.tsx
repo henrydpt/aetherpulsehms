@@ -31,7 +31,7 @@ export default function ConsultationScreen() {
 
   const patient =
     route.params?.patient;
-console.log(patient);
+
   const queueId =
     route.params?.queueId;
 const navigation =
