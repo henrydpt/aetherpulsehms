@@ -4,8 +4,10 @@ import React, {
 } from 'react';
 import { useRoute }
   from '@react-navigation/native';
-import { useNavigation }
-  from '@react-navigation/native';
+import {
+  useNavigation,
+  useFocusEffect,
+} from '@react-navigation/native';
 import {
   SafeAreaView,
   ScrollView,
@@ -30,9 +32,15 @@ const navigation =
   const [queue, setQueue] =
     useState<any[]>([]);
 
-  useEffect(() => {
+useEffect(() => {
+  loadQueue();
+}, []);
+
+useFocusEffect(
+  React.useCallback(() => {
     loadQueue();
-  }, []);
+  }, [])
+);
 
   async function loadQueue() {
 const data =

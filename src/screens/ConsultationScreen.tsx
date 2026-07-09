@@ -1,6 +1,7 @@
 import React, {
   useState,
 } from 'react';
+import { supabase } from '../lib/supabase';
 import {
   useRoute,
   useNavigation,
@@ -19,12 +20,14 @@ import {
 } from 'react-native';
 import { COLORS }
   from '../theme/colors';
-
 import {
   saveConsultation as
   saveConsultationRecord,
 } from '../services/consultationSaveService';
-
+import {
+  admitEncounter,
+  completeConsultation,
+} from '../services/opConsultationService';
 export default function ConsultationScreen() {
   const route =
     useRoute<any>();
@@ -65,7 +68,9 @@ const [spo2, setSpo2] =
 
 const [notes, setNotes] =
   useState('');
-async function saveConsultation() {
+async function saveConsultation(
+  showAlert = true
+) {
   try {
     await saveConsultationRecord({
       op_queue_id: queueId,
@@ -86,10 +91,12 @@ async function saveConsultation() {
       notes,
     });
 
-    Alert.alert(
-      'Success',
-      'Consultation saved'
-    );
+if (showAlert) {
+  Alert.alert(
+    'Success',
+    'Consultation saved'
+  );
+}
   } catch (error: any) {
     Alert.alert(
       'Error',
@@ -116,10 +123,37 @@ navigation.navigate(
 }
 
 async function completeVisit() {
-Alert.alert(
-  'Coming Soon',
-  'Complete Consultation workflow is under development.'
+
+  try {
+
+    await saveConsultation(false);
+
+await completeConsultation(
+  queueId
 );
+
+    Alert.alert(
+      'Success',
+      'Consultation completed.',
+      [
+        {
+          text: 'OK',
+          onPress: () =>
+            navigation.goBack(),
+        },
+      ]
+    );
+
+  } catch (error: any) {
+
+    Alert.alert(
+      'Error',
+      error?.message ||
+        'Unable to complete consultation.'
+    );
+
+  }
+
 }
 return (
   <SafeAreaView style={styles.container}>
