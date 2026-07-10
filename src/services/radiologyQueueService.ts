@@ -1,17 +1,17 @@
 import { supabase } from '../lib/supabase';
 
-export async function getLabOrders() {
+export async function getRadiologyOrders() {
 
   const { data, error } =
     await supabase
-      .from('lab_orders')
+      .from('radiology_orders')
 .select(`
   *,
-  lab_order_items(
+  radiology_order_items(
     *,
-    lab_test_master(
-      test_name,
-      test_code
+    radiology_procedure_master(
+      procedure_name,
+      procedure_code
     )
   )
 `)

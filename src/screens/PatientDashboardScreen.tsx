@@ -167,38 +167,21 @@ setDischargeSummary(summary);
     {' '}
     {route.params?.admission?.patient_id}
   </Text>
-</View>
-
-<View style={styles.card}>
-  <Text
-    style={styles.sectionTitle}
-  >
-    Admission Details
-  </Text>
-
   <Text style={styles.detailText}>
-    Admission No:
-    {' '}
-    {admission?.admission_number}
-  </Text>
+  Admission No: {admission?.admission_number}
+</Text>
 
-  <Text style={styles.detailText}>
-    Ward:
-    {' '}
-    {admission?.wardName}
-  </Text>
+<Text style={styles.detailText}>
+  Ward: {admission?.wardName}
+</Text>
 
-  <Text style={styles.detailText}>
-    Bed:
-    {' '}
-    {admission?.bedNumber}
-  </Text>
+<Text style={styles.detailText}>
+  Bed: {admission?.bedNumber}
+</Text>
 
-  <Text style={styles.detailText}>
-    Status:
-    {' '}
-    {admission?.status}
-  </Text>
+<Text style={styles.detailText}>
+  Status: {admission?.status}
+</Text>
 </View>
 
 <View style={styles.card}>
@@ -207,12 +190,6 @@ setDischargeSummary(summary);
   >
     Latest Consultation
   </Text>
-
-<Text style={styles.detailText}>
-  Complaint:
-  {' '}
-  {consultation?.chief_complaint || '-'}
-</Text>
 
 <Text style={styles.detailText}>
   Diagnosis:
@@ -225,31 +202,23 @@ setDischargeSummary(summary);
   {' '}
   {consultation?.prescription || '-'}
 </Text>
-
-<Text style={styles.detailText}>
-  Notes:
-  {' '}
-  {consultation?.notes || '-'}
-</Text>
-
-<Text style={styles.detailText}>
-  BP:
-  {' '}
-  {consultation?.bp || '-'}
-</Text>
-
-<Text style={styles.detailText}>
-  Pulse:
-  {' '}
-  {consultation?.pulse || '-'}
-</Text>
-<Text style={styles.detailText}>
-  SPO2:
-  {' '}
-  {consultation?.spo2 || '-'}
-</Text>
 </View>
+<View style={styles.card}>
 
+  <Text style={styles.sectionTitle}>
+    Today's Clinical Tasks
+  </Text>
+
+  <Text
+    style={{
+      marginTop: 12,
+      color: '#64748B',
+    }}
+  >
+    Daily care activities for this patient.
+  </Text>
+
+</View>
 <View
   style={{
     marginHorizontal: 16,
@@ -257,373 +226,140 @@ setDischargeSummary(summary);
     marginBottom: -8,
   }}
 >
-  <Text
-    style={{
-      color: COLORS.primary,
-      fontWeight: '700',
-      fontSize: 18,
-    }}
-  >
-    Clinical Modules
-  </Text>
-</View>
-<View style={styles.card}>
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate(
-        'DoctorRounds',
-        {
-          admission,
-        }
-      )
-    }
-    style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    }}
-  >
-    <View>
-      <Text
-        style={styles.sectionTitle}
-      >
-        🩺 Doctor Rounds
-      </Text>
-
-      <Text
-        style={styles.detailText}
-      >
-        Record and review physician rounds
-      </Text>
-    </View>
-
-    <Text
-      style={{
-        fontSize: 26,
-        color: COLORS.primary,
-        fontWeight: '700',
-      }}
-    >
-      ›
-    </Text>
-  </TouchableOpacity>
-</View>
-<>
-<View style={styles.card}>
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate(
-        'MedicationOrders',
-        {
-          admission,
-        }
-      )
-    }
-    style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    }}
-  >
-    <View>
-      <Text
-        style={styles.sectionTitle}
-      >
-        💊 Medication Orders
-      </Text>
-
-      <Text
-        style={styles.detailText}
-      >
-        Prescribe and review medications
-      </Text>
-    </View>
-
-    <Text
-      style={{
-        fontSize: 26,
-        color: COLORS.primary,
-        fontWeight: '700',
-      }}
-    >
-      ›
-    </Text>
-  </TouchableOpacity>
-</View>
-<View style={styles.card}>
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate(
-        'Lab Orders',
-        {
-          admission,
-        }
-      )
-    }
-    style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    }}
-  >
-
-    <View>
-
-      <Text
-        style={styles.sectionTitle}
-      >
-        🧪 Lab Orders
-      </Text>
-
-      <Text
-        style={styles.detailText}
-      >
-        Order laboratory investigations
-      </Text>
-
-    </View>
-
-    <Text
-      style={{
-        fontSize: 26,
-        color: COLORS.primary,
-        fontWeight: '700',
-      }}
-    >
-      ›
-    </Text>
-
-  </TouchableOpacity>
-</View>
-<View style={styles.card}>
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate(
-        'MedicationAdministration',
-        {
-          admission,
-        }
-      )
-    }
-    style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    }}
-  >
-    <View>
-      <Text
-        style={styles.sectionTitle}
-      >
-        💉 Medication Administration
-      </Text>
-
-      <Text
-        style={styles.detailText}
-      >
-        Administer prescribed medications
-      </Text>
-    </View>
-
-    <Text
-      style={{
-        fontSize: 26,
-        color: COLORS.primary,
-        fontWeight: '700',
-      }}
-    >
-      ›
-    </Text>
-  </TouchableOpacity>
-</View>
-</>
-
-<View style={styles.card}>
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate(
-        'NursingNotes',
-        {
-          admission,
-        }
-      )
-    }
-    style={{
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-    }}
-  >
-    <View>
-
-      <Text
-        style={styles.sectionTitle}
-      >
-        📝 Nursing Notes
-      </Text>
-
-      <Text
-        style={styles.detailText}
-      >
-        Record and review nursing notes
-      </Text>
-    </View>
-
-    <Text
-      style={{
-        fontSize: 26,
-        color: COLORS.primary,
-        fontWeight: '700',
-      }}
-    >
-      ›
-    </Text>
-  </TouchableOpacity>
-</View>
-<View style={styles.card}>
-  <Text
-    style={styles.sectionTitle}
-  >
-    Today's Care Tasks
-  </Text>
-
-  {tasks
-    .slice(0, 6)
-    .map((task) => (
-<TouchableOpacity
-  key={task.id}
+<Text
   style={{
-    marginTop: 10,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor:
-      '#E2E8F0',
+    color: COLORS.primary,
+    fontWeight: '700',
+    fontSize: 18,
+    marginBottom: 12,
   }}
-  onPress={() =>
-    navigation.navigate(
-      'TaskDetail',
-      { task }
-    )
-  }
 >
-        <Text
-          style={{
-            fontWeight: '600',
-          }}
-        >
-          {task.title}
-        </Text>
-
-        <Text
-          style={{
-            color:
-              task.status ===
-              'COMPLETED'
-                ? '#16A34A'
-                : '#D97706',
-            marginTop: 4,
-          }}
-        >
-          {task.status}
-        </Text>
-      </TouchableOpacity>
-    ))}
+  Clinical Workspaces
+</Text>
 </View>
 <View style={styles.card}>
-  <Text
-    style={styles.sectionTitle}
-  >
-    Vitals History
-  </Text>
-
-  {vitalsHistory.length === 0 ? (
-    <Text
-      style={{
-        marginTop: 12,
-        color: '#64748B',
-      }}
-    >
-      No vitals recorded.
-    </Text>
-  ) : (
-    vitalsHistory.map(
-      (vital) => (
-        <View
-          key={vital.id}
-          style={{
-            marginTop: 12,
-            paddingTop: 12,
-            borderTopWidth: 1,
-            borderTopColor:
-              '#E2E8F0',
-          }}
-        >
-          <Text>
-            BP: {vital.bp}
-          </Text>
-
-          <Text>
-            Pulse: {vital.pulse}
-          </Text>
-
-          <Text>
-            SpO2: {vital.spo2}
-          </Text>
-
-          <Text>
-            Temp: {vital.temperature}
-          </Text>
-
-          <Text>
-            RR:
-            {' '}
-            {vital.respiratory_rate}
-          </Text>
-
-          <Text
-            style={{
-              marginTop: 4,
-              color: '#64748B',
-              fontSize: 12,
-            }}
-          >
-            {vital.recorded_by}
-          </Text>
-        </View>
-      )
-    )
-  )}
-</View>
 
 <TouchableOpacity
   onPress={() =>
     navigation.navigate(
-      'Discharge',
+      'Clinical Care',
       {
         admission,
       }
     )
   }
-  style={{
-    margin: 16,
-    backgroundColor:
-      '#DC2626',
-    padding: 16,
-    borderRadius: 12,
-    alignItems: 'center',
-  }}
 >
-  <Text
-    style={{
-      color: '#FFFFFF',
-      fontWeight: '700',
-      fontSize: 16,
-    }}
-  >
-    Begin Discharge
-  </Text>
+
+<View>
+
+<Text style={styles.sectionTitle}>
+🩺 Clinical Care
+</Text>
+
+<Text style={styles.detailText}>
+Doctor Rounds, Nursing, Medication
+</Text>
+
+</View>
+
+<Text style={styles.arrow}>›</Text>
+
 </TouchableOpacity>
 
+</View>
+<View style={styles.card}>
+
+<TouchableOpacity
+  onPress={() =>
+    navigation.navigate(
+      'Diagnostics',
+      {
+        admission,
+      }
+    )
+  }
+>
+
+<View>
+
+<Text style={styles.sectionTitle}>
+🔬 Diagnostics
+</Text>
+
+<Text style={styles.detailText}>
+Laboratory and Radiology
+</Text>
+
+</View>
+
+<Text style={styles.arrow}>›</Text>
+
+</TouchableOpacity>
+
+</View>
+<View style={styles.card}>
+
+<TouchableOpacity>
+
+<View>
+
+<Text style={styles.sectionTitle}>
+📄 Patient Journey
+</Text>
+
+<Text style={styles.detailText}>
+Timeline and Discharge
+</Text>
+
+</View>
+
+<Text style={styles.arrow}>›</Text>
+
+</TouchableOpacity>
+
+</View>
+<View style={styles.card}>
+
+<TouchableOpacity>
+
+<View>
+
+<Text style={styles.sectionTitle}>
+💰 Financial
+</Text>
+
+<Text style={styles.detailText}>
+Billing and Payments
+</Text>
+
+</View>
+
+<Text style={styles.arrow}>›</Text>
+
+</TouchableOpacity>
+
+</View>
+<View style={styles.card}>
+
+<TouchableOpacity>
+
+<View>
+
+<Text style={styles.sectionTitle}>
+🏥 Administration
+</Text>
+
+<Text style={styles.detailText}>
+Bed, Doctor and Care Team
+</Text>
+
+</View>
+
+<Text style={styles.arrow}>›</Text>
+
+</TouchableOpacity>
+
+</View>
     </ScrollView>
     </SafeAreaView>
 
@@ -678,5 +414,10 @@ sectionTitle: {
 detailText: {
   color: '#475569',
   marginTop: 6,
+},
+arrow: {
+  fontSize: 26,
+  color: COLORS.primary,
+  fontWeight: '700',
 },
   });

@@ -34,6 +34,8 @@ import ConsultationScreen
   from '../screens/ConsultationScreen';
 import PatientDashboardScreen
   from '../screens/PatientDashboardScreen';
+import ClinicalCareScreen
+  from '../screens/ClinicalCareScreen';
 import DischargeScreen
   from '../screens/DischargeScreen';
 import DoctorRoundsScreen
@@ -81,6 +83,14 @@ import RadiologyProcedureMasterScreen
   from '../screens/RadiologyProcedureMasterScreen';
 import AddRadiologyProcedureScreen
   from '../screens/AddRadiologyProcedureScreen';
+import RadiologyOrdersScreen
+  from '../screens/RadiologyOrdersScreen';
+import TodaysClinicalTasksScreen
+  from '../screens/TodaysClinicalTasksScreen';
+import DiagnosticsScreen
+  from '../screens/DiagnosticsScreen';
+import DiagnosticResultsScreen
+  from '../screens/DiagnosticResultsScreen';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -326,6 +336,18 @@ export default function AppNavigator() {
   component={MedicationTimelineScreen}
 />
 <Stack.Screen
+  name="Today's Clinical Tasks"
+  component={TodaysClinicalTasksScreen}
+/>
+<Stack.Screen
+  name="Diagnostics"
+  component={DiagnosticsScreen}
+/>
+<Stack.Screen
+  name="Diagnostic Results"
+  component={DiagnosticResultsScreen}
+/>
+<Stack.Screen
   name="Test Master"
   component={TestMasterScreen}
 />
@@ -346,6 +368,10 @@ export default function AppNavigator() {
   component={AddRadiologyProcedureScreen}
 />
 <Stack.Screen
+  name="Radiology Orders"
+  component={RadiologyOrdersScreen}
+/>
+<Stack.Screen
   name="Lab Order Detail"
   component={LabOrderDetailScreen}
 />
@@ -356,6 +382,10 @@ export default function AppNavigator() {
 <Stack.Screen
   name="Lab Orders"
   component={LabOrdersScreen}
+/>
+<Stack.Screen
+  name="Clinical Care"
+  component={ClinicalCareScreen}
 />
 <Stack.Screen
   name="Discharge"

@@ -357,7 +357,7 @@ return (
 <View style={styles.card}>
   <TouchableOpacity
     style={styles.primaryButton}
-    onPress={saveConsultation}
+    onPress={() => saveConsultation()}
   >
     <Text style={styles.buttonText}>
       Save Consultation
