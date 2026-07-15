@@ -1,7 +1,9 @@
 import {
   getBillingTransactions,
 } from './billingQueryService';
-
+import {
+  getPayments,
+} from './paymentQueryService';
 export async function
 getBillingSummary(
   admissionId: string
@@ -11,7 +13,10 @@ getBillingSummary(
     await getBillingTransactions(
       admissionId
     );
-
+const payments =
+  await getPayments(
+    admissionId
+  );
   const totalCharges =
     transactions.reduce(
       (sum, item) =>
@@ -19,30 +24,23 @@ getBillingSummary(
       0
     );
 
-  const paidTransactions =
-    transactions.filter(
-      (item) =>
-        item.status === 'PAID'
-    ).length;
+const paidTransactions =
+  payments.length;
 
-  const pendingTransactions =
-    transactions.filter(
-      (item) =>
-        item.status === 'PENDING'
-    ).length;
+const pendingTransactions =
+  Math.max(
+    transactions.length -
+    payments.length,
+    0
+  );
 
-  const totalPaid =
-    transactions
-      .filter(
-        (item) =>
-          item.status === 'PAID'
-      )
-      .reduce(
-        (sum, item) =>
-          sum +
-          Number(item.amount),
-        0
-      );
+const totalPaid =
+  payments.reduce(
+    (sum, payment) =>
+      sum +
+      Number(payment.amount),
+    0
+  );
 
   return {
 
