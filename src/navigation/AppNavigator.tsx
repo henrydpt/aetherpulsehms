@@ -97,6 +97,8 @@ import PatientTimelineScreen
   from '../screens/PatientTimelineScreen';
 import FinancialWorkspaceScreen
   from '../screens/FinancialWorkspaceScreen';
+import BillingScreen
+  from '../screens/BillingScreen';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -426,7 +428,10 @@ export default function AppNavigator() {
   name="AddUser"
   component={AddUserScreen}
 />
-
+<Stack.Screen
+  name="Billing"
+  component={BillingScreen}
+/>
 </Stack.Navigator>
         </NavigationContainer>
   </SafeAreaProvider>

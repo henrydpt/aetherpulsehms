@@ -68,6 +68,14 @@ export default function FinancialWorkspaceScreen() {
 
 <TouchableOpacity
   style={styles.actionRow}
+  onPress={() =>
+    navigation.navigate(
+      'Billing',
+      {
+        admission,
+      }
+    )
+  }
 >
 
 <Text style={styles.actionTitle}>
