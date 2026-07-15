@@ -1,5 +1,9 @@
 import { supabase } from '../lib/supabase';
 
+import {
+  createBillForService,
+} from './billingEngineService';
+
 export async function createLabOrder(
   order: any,
   tests: any[]
@@ -35,6 +39,24 @@ export async function createLabOrder(
     throw itemError;
   }
 
-  return labOrder;
+for (const test of tests) {
+
+  await createBillForService(
+
+    order.admission_id,
+
+    test.test_code,
+
+    'LAB',
+
+    labOrder.id,
+
+    1
+
+  );
+
+}
+
+return labOrder;
 
 }

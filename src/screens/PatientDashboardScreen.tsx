@@ -299,16 +299,25 @@ Laboratory and Radiology
 </View>
 <View style={styles.card}>
 
-<TouchableOpacity>
+<TouchableOpacity
+  onPress={() =>
+    navigation.navigate(
+      'Patient Journey',
+      {
+        admission,
+      }
+    )
+  }
+>
 
 <View>
 
 <Text style={styles.sectionTitle}>
-📄 Patient Journey
+🧭 Patient Journey
 </Text>
 
 <Text style={styles.detailText}>
-Timeline and Discharge
+Timeline and discharge
 </Text>
 
 </View>
@@ -320,7 +329,16 @@ Timeline and Discharge
 </View>
 <View style={styles.card}>
 
-<TouchableOpacity>
+<TouchableOpacity
+  onPress={() =>
+    navigation.navigate(
+      'Financial Workspace',
+      {
+        admission,
+      }
+    )
+  }
+>
 
 <View>
 

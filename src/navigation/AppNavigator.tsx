@@ -91,6 +91,12 @@ import DiagnosticsScreen
   from '../screens/DiagnosticsScreen';
 import DiagnosticResultsScreen
   from '../screens/DiagnosticResultsScreen';
+import PatientJourneyScreen
+  from '../screens/PatientJourneyScreen';
+import PatientTimelineScreen
+  from '../screens/PatientTimelineScreen';
+import FinancialWorkspaceScreen
+  from '../screens/FinancialWorkspaceScreen';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -334,6 +340,18 @@ export default function AppNavigator() {
 <Stack.Screen
   name="Medication Timeline"
   component={MedicationTimelineScreen}
+/>
+<Stack.Screen
+  name="Patient Journey"
+  component={PatientJourneyScreen}
+/>
+<Stack.Screen
+  name="Patient Timeline"
+  component={PatientTimelineScreen}
+/>
+<Stack.Screen
+  name="Financial Workspace"
+  component={FinancialWorkspaceScreen}
 />
 <Stack.Screen
   name="Today's Clinical Tasks"
