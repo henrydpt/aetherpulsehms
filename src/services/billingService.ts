@@ -1,7 +1,8 @@
 import { supabase } from '../lib/supabase';
 
 export async function createBillingTransaction(
-  admissionId: string,
+  admissionId: string | null,
+  encounterId: string | null,
   sourceModule: string,
   sourceId: string | null,
   description: string,
@@ -16,7 +17,8 @@ export async function createBillingTransaction(
 
         admission_id:
           admissionId,
-
+encounter_id:
+  encounterId,
         source_module:
           sourceModule,
 

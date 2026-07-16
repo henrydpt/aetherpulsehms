@@ -189,7 +189,7 @@ const data =
           );
 
           navigation.navigate(
-            'Consultation',
+            'OP Consultation',
             {
               patient: item,
               queueId: item.id,
@@ -222,7 +222,7 @@ const data =
       <TouchableOpacity
         onPress={() =>
           navigation.navigate(
-            'Consultation',
+            'OP Consultation',
             {
               patient: item,
               queueId: item.id,

@@ -354,7 +354,33 @@ keyboardShouldPersistTaps="handled"
 <PatientModuleHeader
   admission={admission}
 />
+<View style={styles.card}>
 
+<Text style={styles.sectionTitle}>
+Today's Clinical Summary
+</Text>
+
+<Text style={styles.detailText}>
+Diagnosis:{' '}
+{consultation?.diagnosis || '-'}
+</Text>
+
+<Text style={styles.detailText}>
+Prescription:{' '}
+{consultation?.prescription || '-'}
+</Text>
+
+<Text style={styles.detailText}>
+Latest Vitals:{' '}
+{vitalsHistory.length} recorded
+</Text>
+
+<Text style={styles.detailText}>
+Pending Tasks:{' '}
+{tasks.length}
+</Text>
+
+</View>
 <View style={styles.card}>
   <Text
     style={styles.sectionTitle}
@@ -526,13 +552,14 @@ const styles =
       fontWeight: '700',
     },
 
-    card: {
-      margin: 16,
-      backgroundColor:
-        '#FFFFFF',
-      borderRadius: 16,
-      padding: 16,
-    },
+card: {
+  marginHorizontal: 16,
+  marginTop: 8,
+  marginBottom: 8,
+  backgroundColor: '#FFFFFF',
+  borderRadius: 16,
+  padding: 16,
+},
 
 title: {
   fontSize: 22,

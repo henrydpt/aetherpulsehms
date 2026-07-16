@@ -241,8 +241,8 @@ setDischargeSummary(summary);
 
 <TouchableOpacity
   onPress={() =>
-    navigation.navigate(
-      'Clinical Care',
+navigation.navigate(
+  'Clinical Care',
       {
         admission,
       }

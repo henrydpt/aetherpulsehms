@@ -8,7 +8,9 @@ import {
 export async function
 createBillForService(
 
-  admissionId: string,
+  admissionId: string | null,
+
+  encounterId: string | null,
 
   serviceCode: string,
 
@@ -31,19 +33,53 @@ createBillForService(
     );
   }
 
-  await createBillingTransaction(
+await createBillingTransaction(
 
-    admissionId,
+  admissionId,
+
+  encounterId,
+
+  sourceModule,
+
+  sourceId,
+
+  charge.service_name,
+
+  quantity,
+
+  charge.unit_price
+
+);
+
+}
+export async function
+createOpBillForService(
+
+  encounterId: string,
+
+  serviceCode: string,
+
+  sourceModule: string,
+
+  sourceId: string,
+
+  quantity = 1
+
+) {
+
+  return createBillForService(
+
+    null,
+
+    encounterId,
+
+    serviceCode,
 
     sourceModule,
 
     sourceId,
 
-    charge.service_name,
-
-    quantity,
-
-    charge.unit_price
+    quantity
 
   );
 

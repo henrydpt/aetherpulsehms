@@ -1,5 +1,7 @@
 import { supabase } from '../lib/supabase';
-
+import {
+  createBillForService,
+} from './billingEngineService';
 export interface CreateAdmissionRequest {
   patientId: string;
   doctorAssigned?: string;
@@ -51,9 +53,25 @@ if (existing.data) {
       .select()
       .single();
 
-  if (error) {
-    throw error;
-  }
+if (error) {
+  throw error;
+}
 
-  return data;
+await createBillForService(
+
+  data.id,
+
+  null,
+
+  'BED_GENERAL',
+
+  'ADMISSION',
+
+  data.id,
+
+  1
+
+);
+
+return data;
 }

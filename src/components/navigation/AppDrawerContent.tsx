@@ -149,30 +149,6 @@ navigation.navigate(
 )
   }
 />
-
-<DrawerRow
-  icon="people"
-  title="IP Admissions"
-  onPress={() =>
-navigation.navigate(
-  'MainTabs',
-  {
-    screen: 'IPD',
-  }
-)
-  }
-/>
-
-      <DrawerRow
-        icon="medical"
-        title="Consultations"
-        onPress={() =>
-          navigation.navigate(
-            'Consultations'
-          )
-        }
-      />
-
 <DrawerRow
   icon="clipboard"
   title="OP Registration"
@@ -182,7 +158,6 @@ navigation.navigate(
     )
   }
 />
-
       <DrawerRow
         icon="bed"
         title="OP Queue"
@@ -195,6 +170,27 @@ navigation.navigate(
 )
         }
       />
+      <DrawerRow
+        icon="medical"
+        title="Consultations"
+        onPress={() =>
+          navigation.navigate(
+            'Consultations'
+          )
+        }
+      />
+<DrawerRow
+  icon="people"
+  title="IP Admissions"
+  onPress={() =>
+navigation.navigate(
+  'MainTabs',
+  {
+    screen: 'IPD',
+  }
+)
+  }
+/>
 
       <DrawerSection
         title="OPERATIONS"

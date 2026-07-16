@@ -11,6 +11,10 @@ export interface Bed {
 export async function getAvailableBeds(
   wardId: string
 ) {
+
+  if (!wardId) {
+    return [];
+  }
   const { data, error } = await supabase
     .from('beds')
     .select('*')

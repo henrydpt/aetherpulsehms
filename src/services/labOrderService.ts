@@ -41,19 +41,21 @@ export async function createLabOrder(
 
 for (const test of tests) {
 
-  await createBillForService(
+await createBillForService(
 
-    order.admission_id,
+  order.admission_id,
 
-    test.test_code,
+  null,
 
-    'LAB',
+  test.test_code,
 
-    labOrder.id,
+  'LAB',
 
-    1
+  labOrder.id,
 
-  );
+  1
+
+);
 
 }
 

@@ -32,11 +32,16 @@ export default function ConsultationScreen() {
   const route =
     useRoute<any>();
 
-  const patient =
-    route.params?.patient;
+const admission =
+  route.params?.admission;
 
-  const queueId =
-    route.params?.queueId;
+const patient =
+  admission?.patient ??
+  route.params?.patient;
+
+const queueId =
+  route.params?.queueId;
+
 const navigation =
   useNavigation<any>();
     const [
@@ -72,24 +77,27 @@ async function saveConsultation(
   showAlert = true
 ) {
   try {
-    await saveConsultationRecord({
-      op_queue_id: queueId,
-      patient_id:
-        patient?.patient_id,
+await saveConsultationRecord({
 
-      chief_complaint:
-        chiefComplaint,
+  op_queue_id:
+    queueId,
 
-      diagnosis,
+  patient_id:
+    patient?.patient_id,
 
-      bp,
-      pulse,
-      temperature,
-      spo2,
+  chief_complaint:
+    chiefComplaint,
 
-      prescription,
-      notes,
-    });
+  diagnosis,
+
+  bp,
+  pulse,
+  temperature,
+  spo2,
+
+  prescription,
+  notes,
+});
 
 if (showAlert) {
   Alert.alert(
@@ -132,17 +140,24 @@ await completeConsultation(
   queueId
 );
 
-    Alert.alert(
-      'Success',
-      'Consultation completed.',
-      [
-        {
-          text: 'OK',
-          onPress: () =>
-            navigation.goBack(),
-        },
-      ]
-    );
+Alert.alert(
+  'Success',
+  'Consultation completed.',
+  [
+    {
+      text: 'Proceed to Billing',
+      onPress: () =>
+        navigation.replace(
+          'Billing',
+          {
+            encounter: {
+              id: queueId,
+            },
+          }
+        ),
+    },
+  ]
+);
 
   } catch (error: any) {
 

@@ -26,3 +26,29 @@ export async function getBillingTransactions(
   return data || [];
 
 }
+export async function getEncounterBillingTransactions(
+  encounterId: string
+) {
+
+  const { data, error } =
+    await supabase
+      .from('billing_transactions')
+      .select('*')
+      .eq(
+        'encounter_id',
+        encounterId
+      )
+      .order(
+        'created_at',
+        {
+          ascending: false,
+        }
+      );
+
+  if (error) {
+    throw error;
+  }
+
+  return data || [];
+
+}

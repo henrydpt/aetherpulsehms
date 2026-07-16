@@ -2,7 +2,9 @@ import { supabase } from '../lib/supabase';
 
 export async function createPayment(
 
-  admissionId: string,
+  admissionId: string | null,
+
+  encounterId: string | null,
 
   amount: number,
 
@@ -19,8 +21,11 @@ export async function createPayment(
       .from('payments')
       .insert({
 
-        admission_id:
-          admissionId,
+admission_id:
+  admissionId,
+
+encounter_id:
+  encounterId,
 
         amount,
 

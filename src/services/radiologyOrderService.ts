@@ -1,11 +1,13 @@
 import { supabase } from '../lib/supabase';
-
+import {
+  createBillForService,
+} from './billingEngineService';
 export async function createRadiologyOrder(
   patientId: string,
   admissionId: string,
   patientName: string,
   orderedBy: string,
-  procedureIds: string[]
+  procedures: any[]
 ) {
 
   const { data: order, error } =
@@ -26,15 +28,15 @@ export async function createRadiologyOrder(
     throw error;
   }
 
-  const items =
-    procedureIds.map(
-      (procedureId) => ({
-        radiology_order_id:
-          order.id,
-        procedure_id:
-          procedureId,
-      })
-    );
+const items =
+  procedures.map(
+    (procedure) => ({
+      radiology_order_id:
+        order.id,
+      procedure_id:
+        procedure.id,
+    })
+  );
 
   const { error: itemError } =
     await supabase
@@ -47,6 +49,26 @@ export async function createRadiologyOrder(
     throw itemError;
   }
 
-  return order;
+for (const procedure of procedures) {
+
+await createBillForService(
+
+  admissionId,
+
+  null,
+
+  procedure.service_code,
+
+  'RADIOLOGY',
+
+  order.id,
+
+  1
+
+);
+
+}
+
+return order;
 
 }

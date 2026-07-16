@@ -5,6 +5,9 @@ import {
 import {
   MEDICATION_STATUS,
 } from '../constants/medicationStatus';
+import {
+  createBillForService,
+} from './billingEngineService';
 export async function getPendingMedicationOrders() {
 
   const { data: orders, error } =
@@ -48,30 +51,91 @@ result.push({
 
 }
 export async function createMedicationDispense(
+
   medicationOrderId: string,
   inventoryId: string,
   quantity: number,
   dispensedBy: string,
   remarks: string
 ) {
+const { data: medicationOrder, error: orderError } =
+  await supabase
+    .from('medication_orders')
+    .select('*')
+    .eq(
+      'id',
+      medicationOrderId
+    )
+    .single();
 
-  const { error } =
-    await supabase
-      .from('medication_dispense')
-      .insert({
-        medication_order_id:
-          medicationOrderId,
-        inventory_id:
-          inventoryId,
-        quantity,
-        dispensed_by:
-          dispensedBy,
-        remarks,
-      });
+if (orderError) {
+  throw orderError;
+}
+const { data: inventory, error: inventoryError } =
+  await supabase
+    .from('pharmacy_inventory')
+    .select(`
+      id,
+      medicines (
+        service_code
+      )
+    `)
+    .eq(
+      'id',
+      inventoryId
+    )
+    .single();
 
-  if (error) {
-    throw error;
-  }
+if (inventoryError) {
+  throw inventoryError;
+}
+const {
+  data: dispense,
+  error,
+} =
+  await supabase
+    .from('medication_dispense')
+    .insert({
+      medication_order_id:
+        medicationOrderId,
+      inventory_id:
+        inventoryId,
+      quantity,
+      dispensed_by:
+        dispensedBy,
+      remarks,
+    })
+    .select()
+    .single();
+
+if (error) {
+  throw error;
+}
+
+const serviceCode =
+  inventory.medicines?.[0]?.service_code;
+
+if (!serviceCode) {
+  throw new Error(
+    'Medicine service code not found.'
+  );
+}
+
+await createBillForService(
+
+  medicationOrder.admission_id,
+
+  null,
+
+  serviceCode,
+
+  'PHARMACY',
+
+  dispense.id,
+
+  quantity
+
+);
 
 }
 export async function getDispensedMedicationOrders() {

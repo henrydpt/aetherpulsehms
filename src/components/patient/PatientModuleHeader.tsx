@@ -54,12 +54,14 @@ export default function PatientModuleHeader({
 }
 
 const styles = StyleSheet.create({
-  card: {
-    margin: 16,
-    padding: 16,
-    borderRadius: 16,
-    backgroundColor: '#FFFFFF',
-  },
+card: {
+  marginHorizontal: 16,
+  marginTop: 16,
+  marginBottom: 8,
+  padding: 16,
+  borderRadius: 16,
+  backgroundColor: '#FFFFFF',
+},
 
   title: {
     fontSize: 22,

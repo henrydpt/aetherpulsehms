@@ -80,9 +80,7 @@ async function placeOrder() {
 
       'Doctor',
 
-      selectedProcedures.map(
-        (p) => p.id
-      )
+selectedProcedures
 
     );
 

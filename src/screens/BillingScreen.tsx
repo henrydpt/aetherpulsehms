@@ -1,5 +1,5 @@
 import React, {
-  useEffect,
+  useCallback,
   useState,
 } from 'react';
 import {
@@ -8,24 +8,36 @@ import {
   View,
   Text,
   StyleSheet,
+  TouchableOpacity,
 } from 'react-native';
 import {
+  useNavigation,
   useRoute,
+  useFocusEffect,
 } from '@react-navigation/native';
 import { COLORS } from '../theme/colors';
 import {
   getBillingTransactions,
+  getEncounterBillingTransactions,
 } from '../services/billingQueryService';
 import {
   getBillingSummary,
+  getEncounterBillingSummary,
 } from '../services/billingSummaryService';
 export default function BillingScreen() {
 
-  const route =
+const route =
     useRoute<any>();
 
-  const admission =
-    route.params?.admission;
+const navigation =
+  useNavigation<any>();
+
+const admission =
+  route.params?.admission;
+
+const encounter =
+  route.params?.encounter;
+
 const [
   transactions,
   setTransactions,
@@ -36,27 +48,37 @@ const [
   setSummary,
 ] = useState<any>(null);
 
-useEffect(() => {
-  loadBilling();
-}, []);
+useFocusEffect(
+  useCallback(() => {
+    loadBilling();
+  }, [])
+);
 
 async function loadBilling() {
 
-  const data =
-    await getBillingTransactions(
-      admission.id
-    );
+const data =
+  admission
+    ? await getBillingTransactions(
+        admission.id
+      )
+    : await getEncounterBillingTransactions(
+        encounter.id
+      );
 
   setTransactions(data);
 
-  const billingSummary =
-    await getBillingSummary(
-      admission.id
-    );
+const billingSummary =
+  admission
+    ? await getBillingSummary(
+        admission.id
+      )
+    : await getEncounterBillingSummary(
+        encounter.id
+      );
 
-  setSummary(
-    billingSummary
-  );
+setSummary(
+  billingSummary
+);
 
 }
 
@@ -235,7 +257,45 @@ async function loadBilling() {
 </View>
 
 </View>
+<View
+  style={{
+    marginHorizontal: 16,
+    marginTop: 16,
+    marginBottom: 40,
+  }}
+>
 
+<TouchableOpacity
+  style={{
+    backgroundColor: COLORS.primary,
+    borderRadius: 12,
+    padding: 16,
+    alignItems: 'center',
+  }}
+  onPress={() =>
+navigation.navigate(
+  'Collect Payment',
+  {
+    admission,
+    encounter,
+  }
+)
+  }
+>
+
+<Text
+  style={{
+    color: '#FFFFFF',
+    fontWeight: '700',
+    fontSize: 16,
+  }}
+>
+  Collect Payment
+</Text>
+
+</TouchableOpacity>
+
+</View>
 </ScrollView>
 
     </SafeAreaView>

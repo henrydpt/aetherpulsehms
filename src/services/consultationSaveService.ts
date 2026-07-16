@@ -5,16 +5,23 @@ export async function
 saveConsultation(
   data: any
 ) {
-  const { error } =
+
+  const {
+    data: consultation,
+    error,
+  } =
     await supabase
       .from(
         'op_consultations'
       )
-      .insert([data]);
+      .insert([data])
+      .select()
+      .single();
 
   if (error) {
     throw error;
   }
 
-  return true;
+  return consultation;
+
 }

@@ -99,6 +99,8 @@ import FinancialWorkspaceScreen
   from '../screens/FinancialWorkspaceScreen';
 import BillingScreen
   from '../screens/BillingScreen';
+import PaymentCollectionScreen
+  from '../screens/PaymentCollectionScreen';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const Stack = createNativeStackNavigator();
@@ -302,7 +304,7 @@ export default function AppNavigator() {
   component={OPRegistrationScreen}
 />
 <Stack.Screen
-  name="Consultation"
+  name="OP Consultation"
   component={ConsultationScreen}
 />
 
@@ -431,6 +433,10 @@ export default function AppNavigator() {
 <Stack.Screen
   name="Billing"
   component={BillingScreen}
+/>
+<Stack.Screen
+  name="Collect Payment"
+  component={PaymentCollectionScreen}
 />
 </Stack.Navigator>
         </NavigationContainer>
